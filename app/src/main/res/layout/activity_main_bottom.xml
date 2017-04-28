@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:gravity="center_horizontal"
+              android:layout_width="match_parent"
+              android:background="@color/bottom_color"
+              android:layout_height="@dimen/activity_main_bottom_high">
+
+    <TextView
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_size"
+        android:paddingLeft="@dimen/bottom_text_padding"
+        android:paddingRight="@dimen/bottom_text_padding"
+        android:textColor="@android:color/white"
+        android:text="@string/exit"/>
+
+    <TextView
+        android:id="@+id/restart"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_size"
+        android:paddingLeft="@dimen/bottom_text_padding"
+        android:paddingRight="@dimen/bottom_text_padding"
+        android:textColor="@android:color/white"
+        android:layout_marginLeft="@dimen/bottom_text_padding"
+        android:text="@string/restart"/>
+
+    <TextView
+        android:id="@+id/shutdown"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/bottom_text_padding"
+        android:paddingRight="@dimen/bottom_text_padding"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/text_size"
+        android:textColor="@android:color/white"
+        android:layout_marginLeft="@dimen/bottom_text_padding"
+        android:text="@string/shutdown"/>
+
+</LinearLayout>

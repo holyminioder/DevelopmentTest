@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinnerArr">
+        <item>1280*720</item>
+        <item>1280*480</item>
+        <item>1920*1680</item>
+    </string-array>
+</resources>

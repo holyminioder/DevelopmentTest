@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_text_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:text="@string/android_version"/>
+
+        <EditText
+            android:layout_width="@dimen/activity_main_left_width"
+            android:layout_height="wrap_content"
+            android:text="@string/version"
+            android:background="@drawable/frame_shape"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/button_margin_left"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="@dimen/system_text_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:text="@string/SE_Android"/>
+
+        <EditText
+            android:layout_width="@dimen/activity_main_left_width"
+            android:layout_height="wrap_content"
+            android:text="@string/jurisdiction"
+            android:background="@drawable/frame_shape"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

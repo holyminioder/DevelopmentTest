@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:gravity="center"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size"
+            android:layout_marginRight="@dimen/activity_main_bottom_high"
+            android:background="@drawable/btn_style_five_selector"
+            android:paddingRight="@dimen/activity_main_bottom_high"
+            android:paddingLeft="@dimen/activity_main_bottom_high"
+            android:text="@string/synchronization"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size"
+            android:layout_marginLeft="@dimen/activity_main_bottom_high"
+            android:background="@drawable/btn_style_five_selector"
+            android:paddingRight="@dimen/activity_main_bottom_high"
+            android:paddingLeft="@dimen/activity_main_bottom_high"
+            android:text="@string/asynchronous"/>
+
+    </LinearLayout>
+
+
+</LinearLayout>

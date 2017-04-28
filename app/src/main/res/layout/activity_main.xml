@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background">
+
+    <include layout="@layout/activity_main_right"
+             android:layout_height="@dimen/activity_main_right_height"
+             android:layout_width="match_parent"
+             android:layout_alignParentTop="true"
+        android:id="@+id/layout_action_bar"/>
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_action_bar">
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_alignParentLeft="true"
+            app:layout_heightPercent="100%"
+            app:layout_widthPercent="14.3%">
+        </ListView>
+
+        <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@id/listView"
+        android:background="@android:color/white"
+        app:layout_heightPercent="100%"
+        app:layout_widthPercent="85.7%">
+        </FrameLayout>
+
+    </android.support.percent.PercentRelativeLayout>
+
+    <include layout="@layout/activity_main_bottom"
+             android:id="@+id/main_bottom"
+             android:layout_height="@dimen/activity_main_bottom_high"
+             android:layout_width="match_parent"
+             android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
