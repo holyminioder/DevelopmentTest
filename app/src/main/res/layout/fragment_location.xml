@@ -1,14 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:gravity="center"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <com.amap.api.maps2d.MapView
         android:id="@+id/map"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginTop="@dimen/button_margin_bottom"
+        app:layout_heightPercent="70%"
+        app:layout_widthPercent="75%"/>
+
+    <TextView
+        android:id="@+id/tv_now_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/now_location"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/text_size"
+        android:layout_below="@id/map"
+        android:layout_marginTop="@dimen/text_spacing"/>
+
+    <TextView
+        android:id="@+id/my_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_widthPercent="40%"
+        android:layout_toRightOf="@id/tv_now_location"
+        android:layout_marginLeft="@dimen/text_spacing"
+        android:background="@drawable/frame_shape"
+        android:layout_below="@id/map"
+        android:textSize="@dimen/list_view_text_size"
+        android:layout_marginTop="@dimen/text_spacing"/>
 
 
-</LinearLayout>
+</android.support.percent.PercentRelativeLayout>

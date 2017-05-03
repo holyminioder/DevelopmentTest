@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.location.AMapLocation;
@@ -41,12 +42,15 @@ public class LocationFragment extends Fragment implements LocationSource, AMapLo
     private LocationSource.OnLocationChangedListener mListener = null;
     //标识，用于判断是否只显示一次定位信息和用户重新定位
     private boolean isFirstLoc = true;
+    //我的位置
+    private TextView myLocation;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_location, container, false);
         mapView = (MapView) view.findViewById(R.id.map);
+        myLocation = (TextView) view.findViewById(R.id.my_location);
         //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，实现地图生命周期管理
         mapView.onCreate(savedInstanceState);
         if (aMap == null) {
@@ -167,6 +171,7 @@ public class LocationFragment extends Fragment implements LocationSource, AMapLo
                             + aMapLocation.getStreet() + ""
                             + aMapLocation.getStreetNum());
                     Toast.makeText(getContext().getApplicationContext(), buffer.toString(), Toast.LENGTH_LONG).show();
+                    myLocation.setText(buffer.toString());
                     isFirstLoc = false;
                 }
 

@@ -21,6 +21,15 @@
             android:layout_marginTop="@dimen/button_margin_bottom"
             android:textSize="@dimen/text_size"/>
 
+        <TextView
+            android:id="@+id/main_board_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/black"
+            android:layout_marginLeft="@dimen/status_bar"
+            android:textSize="@dimen/main_board_msg_text"
+            android:layout_marginTop="@dimen/text_spacing"/>
+
     </LinearLayout>
 
     <LinearLayout

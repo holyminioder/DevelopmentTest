@@ -45,4 +45,11 @@
     <string name="set_resolution">设置分辨率：</string>
 
     <string name="sure">确定</string>
+    <string name="now_location">我的位置</string>
+    <string name="ethernetOrWifi">以太网或wifi测试</string>
+    <string name="loading">加载中...</string>
+    <string name="net_break">断网了，亲</string>
+    <string name="net_url">www.baidu.com</string>
+    <string name="net_hint">请输入网址,如：www.baidu.com</string>
+    <string name="skip">跳转</string>
 </resources>
