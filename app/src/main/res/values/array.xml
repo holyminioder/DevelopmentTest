@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="spinnerArr">
-        <item>1280*720</item>
-        <item>1280*480</item>
-        <item>1920*1680</item>
+        <item>2560*1600</item>
+        <item>2048*1536</item>
+        <item>1920*1200</item>
+        <item>1920*1080</item>
+        <item>1366*768</item>
+        <item>1280*800</item>
+        <item>1280*752</item>
+        <item>1024*768</item>
     </string-array>
 </resources>
