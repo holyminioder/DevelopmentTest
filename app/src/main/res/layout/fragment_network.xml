@@ -129,11 +129,11 @@
         app:layout_heightPercent="100%"
         app:layout_widthPercent="40%">
 
-        <TextView
+        <Button
+            android:id="@+id/btn_bluetooth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
-            android:text="@string/bluetooth"/>
+            android:text="蓝牙"/>
 
     </LinearLayout>
 

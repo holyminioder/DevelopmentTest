@@ -1,11 +1,15 @@
 package com.example.lederui.developmenttest.fragment;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.lederui.developmenttest.R;
 
@@ -23,6 +28,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static android.app.Activity.RESULT_FIRST_USER;
+import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by holyminier on 2017/4/21.
@@ -48,6 +57,10 @@ public class NetworkFragment extends Fragment {
     ImageButton mImgExit;
     @BindView(R.id.btn_skip_web)
     Button mBtnSkipWeb;
+    @BindView(R.id.btn_bluetooth)
+    Button mBtnBlueTooth;
+
+    private static final int BLUE_OK_CODE = 1;
 
     @Nullable
     @Override
@@ -65,7 +78,7 @@ public class NetworkFragment extends Fragment {
     }
 
 
-    @OnClick({R.id.img_exit, R.id.btn_skip_web})
+    @OnClick({R.id.img_exit, R.id.btn_skip_web, R.id.btn_bluetooth})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_exit:
@@ -113,6 +126,53 @@ public class NetworkFragment extends Fragment {
                     }
                 });
                 break;
+            case R.id.btn_bluetooth:
+                BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                if(!mBluetoothAdapter.isEnabled()){
+                    Toast.makeText(getContext(),"请开启蓝牙功能",Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(intent,BLUE_OK_CODE);
+                }else {
+                    showFileChooser();
+                }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    // Get the Uri of the selected file
+                    Uri uri = data.getData();
+                    Log.d(TAG, "File Uri: " + uri.toString());
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("*/*");
+                    intent.putExtra(Intent.EXTRA_STREAM, uri);
+                    startActivity(intent);
+
+                }
+                break;
+            case BLUE_OK_CODE:
+                Log.d("test", "blue code =" + BLUE_OK_CODE);
+                if(requestCode == RESULT_FIRST_USER) {
+                    Toast.makeText(getContext(), "已开启蓝牙功能,请选择文件", Toast.LENGTH_SHORT).show();
+                    showFileChooser();
+                }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private static final int FILE_SELECT_CODE = 0;
+    private void showFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        try {
+            startActivityForResult( Intent.createChooser(intent, "请选择文件进行传输"), FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(getContext(), "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
     }
 }
