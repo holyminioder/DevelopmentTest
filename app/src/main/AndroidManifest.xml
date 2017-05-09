@@ -35,9 +35,10 @@
         </meta-data>
 
         <!--声明定位service-->
-        <service android:name="com.amap.api.location.APSService"></service>
+        <service android:name="com.amap.api.location.APSService">
+        </service>
 
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.MainActivity" android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

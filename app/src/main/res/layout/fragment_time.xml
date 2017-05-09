@@ -1,14 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:gravity="center"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/ll_year"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Time"/>
+        android:orientation="horizontal"
+        app:layout_widthPercent="30%">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textColor="@android:color/black"
+            android:text="@string/year"/>
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/et_year"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/frame_shape"
+            android:textSize="@dimen/list_view_text_size"
+            android:inputType="number"
+            android:hint="@string/hint_year"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_month"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/text_spacing"
+        android:layout_below="@id/ll_year"
+        app:layout_widthPercent="30%">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textColor="@android:color/black"
+            android:text="@string/month"/>
+
+        <EditText
+            android:id="@+id/et_month"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/frame_shape"
+            android:textSize="@dimen/list_view_text_size"
+            android:inputType="number"
+            android:hint="@string/hint_month"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_day"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/text_spacing"
+        android:layout_below="@id/ll_month"
+        app:layout_widthPercent="30%">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textColor="@android:color/black"
+            android:text="@string/day"/>
+
+        <EditText
+            android:id="@+id/et_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/frame_shape"
+            android:textSize="@dimen/list_view_text_size"
+            android:inputType="number"
+            android:hint="@string/hint_day"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_hour"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/text_spacing"
+        android:layout_below="@id/ll_day"
+        app:layout_widthPercent="30%">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textColor="@android:color/black"
+            android:text="@string/hour"/>
+
+        <EditText
+            android:id="@+id/et_hour"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/frame_shape"
+            android:textSize="@dimen/list_view_text_size"
+            android:inputType="number"
+            android:hint="@string/hint_hour"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_minute"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/text_spacing"
+        android:layout_below="@id/ll_hour"
+        app:layout_widthPercent="30%">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textColor="@android:color/black"
+            android:text="@string/minute"/>
+
+        <EditText
+            android:id="@+id/et_minute"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/frame_shape"
+            android:textSize="@dimen/list_view_text_size"
+            android:inputType="number"
+            android:hint="@string/hint_minute"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_second"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/text_spacing"
+        android:layout_below="@id/ll_minute"
+        app:layout_widthPercent="30%">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textColor="@android:color/black"
+            android:text="@string/second"/>
+
+        <EditText
+            android:id="@+id/et_second"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/frame_shape"
+            android:textSize="@dimen/list_view_text_size"
+            android:inputType="number"
+            android:hint="@string/hint_second"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="@dimen/text_spacing"
+        android:layout_below="@id/ll_second"
+        android:gravity="center_horizontal"
+        app:layout_widthPercent="30%">
+
+        <Button
+            android:id="@+id/btn_ensure"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/bottom_text_padding"
+            android:background="@drawable/btn_sure_selector"
+            android:paddingLeft="@dimen/status_bar"
+            android:paddingRight="@dimen/status_bar"
+            android:text="@string/sure"/>
+
+    </LinearLayout>
+
+</android.support.percent.PercentRelativeLayout>
