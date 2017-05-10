@@ -18,9 +18,12 @@ import java.io.FileFilter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 /**
@@ -28,13 +31,6 @@ import java.util.regex.Pattern;
  */
 
 public class MainBoardMessage {
-
-    private Handler mHandler;
-    private UsbManager mManager;
-    private UsbDevice mUsbDevice;
-    private HashMap<String, UsbDevice> deviceList;
-    private UsbInterface mInterface;
-    private int mStatus;
 
     //获取cpu型号
     public static String getCpuInfo() {
@@ -100,6 +96,7 @@ public class MainBoardMessage {
         Log.e("InterfaceCount", String.valueOf(usbDevice.getInterfaceCount()));
         return usbDevice.getInterfaceCount();
     }
+
     // 实时获取CPU当前频率（单位KHZ）
     public static double getCurCpuFreq() {
         String result = "N/A";
@@ -115,7 +112,7 @@ public class MainBoardMessage {
             e.printStackTrace();
         }
         long frequency = Integer.parseInt(result);
-        double mainFrequency = (double)frequency / 1000 / 1000;
+        double mainFrequency = (double) frequency / 1000 / 1000;
         return mainFrequency;
     }
 
@@ -139,11 +136,11 @@ public class MainBoardMessage {
     }
 
     //存储容量
-    public static String getStorageSize(){
+    public static String getStorageSize() {
         long rom = getTotalInternalMemorySize();
         long sdCard = getSDCardMemory();
         long storage = rom + sdCard;
-        String storageSize = formatFileSize(storage, true);
+        String storageSize = formatFileSize(storage, false);
         return storageSize;
     }
 
@@ -176,7 +173,7 @@ public class MainBoardMessage {
 
     //sdCard大小
     public static long getSDCardMemory() {
-        long sdCardInfo= 0;
+        long sdCardInfo = 0;
         String state = Environment.getExternalStorageState();
         if (Environment.MEDIA_MOUNTED.equals(state)) {
             File sdcardDir = Environment.getExternalStorageDirectory();
@@ -186,5 +183,36 @@ public class MainBoardMessage {
             sdCardInfo = bSize * bCount;//总大小
         }
         return sdCardInfo;
+    }
+
+    //获取CPU占用率
+    public static String cpuOccupancy() {
+        StringBuilder tv = new StringBuilder();
+        int rate = 0;
+        try {
+            String Result;
+            Process p;
+            p = Runtime.getRuntime().exec("top -n 1");
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            while ((Result = br.readLine()) != null) {
+                if (Result.trim().length() < 1) {
+                    continue;
+                } else {
+                    String[] CPUusr = Result.split("%");
+                    tv.append("USER:" + CPUusr[0] + "\n");
+                    String[] CPUusage = CPUusr[0].split("User");
+                    String[] SYSusage = CPUusr[1].split("System");
+                    tv.append("CPU:" + CPUusage[1].trim() + " length:" + CPUusage[1].trim().length() + "\n");
+                    tv.append("SYS:" + SYSusage[1].trim() + " length:" + SYSusage[1].trim().length() + "\n");
+                    rate = Integer.parseInt(CPUusage[1].trim()) + Integer.parseInt(SYSusage[1].trim());
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return rate + "";
     }
 }

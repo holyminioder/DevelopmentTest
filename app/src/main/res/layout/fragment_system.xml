@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:gravity="center"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/ll_version"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_widthPercent="45%">
 
         <TextView
             android:layout_width="@dimen/system_text_width"
@@ -19,7 +22,8 @@
             android:text="@string/android_version"/>
 
         <EditText
-            android:layout_width="@dimen/activity_main_left_width"
+            android:id="@+id/versions"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/version"
             android:background="@drawable/frame_shape"/>
@@ -27,10 +31,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/button_margin_left"
-        android:orientation="horizontal">
+        android:layout_below="@id/ll_version"
+        android:orientation="horizontal"
+        app:layout_widthPercent="45%">
 
         <TextView
             android:layout_width="@dimen/system_text_width"
@@ -41,12 +47,12 @@
             android:text="@string/SE_Android"/>
 
         <EditText
-            android:layout_width="@dimen/activity_main_left_width"
+            android:id="@+id/jurisdiction"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/jurisdiction"
             android:background="@drawable/frame_shape"/>
 
     </LinearLayout>
 
-
-</LinearLayout>
+</android.support.percent.PercentRelativeLayout>

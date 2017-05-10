@@ -43,7 +43,7 @@
                 android:layout_width="@dimen/bottom_text_padding"
                 android:layout_height="@dimen/bottom_text_padding"
                 android:layout_gravity="top|right"
-                android:background="@drawable/exit_webview"
+                android:background="@drawable/lucency"
                 android:clickable="true"
                 android:visibility="gone"/>
 

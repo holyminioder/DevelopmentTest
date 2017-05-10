@@ -84,7 +84,7 @@ public class NetworkFragment extends Fragment {
         switch (view.getId()) {
             case R.id.img_exit:
                 mToWeb.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
-                mImgExit.setVisibility(View.INVISIBLE);
+                mImgExit.setBackgroundResource(R.drawable.lucency);
                 break;
             case R.id.btn_skip_web:
                 mLlFail.setVisibility(View.INVISIBLE);
@@ -98,6 +98,7 @@ public class NetworkFragment extends Fragment {
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
                         view.loadUrl(url);
+                        mImgExit.setBackgroundResource(R.drawable.exit_webview);
                         return true;
                     }
                 });

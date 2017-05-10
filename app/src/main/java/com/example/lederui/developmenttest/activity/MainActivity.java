@@ -2,6 +2,7 @@ package com.example.lederui.developmenttest.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.adapter.ListViewAdapter;
+import com.example.lederui.developmenttest.data.MainBoardMessage;
 import com.example.lederui.developmenttest.data.StringManager;
 import com.example.lederui.developmenttest.fragment.BakingMachineFragment;
 import com.example.lederui.developmenttest.fragment.BarcodeReaderFragment;
@@ -39,6 +41,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,9 +74,18 @@ public class MainActivity extends AppCompatActivity {
     TextView mSetting;
     @BindView(R.id.keyboard)
     TextView mKeyboard;
+    @BindView(R.id.printer_state)
+    TextView mPrinterState;
+    @BindView(R.id.cpu_occupancy)
+    TextView mCpuOccupancy;
+    @BindView(R.id.cpu_temperature)
+    TextView mCpuTemperature;
+    @BindView(R.id.voltage)
+    TextView mVoltage;
 
     private FragmentTransaction mFt;
     private ListViewAdapter mAdapter;
+    private Handler mHandler = null;
 
     private TicketReaderFragment mTicketFragment;
     private BakingMachineFragment mMachineFragment;
@@ -100,6 +113,31 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        initDate();
+    }
+    //界面初始化设置
+    private void initDate() {
+        //CPU使用率
+        mHandler = new Handler();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                final String occupancy = MainBoardMessage.cpuOccupancy();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCpuOccupancy.setText("CPU占用率：" + occupancy + "%");
+                    }
+                });
+            }
+        }, 1000, 3000);
+
+        //默认选中诊断程序
+        initBackground(mDiagnoseProcedure);
+        mListView.setVisibility(View.VISIBLE);
+        setListViewAdapter(StringManager.diagnosis);
+        onDiagnosisItemClick();
     }
 
     //主分类的点击事件
