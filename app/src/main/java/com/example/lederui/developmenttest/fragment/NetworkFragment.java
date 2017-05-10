@@ -78,6 +78,7 @@ public class NetworkFragment extends Fragment {
     }
 
 
+
     @OnClick({R.id.img_exit, R.id.btn_skip_web, R.id.btn_bluetooth})
     public void onViewClicked(View view) {
         switch (view.getId()) {

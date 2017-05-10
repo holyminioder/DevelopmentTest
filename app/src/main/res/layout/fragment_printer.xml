@@ -1,14 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:gravity="center"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Printer"/>
+    <RelativeLayout
+        android:id="@+id/cut_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/textcut"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="切纸模式"
+            android:gravity="center"
+            android:layout_marginLeft="130dp"/>
+
+        <RadioGroup
+            android:id="@+id/riogroup_cut"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_toRightOf="@+id/textcut"
+
+            >
+
+            <RadioButton
+                android:id="@+id/riobtn_halfcut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="半切"
+                android:checked="true"
+                  />
+
+            <RadioButton
+                android:id="@+id/riobtn_allcut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="全切"
+                 />
 
 
-</LinearLayout>
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/riogroup_blackmark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="350dp"
+
+            >
+            <RadioButton
+                android:id="@+id/riobtn_blackmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="黑标"
+                android:checked="true"
+               />
+            <RadioButton
+                android:id="@+id/riobtn_noblackmark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="非黑标"
+                />
+        </RadioGroup>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/ptn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cut_layout">
+
+        <Button
+            android:id="@+id/btn_printSample"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="体彩样票"
+
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="122dp"
+            android:layout_marginStart="122dp" />
+
+        <Button
+            android:id="@+id/btn_printString"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="打印字符"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="252dp" />
+
+        <Button
+            android:id="@+id/btn_printImage"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="打印图像"
+            android:layout_marginLeft="380dp"/>
+
+        <Button
+            android:id="@+id/btn_printSmallBlackBar"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="打印横条"
+            android:layout_below="@+id/btn_printSample"
+            android:layout_alignLeft="@+id/btn_printSample"/>
+
+        <Button
+            android:id="@+id/btn_printBigBlackBar"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="全黑打印"
+            android:layout_below="@+id/btn_printString"
+            android:layout_alignLeft="@+id/btn_printString"/>
+
+       <ToggleButton
+           android:id="@+id/btn_printContinue"
+           android:layout_width="100dp"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/btn_printImage"
+           android:layout_alignLeft="@+id/btn_printImage"
+           android:textOn="连续打印25分钟"
+           android:textOff="停止打印"
+           android:checked="true"
+           />
+        <Button
+            android:id="@+id/btn_printCode"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_printSmallBlackBar"
+            android:layout_alignLeft="@+id/btn_printSmallBlackBar"
+            android:text="打印PDF"/>
+
+
+        <Spinner
+            android:id="@+id/spinner_codeType"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/btn_printCode"
+            android:layout_below="@+id/btn_printCode"
+            android:layout_marginTop="4dp"/>
+
+        <Button
+            android:id="@+id/btn_printPageMode"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_printBigBlackBar"
+            android:text="页模式测试"
+            android:layout_alignLeft="@+id/btn_printBigBlackBar"/>
+
+        <Button
+            android:id="@+id/btn_printSpeedtest"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/spinner_codeType"
+            android:text="打印速度测试"
+            android:layout_alignLeft="@+id/spinner_codeType"
+            android:layout_marginTop="15dp"/>
+
+        <TextView
+            android:id="@+id/printSpeedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignLeft="@+id/btn_printSpeedtest"
+            android:layout_below="@+id/btn_printSpeedtest"
+            android:text="速度"/>
+
+        <Button
+            android:id="@+id/btn_CutPaperSpeedtest"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="切纸速度测试"
+            android:layout_alignBottom="@+id/btn_printSpeedtest"
+            android:layout_alignLeft="@+id/btn_printContinue"
+            android:layout_alignStart="@+id/btn_printContinue" />
+
+        <TextView
+            android:id="@+id/cutSpeedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_below="@+id/btn_CutPaperSpeedtest"
+            android:layout_alignLeft="@+id/btn_CutPaperSpeedtest"
+            android:text="切纸速度"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
