@@ -1,6 +1,7 @@
 package com.example.lederui.developmenttest.activity;
 
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
@@ -86,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
     private FragmentTransaction mFt;
     private ListViewAdapter mAdapter;
     private Handler mHandler = null;
+    private Typeface mTypeFace;
 
     private TicketReaderFragment mTicketFragment;
     private BakingMachineFragment mMachineFragment;
@@ -132,6 +134,22 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }, 1000, 3000);
+
+        mTypeFace = Typeface.createFromAsset(getAssets(), "fonts/simhei.ttf");
+        mDiagnoseProcedure.setTypeface(mTypeFace);
+        mPrinter.setTypeface(mTypeFace);
+        mScannerGun.setTypeface(mTypeFace);
+        mTicketReader.setTypeface(mTypeFace);
+        mKeyboard.setTypeface(mTypeFace);
+        mToastChance.setTypeface(mTypeFace);
+        mSetting.setTypeface(mTypeFace);
+        mExit.setTypeface(mTypeFace);
+        mRestart.setTypeface(mTypeFace);
+        mShutdown.setTypeface(mTypeFace);
+        mPrinterState.setTypeface(mTypeFace);
+        mCpuOccupancy.setTypeface(mTypeFace);
+        mCpuTemperature.setTypeface(mTypeFace);
+        mVoltage.setTypeface(mTypeFace);
 
         //默认选中诊断程序
         initBackground(mDiagnoseProcedure);
@@ -253,7 +271,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < strings.length; i++) {
             data.add(strings[i]);
         }
-        mAdapter = new ListViewAdapter(this, data);
+        mAdapter = new ListViewAdapter(this, data, mTypeFace);
         mListView.setAdapter(mAdapter);
         mListView.setItemsCanFocus(true);
         mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);

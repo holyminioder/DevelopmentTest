@@ -20,7 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textStyle="bold"
             android:textSize="@dimen/list_view_text_size"
             android:textColor="@android:color/black"
             android:text="@string/printer_state"/>
@@ -31,7 +30,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textStyle="bold"
             android:textSize="@dimen/list_view_text_size"
             android:textColor="@android:color/black"
             android:text="@string/cpu_seizure_rate"/>
@@ -42,7 +40,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textStyle="bold"
             android:textSize="@dimen/list_view_text_size"
             android:textColor="@android:color/black"
             android:text="@string/cpu_temperature"/>
@@ -53,7 +50,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:textStyle="bold"
             android:textSize="@dimen/list_view_text_size"
             android:textColor="@android:color/black"
             android:text="@string/voltage"/>
@@ -62,13 +58,14 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="1dp">
 
         <TextView
             android:id="@+id/diagnose_procedure"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="@dimen/text_size"
@@ -81,7 +78,7 @@
         <TextView
             android:id="@+id/printer"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="@dimen/text_size"
@@ -94,7 +91,7 @@
         <TextView
             android:id="@+id/scanner_gun"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="@dimen/text_size"
@@ -107,7 +104,7 @@
         <TextView
             android:id="@+id/ticket_reader"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="@dimen/text_size"
@@ -120,7 +117,7 @@
         <TextView
             android:id="@+id/keyboard"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="@dimen/text_size"
@@ -133,7 +130,7 @@
         <TextView
             android:id="@+id/toast_chance"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="@dimen/text_size"
@@ -146,7 +143,7 @@
         <TextView
             android:id="@+id/setting"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="@dimen/text_size"
