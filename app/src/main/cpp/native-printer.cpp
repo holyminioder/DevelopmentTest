@@ -9,7 +9,7 @@
 extern "C"
 
 #include "byScanPrnDeviceDll.h"
-#include "com_example_lederui_developmenttest_fragment_PrinterFragment.h"
+#include "com_example_lederui_developmenttest_data_PrinterInterface.h"
 
 #define  LOG_TAG    "native-printer"
 #define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
@@ -49,7 +49,7 @@ int	returnValueInt = PRINTER_NO_ERROR;
 bool isInit = false;
 
 
-JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_fragment_PrinterFragment_PrintInit
+JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintInit
         (JNIEnv * env, jobject)
 {
     char errStr[256] = {0x00};
@@ -69,10 +69,16 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_fragment_Pri
 }
 
 
-JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_fragment_PrinterFragment_SetCutMode
+JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_SetCutMode
         (JNIEnv * env, jobject, jint mode) {
 
-    bool ret = byPSetCutterMode(mode);
+    bool ret = PSetCutterMode(mode);
+
+    char err[256] = {0x00};
+    byPGetLastErrorStr(err,200);
+    LOGI("setcutmode(1) return %d err = %s",ret,err);
+
+
     return  ret;
 }
 
@@ -650,7 +656,7 @@ int PrintBarcodeTicket(int codeType)
     return TRUE;
 }
 
-JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_fragment_PrinterFragment_GetLastErrStr
+JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetLastErrStr
         (JNIEnv *env, jobject) {
 
         char	errStr[256] = {0x00};
@@ -659,18 +665,20 @@ JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_fragment_Prin
 
 }
 
-JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_fragment_PrinterFragment_PrintSample
+JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintSample
         (JNIEnv *, jobject, jint mode) {
 
+    PInit("/sdcard", "/sdcard");
     PSetCutterMode(mode);
-    if(PrintPDF417() != NO_ERROR)
-        return  false;
+    if (PrintPDF417() != NO_ERROR)
+        return false;
     return true;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_fragment_PrinterFragment_PrintAllString
+JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintAllString
         (JNIEnv *, jobject, jint mode) {
 
+    PInit("/sdcard", "/sdcard");
     PSetCutterMode(mode);
     bool returnValueBool = true;
     char	errStr[256] = {0x00};
@@ -712,9 +720,10 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_fragment_Pri
     return  true;
 }
 
-JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_fragment_PrinterFragment_PrintImage
+JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintImage
         (JNIEnv *, jobject, jint){
 
+        PInit("/sdcard", "/sdcard");
         returnValueInt = byPPrintDiskImage(0, 0, "/sdcard/conf/demo.bmp");
         PCutPaper();
 
@@ -724,8 +733,9 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_fragment_Pri
         return  true;
 }
 
-JNIEXPORT bool JNICALL Java_com_example_lederui_developmenttest_fragment_PrinterFragment_PrintBlackBarcode
+JNIEXPORT bool JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintBlackBarcode
         (JNIEnv *, jobject, jint, jint size) {
+    PInit("/sdcard", "/sdcard");
     int msize = size;
     if(isInit){
         if(size == 0){
@@ -747,8 +757,9 @@ JNIEXPORT bool JNICALL Java_com_example_lederui_developmenttest_fragment_Printer
     return true;
 }
 
-JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_fragment_PrinterFragment_PrintBarCode
+JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintBarCode
         (JNIEnv *env, jobject, jint cutmode, jint codeType) {
+    PInit("/sdcard", "/sdcard");
     int mcut = cutmode;
     int type = codeType;
     LOGI("codeTypessss=%d",type);
@@ -777,22 +788,126 @@ JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_fragment_Prin
     return env->NewStringUTF(errStr);
 }
 
-JNIEXPORT bool JNICALL Java_com_example_lederui_developmenttest_fragment_PrinterFragment_PrintPaperMode
+JNIEXPORT bool JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintPaperMode
         (JNIEnv *, jobject, jint) {
+    PInit("/sdcard", "/sdcard");
 
+    bool ret = true;
+    PSetPageMode(400 , 700 , 40 , 40);
+    PSetAngle(90);
+    PPrintString("中国体育彩票1中国体育彩票2中国体育彩票3中国体育彩票4");
     PPrintPage();
-    PPrintString("页模式?\n\n");
+    ret = PCutPaper();
+
+    PSetPageMode(400 , 700 , 40 , 40);
+    PSetAngle(180);
+    PPrintString("中国体育彩票1中国体育彩票2中国体育彩票3中国体育彩票4");
+    PPrintPage();
+    ret = PCutPaper();
+
+    PSetPageMode(400 , 700 , 40 , 40);
+    PSetAngle(270);
+    PPrintString("中国体育彩票1中国体育彩票2中国体育彩票3中国体育彩票4");
+    PPrintPage();
+    ret = PCutPaper();
+
+    PSetPageMode(400 , 700 , 40 , 40);
+    PSetAngle(0);
+    PPrintString("中国体育彩票1中国体育彩票2中国体育彩票3中国体育彩票4");
+    PPrintPage();
+    ret = PCutPaper();
+
+    if(!ret)
+        return false;
+
+
     return true;
 }
 
-JNIEXPORT bool JNICALL Java_com_example_lederui_developmenttest_fragment_PrinterFragment_PrintString
+JNIEXPORT bool JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintString
         (JNIEnv *, jobject , jstring str) {
 
+    int ret = byPPrintString("cutpaper test\n");
 
-    if(PPrintString("cutpaper test") != NO_ERROR)
+    if(ret != NO_ERROR)
         return false;
     PCutPaper();
 
+    char err[256] = {0x00};
+    byPGetLastErrorStr(err,200);
+    LOGI("byPPrintString return %d err = %s",ret,err);
+
+
     return true;
 }
+
+JNIEXPORT bool JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_CutPaper
+        (JNIEnv *, jobject) {
+    bool ret = PCutPaper();
+
+}
+
+JNIEXPORT bool JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PSetPageMode
+        (JNIEnv *, jobject, jint width ,jint heigt, jint leftTop_x, jint leftTop_y) {
+    int wid = width;
+    int h = heigt;
+    int leftx = leftTop_x;
+    int lefty = leftTop_y;
+    PSetPageMode(wid , h , leftx , lefty);
+}
+
+JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetPrintHwInfo
+        (JNIEnv *env, jobject) {
+
+//    PInit("/sdcard", "/sdcard");
+    char info[1024] = {0x00};
+    bool ret = PGetHWInformation(info, 1000);
+    if (!ret) {
+        char err[256] = {0x00};
+        byPGetLastErrorStr(err, 200);
+        LOGI("gethwinfo return = %d, hwinfo = %s", ret, info);
+        return env->NewStringUTF(err);
+
+    }
+    else {
+        LOGI("gethwinfo return = %d, hwinfo = %s", ret, info);
+
+    }
+    bool isready = byPPrinterIsReady();
+    LOGI("printerIsReady return = %d",isready);
+
+    return env->NewStringUTF(info);
+}
+
+JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrinterStatus
+        (JNIEnv *env, jobject) {
+
+//    bool isready = PPrinterIsReady();
+//    if(!isready) {
+        if (byPInit("/sdcard","/sdcard") != PRINTER_NO_ERROR) {
+            char errStr[256] = {0x00};
+            byPGetLastErrorStr(errStr, 200);
+            LOGI("printer init false! err = %s",errStr);
+            return env->NewStringUTF(errStr);
+        } else{
+            if(PPrinterIsReady())
+                return  env->NewStringUTF("正常");
+        }
+
+//    }
+//    LOGI("isready =%d",isready);
+    return  env->NewStringUTF("正常");
+}
+
+JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetAuthority
+        (JNIEnv *, jobject) {
+
+
+    system("mv /sdcard/conf/HWISNBCPrinter0.ini /sdcard/conf/HWISNBCPrinter.ini");
+
+
+}
+
+
+
 

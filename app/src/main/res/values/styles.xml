@@ -7,5 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+   <drawable name="btn_normalcolor_printer1">#D2CBCB</drawable>
+    <drawable name="btn_presscolor_printer1">#2c72af</drawable>
 
 </resources>

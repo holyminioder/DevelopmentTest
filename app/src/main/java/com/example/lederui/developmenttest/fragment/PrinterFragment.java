@@ -11,19 +11,26 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.lederui.developmenttest.R;
+import com.example.lederui.developmenttest.data.PrinterInterface;
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Properties;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
+import static com.example.lederui.developmenttest.data.PrinterInterface.GetLastErrStr;
 
 /**
  * Created by holyminier on 2017/4/21.
@@ -32,46 +39,8 @@ import butterknife.Unbinder;
 /** 打印机Fragment */
 public class PrinterFragment extends Fragment  implements View.OnClickListener{
 
-    static{
-        System.loadLibrary("usb1.0");
-        System.loadLibrary("ConfigFileINI");
-        System.loadLibrary("flog");
-        System.loadLibrary("bitmap");
-        System.loadLibrary("scanprn");
-        System.loadLibrary("ScanPrnWrap");
-        System.loadLibrary("native-printer");
-    }
+    private PrinterInterface mPrintInterface = new PrinterInterface();
 
-    private native boolean PrintInit();
-
-    private native  String GetLastErrStr();
-
-    private native boolean SetCutMode(int mode);
-
-    //change ini file , set allcut or halfcut
-    private native void SetAllcutOrHalfcut(int mode);
-
-    private native boolean PrintSample(int cutmode);
-
-    private native boolean PrintAllString(int cutmode);
-
-    private native boolean PrintImage(int cutmode);
-
-    private native boolean PrintBlackBarcode(int cutmode,int size);
-
-    private native String PrintCodePaper(int cutmode,int code);
-
-    private native String PrintContinue(int cutmode , int time);
-
-    private native boolean PrintPaperMode(int cutmode);
-
-    private native String PrintSpeedTest(int cutmode);
-
-    private native String PrintCutPaperSpeed(int cutmode);
-
-    private native String PrintBarCode(int cutmode ,int codeType);
-
-    private native  boolean PrintString(String str);
 
     @BindView(R.id.btn_printSample) Button mBtPrintSample;
     @BindView(R.id.btn_printString) Button mBtPrintStringBt;
@@ -83,10 +52,10 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
     @BindView(R.id.btn_printPageMode) Button mBtPrintPageMode;
     @BindView(R.id.btn_printSpeedtest) Button mBtPrintSpeedTest;
     @BindView(R.id.btn_CutPaperSpeedtest) Button mBtCutPaperSpeedTest;
-    @BindView(R.id.riobtn_halfcut) RadioButton mRioHalfCut;
-    @BindView(R.id.riobtn_allcut) RadioButton mRioAllCut;
-    @BindView(R.id.riogroup_cut) RadioGroup mRioGroupCut;
-    @BindView(R.id.riogroup_blackmark) RadioGroup mRioGroupBlackMark;
+    @BindView(R.id.btn_halfcut) Button mBtnHalfCut;
+    @BindView(R.id.btn_allcut) Button mBtnAllCut;
+    @BindView(R.id.btn_blackmark) Button mBtnBlackMark;
+    @BindView(R.id.btn_noblackmark) Button mBtnNoBlackMark;
     @BindView(R.id.printSpeedTextView) TextView mPrintSpeedView;
     @BindView(R.id.cutSpeedTextView) TextView mCutSpeedView;
 
@@ -119,31 +88,20 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
     }
 
     private void InitView(){
+
         mCutMode = 0;
         mCodetype = 0;
-
-
-        mRioGroupCut.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                if(checkedId == R.id.riobtn_halfcut){
-                    mCutMode = 0;
-                    SetCutMode(mCutMode);
-                }else {
-                    mCutMode = 1;
-                    SetCutMode(mCutMode);
-                }
-            }
-        });
+        mBtnHalfCut.callOnClick();
+//        mBtnBlackMark.callOnClick();
 
         mToggleBtn = (ToggleButton) mView.findViewById(R.id.btn_printContinue);
-        mCountDownTimer = new CountDownTimer(3*1000,500) {
+        mCountDownTimer = new CountDownTimer(25*60*1000,500) {
 
             @Override
             public void onTick(long millisUntilFinished) {
                 // TODO Auto-generated method stub
                 Log.d("runable", "running");
-                PrintAllString(mCutMode);
+                mPrintInterface.PrintAllString(0);
             }
 
             @Override
@@ -153,6 +111,9 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                 mToggleBtn.setChecked(true);
             }
         };
+
+
+
 
         final String[] mCodeItems = {"PDF417","QR","EAN","code39","code128"};
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item, mCodeItems);
@@ -170,59 +131,82 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
 
             }
         });
+
     }
 
-    private void InitDev() {
-        if(PrintInit()) {
+    public void InitDev() {
+        if(mPrintInterface.PrintInit()) {
             isInit = true;
+            Log.i("printerfragment","PrinterFragment printer init ok");
         }else {
             isInit = false;
+            Log.i("printerfragment","PrinterFragment printer init false");
         }
     }
 
 
-    @OnClick({R.id.riobtn_halfcut,R.id.riobtn_allcut,R.id.btn_printSample,R.id.btn_printString,R.id.btn_printImage
+    @OnClick({R.id.btn_halfcut,R.id.btn_allcut,R.id.btn_blackmark,R.id.btn_noblackmark,R.id.btn_printSample,R.id.btn_printString,R.id.btn_printImage
     ,R.id.btn_printSmallBlackBar,R.id.btn_printBigBlackBar,R.id.btn_printContinue,R.id.btn_printCode
-    ,R.id.btn_printPageMode,R.id.btn_printSpeedtest, R.id.btn_CutPaperSpeedtest})
+    ,R.id.btn_printPageMode,R.id.btn_printSpeedtest, R.id.btn_CutPaperSpeedtest })
     @Override
     public void onClick(View v) {
-        if(!isInit) {
-            Toast.makeText(getContext(),"printer init failed: "+GetLastErrStr(),Toast.LENGTH_SHORT)
-                    .show();
-            return;
-        }
+//        if(!isInit) {
+//            Toast.makeText(getContext(),"printer init failed: "+GetLastErrStr(),Toast.LENGTH_SHORT)
+//                    .show();
+//            return;
+//        }
         switch (v.getId()) {
-            case R.id.riobtn_halfcut:
-                mCutMode = 0;
+            //0   全切  1  半切
+            case R.id.btn_halfcut:
+                mBtnAllCut.setEnabled(true);
+                mBtnHalfCut.setEnabled(false);
+//                setCutMarkByINI("1");
                 break;
-            case R.id.riobtn_allcut:
+            case R.id.btn_allcut:
+                mBtnAllCut.setEnabled(false);
+                mBtnHalfCut.setEnabled(true);
+//                mPrintInterface.GetAuthority();
+//                setCutMarkByINI("0");
+                break;
+            case R.id.btn_blackmark:
+                mCutMode = 0;
+                mBtnNoBlackMark.setEnabled(true);
+                mBtnBlackMark.setEnabled(false);
+                mPrintInterface.SetCutMode(mCutMode);
+                break;
+            case R.id.btn_noblackmark:
                 mCutMode = 1;
+                mBtnNoBlackMark.setEnabled(false);
+                mBtnBlackMark.setEnabled(true);
+                mPrintInterface.SetCutMode(mCutMode);
+                break;
             case R.id.btn_printSample:
-                if(!PrintSample(mCutMode)) {
+                if(!mPrintInterface.PrintSample(mCutMode)) {
                     String str = GetLastErrStr();
                     Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
                 }
+
                 break;
             case R.id.btn_printString:
-                if(!PrintAllString(mCutMode)){
+                if(!mPrintInterface.PrintAllString(mCutMode)){
                     String str = GetLastErrStr();
                     Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_printImage:
-                if(!PrintImage(mCutMode)){
+                if(!mPrintInterface.PrintImage(mCutMode)){
                     String str = GetLastErrStr();
                     Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_printSmallBlackBar:
-                if(!PrintBlackBarcode(mCutMode,0)) {
+                if(!mPrintInterface.PrintBlackBarcode(mCutMode,0)) {
                     String str = GetLastErrStr();
                     Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
                 }
                 break;
             case R.id.btn_printBigBlackBar:
-                if(!PrintBlackBarcode(mCutMode,1)) {
+                if(!mPrintInterface.PrintBlackBarcode(mCutMode,1)) {
                     String str = GetLastErrStr();
                     Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
                 }
@@ -237,64 +221,72 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
 
                 break;
             case R.id.btn_printCode:
-                PrintBarCode(mCutMode,mCodetype);
+                mPrintInterface.PrintBarCode(mCutMode,mCodetype);
                 break;
             case R.id.btn_printPageMode:
-                PrintPaperMode(mCutMode);
+                if(!mPrintInterface.PrintPaperMode(mCutMode)) {
+                    String str = GetLastErrStr();
+                    Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
+                }
                 break;
             case R.id.btn_printSpeedtest:
                 TestPrinterSpeed();
-//                PrintSpeedTest(mCutMode);
                 break;
             case R.id.btn_CutPaperSpeedtest:
                 TestCutPaperSpeed();
-//                PrintCutPaperSpeed(mCutMode);
                 break;
+
             default:
                 break;
         }
 
     }
 
+    //打印速度测试 打印一分钟
     private void TestPrinterSpeed() {
         long timer1 = System.currentTimeMillis();
-        Log.i("test", "time1=" + timer1);
+        long timer2;
         int count = 0;
         boolean stop = false;
-        while (count <10){
-            PrintSample(mCutMode);
+
+        while (true){
+            timer2 = System.currentTimeMillis();
+            long diff = timer2 - timer1;
+            Log.i("printer", "difftime=" + diff);
+            if(diff > 4*1000)
+                break;
+            mPrintInterface.PrintSample(mCutMode);
             count++;
         }
-        long timer2 = System.currentTimeMillis();
-        Log.i("test", "time2=" + timer2);
-        long diff = timer2 - timer1;
-        Log.i("test", "difftime=" + diff);
-        int speed =  102*10*1000/(int)diff; // 102*15*1000/diff;
-        Log.i("test", "speed = " + speed);
 
-        mPrintSpeedView.setText("打印速度="+speed+"mm/s\n" + "计算公式=102*张数*1000/时间间隔(ms)");
+        Log.i("printer", "speed = " + count+"张");
+
+        mPrintSpeedView.setText("打印速度="+count+"张/分钟\n");
+
     }
 
+
     private void TestCutPaperSpeed() {
-        long timer1 = System.currentTimeMillis();
-        Log.i("test", "time1=" + timer1);
-        int count = 0;
-        boolean stop = false;
-        SetCutMode(1);
-        while (count < 4){
-            PrintString("s");
-            count++;
+//        long timer1 = System.currentTimeMillis();
+//        Log.i("test", "time1=" + timer1);
+//        int count = 0;
+//
+//        mPrintInterface.SetCutMode(1);
+//        mPrintInterface.PrintString("test");
+//        while (count < 4) {
+//            PrintString("s");
+//            count++;
 //            delay(500);
+//        }
 
-        }
-        long timer2 = System.currentTimeMillis();
-        Log.i("test", "time2=" + timer2);
-        long diff = timer2 - timer1;
-        Log.i("test", "difftime=" + diff);
-        int speed =  20*60*1000/(int)diff; // 102*15*1000/diff;
-        Log.i("test", "speed = " + speed);
-
-        mPrintSpeedView.setText("切纸速度="+speed+"切/分钟\n" );
+//        long timer2 = System.currentTimeMillis();
+//        Log.i("test", "time2=" + timer2);
+//        long diff = timer2 - timer1;
+//        Log.i("test", "difftime=" + diff);
+//        int speed =  20*60*1000/(int)diff; // 102*15*1000/diff;
+//        Log.i("test", "speed = " + speed);
+//
+//        mPrintSpeedView.setText("切纸速度="+speed+"切/分钟\n" );
     }
 
 
@@ -306,5 +298,29 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             e.printStackTrace();
         }
     }
+
+    String configPath = "/sdcard/conf/HWISNBCPrinter.ini";
+    FileInputStream fileInputStream = null;
+    OutputStream outputStream ;
+    Properties properties;
+
+    private void setCutMarkByINI(String mode) {
+        properties = new Properties();
+
+        try {
+            fileInputStream = new FileInputStream(configPath);
+            properties.load(fileInputStream);
+            outputStream  = new FileOutputStream(configPath);
+            String key = "CutMode";
+            properties.setProperty("CutMode",mode);
+            properties.store(outputStream, "test");
+            outputStream.close();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

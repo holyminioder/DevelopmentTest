@@ -3,6 +3,7 @@ package com.example.lederui.developmenttest.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.data.MainBoardMessage;
+import com.example.lederui.developmenttest.data.PrinterInterface;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,16 +26,21 @@ import butterknife.Unbinder;
  */
 public class HardwareFragment extends Fragment {
 
-    @BindView(R.id.main_board_message)
-    TextView mMainMessage;
+    @BindView(R.id.main_board_message) TextView mMainMessage;
+    @BindView(R.id.printer_hw_info) TextView mPrinterHwInfoView;
+
     Unbinder unbinder;
+    private PrinterInterface mPrinterLib;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hardware, container, false);
         unbinder = ButterKnife.bind(this, view);
+
         getMainBoardInfo();
+//        getPrinterHWInfo();
+
         return view;
     }
 
@@ -59,5 +66,12 @@ public class HardwareFragment extends Fragment {
         sb.append(MainBoardMessage.getUsbInterface(getContext()));
 
         mMainMessage.setText(sb.toString());
+    }
+
+    //获取打印机硬件信息
+    private void getPrinterHWInfo() {
+        String info = mPrinterLib.GetPrintHwInfo();
+        mPrinterHwInfoView.setText(info+"");
+        Log.i("printer", "hwinfo =" + info);
     }
 }

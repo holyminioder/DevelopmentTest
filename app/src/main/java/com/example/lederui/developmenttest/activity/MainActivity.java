@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.adapter.ListViewAdapter;
 import com.example.lederui.developmenttest.data.MainBoardMessage;
+import com.example.lederui.developmenttest.data.PrinterInterface;
 import com.example.lederui.developmenttest.data.StringManager;
 import com.example.lederui.developmenttest.fragment.BakingMachineFragment;
 import com.example.lederui.developmenttest.fragment.BarcodeReaderFragment;
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentTransaction mFt;
     private ListViewAdapter mAdapter;
-    private Handler mHandler = null;
+    private Handler mHandler = null,mHandler2 = null;
 
     private TicketReaderFragment mTicketFragment;
     private BakingMachineFragment mMachineFragment;
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private MainScreenTestFragment mMainScreenFragment;
     private NetworkFragment mNetworkFragment;
     private PrinterFragment mPrinterFragment;
+    private PrinterInterface mPrinterLib;
     private ResolvingPowerFragment mPowerFragment;
     private ScanningGunFragment mScanningGunFragment;
     private SecoScreenSetFragment mSecoScreenFragment;
@@ -113,7 +116,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        mPrinterLib = new PrinterInterface();
+//        initDev();
         initDate();
+
     }
     //界面初始化设置
     private void initDate() {
@@ -133,11 +140,57 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 1000, 3000);
 
+        //打印機狀態
+//        mHandler2 = new Handler();
+//        Timer timer2 = new Timer();
+//        timer2.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                final String printStatus = mPrinterLib.PrinterStatus();
+//                mHandler2.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mPrinterState.setText("打印机状态：" + printStatus);
+//                        Log.i("printer", "printStatus == " + printStatus);
+//                    }
+//                });
+//            }
+//        }, 1000, 1000*60*5);
+
         //默认选中诊断程序
         initBackground(mDiagnoseProcedure);
         mListView.setVisibility(View.VISIBLE);
         setListViewAdapter(StringManager.diagnosis);
         onDiagnosisItemClick();
+    }
+
+    private void initDev() {
+        //打开打印机usb权限
+        try {
+            Process su;
+            su = Runtime.getRuntime().exec("/system/xbin/su");
+            String cmd = "chmod  777 /dev/bus/usb/* \n"
+                    + "exit\n";
+            String cmd2 = "chmod  777 /dev/bus/usb/*/* \n"
+                    + "exit\n";
+            su.getOutputStream().write(cmd.getBytes());
+            su.getOutputStream().write(cmd2.getBytes());
+            if (su.waitFor() != 0) {
+                throw new SecurityException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SecurityException();
+        }
+
+
+
+
+        if(!mPrinterLib.PrintInit()){
+            Log.i("printer","init false");
+        }else {
+            Log.i("printer","init ok");
+        }
     }
 
     //主分类的点击事件
