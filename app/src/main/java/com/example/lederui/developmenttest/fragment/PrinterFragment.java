@@ -59,12 +59,15 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
     @BindView(R.id.printSpeedTextView) TextView mPrintSpeedView;
     @BindView(R.id.cutSpeedTextView) TextView mCutSpeedView;
 
+
+
     private View mView;
     Unbinder binder;
     private int mCutMode;
     private static boolean isInit = false;
     private Spinner mSpinner;
     private int mCodetype;
+    private String mPDFCode;
     private CountDownTimer mCountDownTimer;
     private ToggleButton mToggleBtn;
 
@@ -81,6 +84,8 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
         return view;
     }
 
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -91,8 +96,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
 
         mCutMode = 0;
         mCodetype = 0;
-        mBtnHalfCut.callOnClick();
-//        mBtnBlackMark.callOnClick();
+
 
         mToggleBtn = (ToggleButton) mView.findViewById(R.id.btn_printContinue);
         mCountDownTimer = new CountDownTimer(25*60*1000,500) {
@@ -132,6 +136,31 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             }
         });
 
+
+        mBtnBlackMark = (Button) mView.findViewById(R.id.btn_blackmark);
+        mBtnHalfCut = (Button) mView.findViewById(R.id.btn_halfcut);
+
+        mBtnBlackMark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCutMode = 0;
+                mBtnNoBlackMark.setEnabled(true);
+                mBtnBlackMark.setEnabled(false);
+                mPrintInterface.SetCutMode(mCutMode);
+            }
+        });
+
+        mBtnHalfCut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBtnAllCut.setEnabled(true);
+                mBtnHalfCut.setEnabled(false);
+            }
+        });
+
+        mBtnBlackMark.performClick();
+        mBtnHalfCut.performClick();
+
     }
 
     public void InitDev() {
@@ -145,7 +174,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
     }
 
 
-    @OnClick({R.id.btn_halfcut,R.id.btn_allcut,R.id.btn_blackmark,R.id.btn_noblackmark,R.id.btn_printSample,R.id.btn_printString,R.id.btn_printImage
+    @OnClick({R.id.btn_allcut,R.id.btn_noblackmark,R.id.btn_printSample,R.id.btn_printString,R.id.btn_printImage
     ,R.id.btn_printSmallBlackBar,R.id.btn_printBigBlackBar,R.id.btn_printContinue,R.id.btn_printCode
     ,R.id.btn_printPageMode,R.id.btn_printSpeedtest, R.id.btn_CutPaperSpeedtest })
     @Override
@@ -157,22 +186,12 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
 //        }
         switch (v.getId()) {
             //0   全切  1  半切
-            case R.id.btn_halfcut:
-                mBtnAllCut.setEnabled(true);
-                mBtnHalfCut.setEnabled(false);
-//                setCutMarkByINI("1");
-                break;
+
             case R.id.btn_allcut:
                 mBtnAllCut.setEnabled(false);
                 mBtnHalfCut.setEnabled(true);
 //                mPrintInterface.GetAuthority();
 //                setCutMarkByINI("0");
-                break;
-            case R.id.btn_blackmark:
-                mCutMode = 0;
-                mBtnNoBlackMark.setEnabled(true);
-                mBtnBlackMark.setEnabled(false);
-                mPrintInterface.SetCutMode(mCutMode);
                 break;
             case R.id.btn_noblackmark:
                 mCutMode = 1;
@@ -185,6 +204,8 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                     String str = GetLastErrStr();
                     Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
                 }
+                mPDFCode = mPrintInterface.GetPDFCode();
+                Log.i("printer","btn_printSample mpdfcode = " + mPDFCode);
 
                 break;
             case R.id.btn_printString:

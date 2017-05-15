@@ -47,6 +47,8 @@ extern "C"
 
 int	returnValueInt = PRINTER_NO_ERROR;
 bool isInit = false;
+char  mbarCode[256] = {0x00};
+
 
 
 JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintInit
@@ -298,6 +300,7 @@ bool PrintPDF417() {
 
     //*****************************************************************************************************************
     //´òÓ¡ÌõÂë
+    memcpy(mbarCode, barCode, sizeof(barCode));
     returnValueInt = byPrintPDF417(16, 50, 4, 4, 3, barCode, 32, 2);
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
@@ -313,6 +316,15 @@ bool PrintPDF417() {
 
     return returnValue;
 }
+
+
+JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetPDFCode
+        (JNIEnv *env, jobject) {
+
+    return env->NewStringUTF(mbarCode);
+}
+
+
 
 
 int PrintBarcodeTicket(int codeType)

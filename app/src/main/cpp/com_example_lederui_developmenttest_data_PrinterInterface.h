@@ -133,6 +133,9 @@ JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterI
 JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetAuthority
         (JNIEnv *, jobject);
 
+JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetPDFCode
+        (JNIEnv *, jobject);
+
 #ifdef __cplusplus
 }
 #endif

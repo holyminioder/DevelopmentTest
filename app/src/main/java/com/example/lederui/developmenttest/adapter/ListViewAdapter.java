@@ -1,6 +1,7 @@
 package com.example.lederui.developmenttest.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,11 +24,13 @@ public class ListViewAdapter extends BaseAdapter {
     private List<String> mList = new ArrayList<>();
     private LayoutInflater mInflater;
     private Context mContext;
+    private Typeface mTypeFace;
 
-    public ListViewAdapter(Context context, List<String> list) {
+    public ListViewAdapter(Context context, List<String> list, Typeface typeFace) {
         mList = list;
         mContext = context;
         mInflater = LayoutInflater.from(context);
+        mTypeFace = typeFace;
     }
 
     @Override
@@ -57,6 +60,7 @@ public class ListViewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         viewHolder.mListItem.setText(mList.get(position));
+        viewHolder.mListItem.setTypeface(mTypeFace);
         return convertView;
     }
 

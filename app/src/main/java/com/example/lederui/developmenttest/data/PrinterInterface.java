@@ -55,4 +55,6 @@ public class PrinterInterface {
     public static native String PrinterStatus();
 
     public static native boolean GetAuthority();
+
+    public static native String GetPDFCode();
 }
