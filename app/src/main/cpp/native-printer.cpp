@@ -701,7 +701,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
         {
             printf("PrinterSetLeftMargin failed!\n");
             LOGI("PrinterSetLeftMargin failed!");
-            goto ExitLine;
+            return false;
 
         }
         returnValueBool = byPSetLineSpace(36);//设置行高
@@ -709,7 +709,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
         {
             printf("PrinterSetLineSpace(36) failed!\n");
             LOGI("PrinterSetLineSpace(36) failed!");
-            goto ExitLine;
+            return false;
         }
 
         returnValueBool = byPSetFont(0x00,0x10,0x01);//设置字体
@@ -717,17 +717,18 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
         {
             printf("PrinterSetLineSpace(0x00,0x10,0x01) failed!\n");
             LOGI("PrinterSetLineSpace(0x00,0x10,0x01) failed!");
-            goto ExitLine;
+            return false;
         }
 
         returnValueInt = byPPrintString("测试字符串");//打印字符串
         byPFeedLine(4);
-        byPPrintString("zxcvbnmlkjhgfdsaqwertyuiopZXCVBNMLKJHGFDSAQWERTYUIOP0123456789[]{}-=_+,./<>?`1~!@#$%^&*()");
+        returnValueInt =byPPrintString("zxcvbnmlkjhgfdsaqwertyuiopZXCVBNMLKJHGFDSAQWERTYUIOP0123456789[]{}-=_+,./<>?`1~!@#$%^&*()");
         PCutPaper();
     LOGI("print string");
 
-    ExitLine:
-     return false;
+    if(returnValueInt != NO_ERROR){
+        return false;
+    }
 
     return  true;
 }
@@ -894,28 +895,24 @@ JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterI
 JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrinterStatus
         (JNIEnv *env, jobject) {
 
-//    bool isready = PPrinterIsReady();
-//    if(!isready) {
-        if (byPInit("/sdcard","/sdcard") != PRINTER_NO_ERROR) {
-            char errStr[256] = {0x00};
-            byPGetLastErrorStr(errStr, 200);
-            LOGI("printer init false! err = %s",errStr);
-            return env->NewStringUTF(errStr);
-        } else{
-            if(PPrinterIsReady())
-                return  env->NewStringUTF("正常");
+        //isReady 接口有问题 使用init判断
+        int ret = PInit("/sdcard","/sdcard");
+        LOGI("printer ret =" + ret);
+        if (ret != PRINTER_NO_ERROR) {
+            LOGI("printer ret 2=" + ret);
+            char err[256] = {0x00};
+            byPGetLastErrorStr(err, 200);
+            return env->NewStringUTF(err);
         }
 
-//    }
-//    LOGI("isready =%d",isready);
-    return  env->NewStringUTF("正常");
+        return  env->NewStringUTF("正常");
 }
 
 JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetAuthority
         (JNIEnv *, jobject) {
 
 
-    system("mv /sdcard/conf/HWISNBCPrinter0.ini /sdcard/conf/HWISNBCPrinter.ini");
+//    system("mv /sdcard/conf/HWISNBCPrinter0.ini /sdcard/conf/HWISNBCPrinter.ini");
 
 
 }

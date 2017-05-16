@@ -57,5 +57,5 @@ dependencies {
     compile 'com.android.support:percent:25.3.1'
     compile files('libs/Amap_2DMap_V4.2.0_20170209.jar')
     compile files('libs/AMap_Location_V3.3.0_20170118.jar')
-
+    compile files('libs/org.dtools.javaini-v1.1.00.jar')
 }

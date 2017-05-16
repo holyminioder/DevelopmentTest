@@ -163,7 +163,8 @@ public class MainActivity extends AppCompatActivity {
 //                    }
 //                });
 //            }
-//        }, 1000, 1000*60*5);
+//        }, 3000, 1000*60*5);
+
         mTypeFace = Typeface.createFromAsset(getAssets(), "fonts/simhei.ttf");
         mDiagnoseProcedure.setTypeface(mTypeFace);
         mPrinter.setTypeface(mTypeFace);

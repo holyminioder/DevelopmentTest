@@ -19,11 +19,14 @@ import android.widget.ToggleButton;
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.data.PrinterInterface;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Properties;
+import org.dtools.ini.BasicIniFile;
+import org.dtools.ini.IniFile;
+import org.dtools.ini.IniFileReader;
+import org.dtools.ini.IniFileWriter;
+import org.dtools.ini.IniItem;
+import org.dtools.ini.IniSection;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -155,6 +158,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             public void onClick(View v) {
                 mBtnAllCut.setEnabled(true);
                 mBtnHalfCut.setEnabled(false);
+                setCutMarkByINI("1");
             }
         });
 
@@ -179,19 +183,13 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
     ,R.id.btn_printPageMode,R.id.btn_printSpeedtest, R.id.btn_CutPaperSpeedtest })
     @Override
     public void onClick(View v) {
-//        if(!isInit) {
-//            Toast.makeText(getContext(),"printer init failed: "+GetLastErrStr(),Toast.LENGTH_SHORT)
-//                    .show();
-//            return;
-//        }
         switch (v.getId()) {
             //0   全切  1  半切
 
             case R.id.btn_allcut:
                 mBtnAllCut.setEnabled(false);
                 mBtnHalfCut.setEnabled(true);
-//                mPrintInterface.GetAuthority();
-//                setCutMarkByINI("0");
+                setCutMarkByINI("0");
                 break;
             case R.id.btn_noblackmark:
                 mCutMode = 1;
@@ -320,26 +318,28 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
         }
     }
 
-    String configPath = "/sdcard/conf/HWISNBCPrinter.ini";
-    FileInputStream fileInputStream = null;
-    OutputStream outputStream ;
-    Properties properties;
-
+  //set printer halfcut or  allcut  by .INI file
     private void setCutMarkByINI(String mode) {
-        properties = new Properties();
-
+        IniFile iniFile = new BasicIniFile();
+        File file = new File("/sdcard/conf/HWISNBCPrinter.ini");
+        IniFileReader iniFileReader = new IniFileReader(iniFile, file);
+        IniFileWriter iniFileWriter = new IniFileWriter(iniFile, file);
         try {
-            fileInputStream = new FileInputStream(configPath);
-            properties.load(fileInputStream);
-            outputStream  = new FileOutputStream(configPath);
-            String key = "CutMode";
-            properties.setProperty("CutMode",mode);
-            properties.store(outputStream, "test");
-            outputStream.close();
+            iniFileReader.read();
+            IniSection iniSection = iniFile.getSection("PrinterConfig");
+            IniItem iniItem = iniSection.getItem("CutMode");
+            String value = 	iniItem.getValue();
 
-        }catch (IOException e){
+            iniItem.setValue(mode);
+            iniSection.addItem(iniItem);
+            iniFile.addSection(iniSection);
+            iniFileWriter.write();
+
+        } catch (Exception e) {
+            // TODO: handle exception
             e.printStackTrace();
         }
+
 
     }
 
