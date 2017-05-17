@@ -272,7 +272,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             timer2 = System.currentTimeMillis();
             long diff = timer2 - timer1;
             Log.i("printer", "difftime=" + diff);
-            if(diff > 4*1000)
+            if(diff > 10*1000)
                 break;
             mPrintInterface.PrintSample(mCutMode);
             count++;
