@@ -10,11 +10,12 @@
     <string name="ticket_reader">读票机</string>
     <string name="printer">打印机</string>
     <string name="scanner_gun">扫描枪</string>
-    <string name="keyboard">键盘</string>
+    <string name="keyboard">电池</string>
     <string name="toast_chance">烤机程序</string>
     <string name="setting">设置</string>
     <string name="barcode_gun">条码枪</string>
     <string name="main_board">主板</string>
+    <string name="main_board_status">主板正常</string>
     
     <string name="cpu_seizure_rate">CPU占用率：</string>
     <string name="cpu_temperature">CPU温度：</string>

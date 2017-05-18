@@ -30,6 +30,16 @@
             android:textSize="@dimen/main_board_msg_text"
             android:layout_marginTop="@dimen/text_spacing"/>
 
+        <TextView
+            android:id="@+id/main_board_status"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/main_board_status"
+            android:gravity="bottom|center_horizontal"
+            android:textSize="@dimen/main_board_text_size"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="@dimen/button_margin_bottom"/>
+
     </LinearLayout>
 
     <LinearLayout

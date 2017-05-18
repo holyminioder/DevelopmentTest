@@ -3,6 +3,7 @@ package com.example.lederui.developmenttest.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,10 +27,14 @@ import butterknife.Unbinder;
  */
 public class HardwareFragment extends Fragment {
 
-    @BindView(R.id.main_board_message) TextView mMainMessage;
-    @BindView(R.id.printer_hw_info) TextView mPrinterHwInfoView;
+    @BindView(R.id.main_board_message)
+    TextView mMainMessage;
+    @BindView(R.id.printer_hw_info)
+    TextView mPrinterHwInfoView;
 
     Unbinder unbinder;
+    @BindView(R.id.main_board_status)
+    TextView mMainBoardStatus;
     private PrinterInterface mPrinterLib;
 
     @Nullable
@@ -50,7 +55,7 @@ public class HardwareFragment extends Fragment {
         unbinder.unbind();
     }
 
-    private void getMainBoardInfo(){
+    private void getMainBoardInfo() {
         StringBuffer sb = new StringBuffer();
         sb.append("CPU型号：");
         sb.append(MainBoardMessage.getCpuInfo() + "\n" + "\n");
@@ -66,12 +71,17 @@ public class HardwareFragment extends Fragment {
         sb.append(MainBoardMessage.getUsbInterface(getContext()));
 
         mMainMessage.setText(sb.toString());
+
+        if (TextUtils.isEmpty(sb)) {
+            mMainBoardStatus.setText("主板异常");
+            mMainBoardStatus.setTextColor(getResources().getColor(R.color.read_color));
+        }
     }
 
     //获取打印机硬件信息
     private void getPrinterHWInfo() {
         String info = mPrinterLib.GetPrintHwInfo();
-        mPrinterHwInfoView.setText(info+"");
+        mPrinterHwInfoView.setText(info + "");
         Log.i("printer", "hwinfo =" + info);
     }
 }
