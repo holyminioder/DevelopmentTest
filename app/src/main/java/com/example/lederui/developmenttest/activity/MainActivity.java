@@ -125,12 +125,12 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mPrinterLib = new PrinterInterface();
-        initDev();
+//        initDev();
         initDate();
 
 
     }
-    //界面初始化设置
+    //   界面初始化设置
     private void initDate() {
         //CPU使用率
         mHandler = new Handler();
