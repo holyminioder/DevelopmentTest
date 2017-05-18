@@ -71,7 +71,6 @@ public class HardwareFragment extends Fragment {
         sb.append(MainBoardMessage.getUsbInterface(getContext()));
 
         mMainMessage.setText(sb.toString());
-
         if (TextUtils.isEmpty(sb)) {
             mMainBoardStatus.setText("主板异常");
             mMainBoardStatus.setTextColor(getResources().getColor(R.color.read_color));
