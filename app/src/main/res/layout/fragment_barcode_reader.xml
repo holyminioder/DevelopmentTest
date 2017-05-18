@@ -1,14 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:gravity="center"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="@dimen/activity_vertical_margin">
 
     <TextView
+        android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BarcodeReader"/>
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+
+        android:textAppearance="?android:attr/textAppearanceLarge"/>
 
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="22dp">
+        <LinearLayout
+
+            android:id="@+id/Linaer"
+            android:focusable="true"
+            android:layout_width="wrap_content"
+            android:layout_height="59dp"
+            android:orientation="horizontal"
+            android:focusableInTouchMode="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="初始化"
+                android:id="@+id/button_init"
+                tools:ignore="HardcodedText"
+
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="获取条码"
+                android:id="@+id/button_sp"/>
+
+            <TextView
+                android:id="@+id/connect_text"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:text="未连接"
+                android:layout_above="@+id/spinner"
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@+id/button_close"
+                android:layout_toEndOf="@+id/button_close"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="18sp" />
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="55dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自动连续"
+                android:id="@+id/button_lianx" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手工断续"
+                android:id="@+id/button_duanx"/>
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="正 确:"-->
+            <!--android:textSize="18dp"-->
+            <!--android:layout_marginTop="151dp"-->
+            <!--android:layout_marginLeft="72dp"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="错 误:"-->
+            <!--android:textSize="18dp"-->
+            <!--android:layout_marginTop="151dp"-->
+            <!--android:layout_marginLeft="62dp"/>-->
+            <!--&lt;!&ndash;<TextView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wr-->
+            <!--ap_content"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_marginTop="331dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_marginLeft="62dp"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/cwu"/>&ndash;&gt;-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="条码类型格式:"-->
+            <!--android:textSize="18dp"-->
+            <!--android:layout_marginTop="151dp"-->
+            <!--android:layout_marginLeft="122dp"/>-->
+
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="151dp"-->
+            <!--android:layout_marginLeft="5dp"-->
+            <!--android:id="@+id/leix"/>-->
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:layout_marginLeft="255dp"
+            android:orientation="horizontal"
+            tools:ignore="UselessLeaf"
+            android:layout_alignTop="@+id/Linaer"
+            android:weightSum="1"
+            >
+
+
+
+
+            <TextView
+                android:id="@+id/textView_func"
+                android:background="#e2dddd"
+                android:verticalScrollbarPosition="right"
+                android:paddingBottom="185dp"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAllCaps="false"
+                android:textColorLink="?attr/actionModeSplitBackground"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="正 确:"
+                android:textSize="18dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="251dp"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="错 误:"
+                android:textSize="18dp"
+                android:layout_marginLeft="128dp"
+                android:layout_marginTop="251dp"
+                />
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wr
+            ap_content"-->
+            <!--android:layout_marginTop="331dp"-->
+            <!--android:layout_marginLeft="62dp"-->
+            <!--android:id="@+id/cwu"/>-->
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="条码类型格式:"
+                android:textSize="18dp"
+                android:layout_marginLeft="288dp"
+                android:layout_marginTop="251dp"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="412dp"
+                android:layout_marginTop="255dp"
+
+                android:id="@+id/leix"/>
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
