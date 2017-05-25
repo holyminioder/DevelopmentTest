@@ -6,4 +6,6 @@
 
     <color name="action_bar_color">#56a4fc</color>
     <color name="bottom_color">#8b8bbe</color>
+    <color name="cutpaper_normal_color">#D2CBCB</color>
+    <color name="cutpaper_press_color">#2c72af</color>
 </resources>

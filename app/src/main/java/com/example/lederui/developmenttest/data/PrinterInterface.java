@@ -52,9 +52,42 @@ public class PrinterInterface {
 
     public static native String GetPrintHwInfo();
 
-    public static native String PrinterStatus();
+    public static native int PrinterStatus();
 
     public static native boolean GetAuthority();
 
     public static native String GetPDFCode();
+
+    public  int NO_ERROR = 0;
+
+    public final int NO_PRINTER = 1;
+
+    public final int DATA_LINE_ERROR = 2;
+
+    public final int POWER_ERROR = 3;
+
+    public final int PRINTER_IS_BUSY = 4;
+
+    public final int TIME_OUT = 5;
+
+    public final int GET_HWVERSION_ERROR = 6;
+
+    public final int START_ERROR = 7;
+
+    public final int COVER_ERROR = 8;
+
+    public final int PAPER_EMPTY_ERROR = 9;
+
+    public final int PAPER_JAM_ERROR = 10;
+
+    public final int PAPER_FEW_ERROR = 11;
+
+    public  final int PRINT_NOT_COMPELTE =12 ;
+
+    public final int PRINTER_CUTTER_ERROR = 13;
+
+    public final int SET_CUTMODE_ERROR = 20;
+
+    public final int OTHER_ERROR = 500;
+
 }

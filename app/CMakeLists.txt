@@ -38,6 +38,11 @@ add_library(libusb1.0 SHARED IMPORTED)
 set_target_properties(libusb1.0  PROPERTIES
         IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libusb1.0.so")
 
+add_library(libbcr SHARED IMPORTED)
+set_target_properties(libbcr  PROPERTIES
+                IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libbcr.so")
+
+
 set(CMAKE_CXX_FLAGS "-std=c++11")
 
 
@@ -81,6 +86,7 @@ target_link_libraries( # Specifies the target library.
                        libflog
                        libusb1.0
                        libbitmap
+                       libbcr
                        # Links the target library to the log library
                        # included in the NDK.
 

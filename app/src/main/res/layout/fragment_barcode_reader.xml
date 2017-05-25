@@ -1,14 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:gravity="center"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+
     <TextView
+        android:id="@+id/textview1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BarcodeReader"/>
+        android:text="识别结果"
+        android:layout_alignLeft="@+id/bcrscanData_view"
+        android:layout_marginTop="50dp"
+        />
+
+    <TextView
+        android:id="@+id/bcrscanData_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="80dp"
+        app:layout_widthPercent="60%"
+        app:layout_heightPercent="70%"
+        android:background="#D2CBCB"/>
+
+    <TextView
+        android:id="@+id/textview_status0"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="15%"
+        app:layout_heightPercent="15%"
+        android:layout_toRightOf="@+id/bcrscanData_view"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="100dp"
+        android:text="条码枪状态"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/bcr_status"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBaseline="@+id/textview_status0"
+        android:layout_toRightOf="@+id/textview_status0"
+        app:layout_widthPercent="15%"
+        app:layout_heightPercent="15%"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="100dp"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/textview_type0"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/textview_status0"
+        android:layout_marginTop="20dp"
+        android:layout_alignLeft="@+id/textview_status0"
+        app:layout_widthPercent="15%"
+        app:layout_heightPercent="15%"
+        android:text="条码类型"
+        android:textSize="15sp"/>
+
+    <TextView
+        android:id="@+id/bcr_codetype"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBaseline="@+id/textview_type0"
+        android:layout_toRightOf="@+id/textview_type0"
+        app:layout_widthPercent="15%"
+        app:layout_heightPercent="15%"
+        android:layout_marginLeft="10dp"
+        android:textSize="15sp"
+        android:text="PDF417"/>
+
+    <TextView
+        android:id="@+id/textview_scanmode"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/bcr_codetype"
+        android:layout_marginTop="20dp"
+        app:layout_widthPercent="15%"
+        app:layout_heightPercent="15%"
+        android:text="扫描方式"
+        android:layout_alignLeft="@+id/textview_status0"
+        android:textSize="15sp"/>
+
+    <Spinner
+        android:id="@+id/scanmode_spinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignTop="@+id/textview_scanmode"
+        android:layout_alignLeft="@+id/bcr_codetype"
+        app:layout_widthPercent="15%"
+        app:layout_heightPercent="15%"
+        android:entries="@array/bcrScanModeArr"
+        />
 
 
-</LinearLayout>
+
+</android.support.percent.PercentRelativeLayout>

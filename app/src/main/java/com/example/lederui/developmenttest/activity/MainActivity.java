@@ -53,6 +53,7 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @BindView(R.id.printer)
     TextView mPrinter;
     @BindView(R.id.scanner_gun)
@@ -148,22 +149,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 1000, 3000);
 
-       // 打印機狀態
-//        mHandler2 = new Handler();
-//        Timer timer2 = new Timer();
-//        timer2.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                final String printStatus = mPrinterLib.PrinterStatus();
-//                mHandler2.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mPrinterState.setText("打印机状态：" + printStatus);
-//                        Log.i("printer", "printStatus == " + printStatus);
-//                    }
-//                });
-//            }
-//        }, 3000, 1000*60*5);
+
 
         mTypeFace = Typeface.createFromAsset(getAssets(), "fonts/simhei.ttf");
         mDiagnoseProcedure.setTypeface(mTypeFace);
@@ -618,13 +604,22 @@ public class MainActivity extends AppCompatActivity {
 
     //初始化ScanningGunFragment
     private void initScanningGunFragment() {
+//        mFt = getSupportFragmentManager().beginTransaction();
+//        if (mScanningGunFragment == null) {
+//            mScanningGunFragment = new ScanningGunFragment();
+//            mFt.add(R.id.container, mScanningGunFragment);
+//        }
+//        hideFragment(mFt);
+//        mFt.show(mScanningGunFragment);
+//        mFt.commit();
+        //用同一个fragment
         mFt = getSupportFragmentManager().beginTransaction();
-        if (mScanningGunFragment == null) {
-            mScanningGunFragment = new ScanningGunFragment();
-            mFt.add(R.id.container, mScanningGunFragment);
+        if (mBarcodeFragment == null) {
+            mBarcodeFragment = new BarcodeReaderFragment();
+            mFt.add(R.id.container, mBarcodeFragment);
         }
         hideFragment(mFt);
-        mFt.show(mScanningGunFragment);
+        mFt.show(mBarcodeFragment);
         mFt.commit();
     }
 

@@ -5,12 +5,22 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+
+    <TextView
+        android:id="@+id/printer_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/cut_layout"
+        android:text="打印机状态"
+        android:textSize="15sp"
+        android:layout_marginLeft="10dp"/>
+
     <android.support.percent.PercentRelativeLayout
         android:id="@+id/cut_layout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_heightPercent="15%"
-        app:layout_widthPercent="70%"
+        app:layout_widthPercent="60%"
         android:gravity="center_vertical"
         android:layout_centerInParent="true"
         android:layout_alignParentTop="true"
@@ -37,8 +47,9 @@
             app:layout_widthPercent="15%"
             android:text="半切"
             android:textSize="@dimen/text_size"
-            android:background="@drawable/btn_color_printer1"
 
+            android:background="@drawable/btn_color_printer1"
+            android:textColor="@android:color/white"
             />
          <Button
              android:id="@+id/btn_allcut"
@@ -48,7 +59,8 @@
              android:text="全切"
              android:layout_toRightOf="@+id/btn_halfcut"
              android:background="@drawable/btn_color_printer1"
-             android:textSize="@dimen/text_size"/>
+             android:textSize="@dimen/text_size"
+             android:textColor="@android:color/white"/>
 
         <Button
             android:id="@+id/btn_blackmark"
@@ -60,6 +72,7 @@
             android:text="黑标"
             android:background="@drawable/btn_color_printer1"
             android:textSize="@dimen/text_size"
+            android:textColor="@android:color/white"
             />
 
         <Button
@@ -71,6 +84,7 @@
             android:text="非黑标"
             android:background="@drawable/btn_color_printer1"
             android:textSize="@dimen/text_size"
+            android:textColor="@android:color/white"
             />
 
 
@@ -121,29 +135,42 @@
             android:textSize="@dimen/text_size"/>
 
         <Button
+            android:id="@+id/choice_imagefile"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            app:layout_widthPercent="13%"
+            android:text="选择图像"
+            android:layout_toRightOf="@+id/btn_printImage"
+            android:layout_alignBaseline="@+id/btn_printSample"
+            android:background="@drawable/btn_style_five_selector"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size"
+            />
+
+        <Button
             android:id="@+id/btn_printSmallBlackBar"
             android:layout_width="0dp"
             android:layout_height="@dimen/printer_button_height"
-            app:layout_widthPercent="18%"
+            app:layout_widthPercent="9%"
             android:text="打印横条"
             android:layout_below="@+id/btn_printSample"
             android:layout_marginTop="@dimen/printer_button_marginTop"
             android:layout_alignLeft="@+id/btn_printSample"
             android:background="@drawable/btn_style_five_selector"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size"/>
+            android:textSize="15sp"/>
 
         <Button
             android:id="@+id/btn_printBigBlackBar"
             android:layout_width="0dp"
             android:layout_height="@dimen/printer_button_height"
-            app:layout_widthPercent="18%"
+            app:layout_widthPercent="9%"
             android:text="全黑打印"
             android:layout_alignBaseline="@+id/btn_printSmallBlackBar"
-            android:layout_alignLeft="@+id/btn_printString"
+            android:layout_toRightOf="@+id/btn_printSmallBlackBar"
             android:background="@drawable/btn_style_five_selector"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size"/>
+            android:textSize="15sp"/>
 
        <ToggleButton
            android:id="@+id/btn_printContinue"
@@ -167,7 +194,7 @@
             android:layout_below="@+id/btn_printSmallBlackBar"
             android:layout_marginTop="@dimen/printer_button_marginTop"
             android:layout_alignLeft="@+id/btn_printSmallBlackBar"
-            android:text="打印PDF"
+            android:text="打印条码"
             android:background="@drawable/btn_style_five_selector"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size"/>
@@ -176,8 +203,9 @@
         <Spinner
             android:id="@+id/spinner_codeType"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_widthPercent="18%"
+            app:layout_heightPercent = "5%"
             android:layout_alignLeft="@+id/btn_printCode"
              android:layout_below="@+id/btn_printCode"
             android:layout_marginTop="4dp"/>
@@ -187,9 +215,9 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/printer_button_height"
             app:layout_widthPercent="18%"
-            android:layout_alignBaseline="@+id/btn_printCode"
+            android:layout_alignBaseline="@+id/btn_printSmallBlackBar"
             android:text="页模式测试"
-            android:layout_alignLeft="@+id/btn_printBigBlackBar"
+            android:layout_alignLeft="@+id/btn_printString"
             android:background="@drawable/btn_style_five_selector"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size"/>
@@ -199,10 +227,9 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/printer_button_height"
             app:layout_widthPercent="18%"
-            android:layout_below="@+id/spinner_codeType"
+            android:layout_alignBaseline="@+id/btn_printCode"
+            android:layout_alignLeft = "@+id/btn_printString"
             android:text="打印速度测试"
-            android:layout_alignLeft="@+id/spinner_codeType"
-            android:layout_marginTop="@dimen/printer_button_marginTop"
             android:background="@drawable/btn_style_five_selector"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size"/>
@@ -213,7 +240,7 @@
             android:layout_height="40dp"
             android:layout_alignLeft="@+id/btn_printSpeedtest"
             android:layout_below="@+id/btn_printSpeedtest"
-            android:text="速度"/>
+            android:text="打印速度"/>
 
         <Button
             android:id="@+id/btn_CutPaperSpeedtest"
@@ -221,9 +248,8 @@
             android:layout_height="@dimen/printer_button_height"
             app:layout_widthPercent="18%"
             android:text="切纸速度测试"
-            android:layout_alignBottom="@+id/btn_printSpeedtest"
-            android:layout_alignLeft="@+id/btn_printContinue"
-            android:layout_alignStart="@+id/btn_printContinue"
+            android:layout_alignBaseline="@+id/btn_printCode"
+            android:layout_alignLeft="@id/btn_printImage"
             android:background="@drawable/btn_style_five_selector"
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size"/>
