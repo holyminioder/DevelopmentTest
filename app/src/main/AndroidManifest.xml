@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
           package="com.example.lederui.developmenttest">
 
     <!--//定位包、导航包需要的额外权限（注：基础权限也需要）-->
@@ -22,12 +23,27 @@
     <!--写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 监听电话呼出 -->
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
+    <!-- 监听电话状态改变 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <!-- fsp -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- 扫描枪 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.SET_TIME_ZONE"/>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:label">
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
@@ -38,7 +54,9 @@
         <service android:name="com.amap.api.location.APSService">
         </service>
 
-        <activity android:name=".activity.MainActivity" android:windowSoftInputMode="adjustPan|stateHidden">
+        <activity android:name=".activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="adjustPan|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -46,15 +64,16 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name="com.ztec.bcr.BarcoderReaderService"
-            android:enabled="true">
-        </service>
 
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <activity android:name=".activity.VideoViewActivity"></activity>
+
+        <service
+            android:name="com.ztec.bcr.BarcoderReaderService"
+            android:enabled="true"></service>
     </application>
 
 </manifest>

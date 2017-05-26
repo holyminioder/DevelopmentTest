@@ -24,7 +24,6 @@ import android.widget.ToggleButton;
 
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.data.PrinterInterface;
-
 import org.dtools.ini.BasicIniFile;
 import org.dtools.ini.IniFile;
 import org.dtools.ini.IniFileReader;
@@ -346,6 +345,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             long diff = timer2 - timer1;
             Log.i("printer", "difftime=" + diff);
             if(diff > 60*1000)
+
                 break;
             mPrintInterface.PrintSample(mCutMode);
             count++;

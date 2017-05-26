@@ -10,11 +10,12 @@
     <string name="ticket_reader">读票机</string>
     <string name="printer">打印机</string>
     <string name="scanner_gun">扫描枪</string>
-    <string name="keyboard">键盘</string>
+    <string name="keyboard">电池</string>
     <string name="toast_chance">烤机程序</string>
     <string name="setting">设置</string>
     <string name="barcode_gun">条码枪</string>
     <string name="main_board">主板</string>
+    <string name="main_board_status">主板正常</string>
     
     <string name="cpu_seizure_rate">CPU占用率：</string>
     <string name="cpu_temperature">CPU温度：</string>
@@ -44,7 +45,8 @@
     <string name="resolving_power">1920*1680</string>
     <string name="set_resolution">设置分辨率：</string>
 
-    <string name="sure">确定</string>
+    <string name="sure">修改系统时间</string>
+    <string name="get_net_time">获取网络时间</string>
     <string name="now_location">我的位置</string>
     <string name="ethernetOrWifi">以太网或wifi测试</string>
     <string name="loading">加载中...</string>
@@ -52,6 +54,8 @@
     <string name="net_url">www.baidu.com</string>
     <string name="net_hint">请输入网址,如：www.baidu.com</string>
     <string name="skip">跳转</string>
+    <string name="browse">浏览</string>
+    <string name="play">播放</string>
 
     <string name="year">年：</string>
     <string name="month">月：</string>

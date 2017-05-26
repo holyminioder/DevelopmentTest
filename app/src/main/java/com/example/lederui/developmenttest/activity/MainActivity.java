@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
-    //界面初始化设置
+    //   界面初始化设置
     private void initDate() {
         //CPU使用率
         mHandler = new Handler();
