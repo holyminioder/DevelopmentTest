@@ -29,6 +29,7 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.ztec.bcr.BarcoderReaderService;
 import com.ztec.bcr.TBarcoderReader;
+
 import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
@@ -46,6 +47,7 @@ public class BarcodeReaderFragment extends Fragment {
     private View mView;
     private GoogleApiClient client;
     private TextView mBCRStatus;
+    private TextView mBCRCodeType;
     private TextView mScandata_view;
     private BarcoderReaderService bcrService;
     private TBarcoderReader tbcr;
@@ -73,6 +75,7 @@ public class BarcodeReaderFragment extends Fragment {
 
         client = new GoogleApiClient.Builder(getContext()).addApi(AppIndex.API).build();
         mBCRStatus = (TextView) mView.findViewById(R.id.bcr_status);
+        mBCRCodeType = (TextView) mView.findViewById(R.id.bcr_codetype);
         mScandata_view = (TextView) mView.findViewById(R.id.bcrscanData_view);
         mSprinner = (Spinner) mView.findViewById(R.id.scanmode_spinner);
         mSprinner.setSelection(0,true);
@@ -224,7 +227,34 @@ public class BarcodeReaderFragment extends Fragment {
             switch (msg.what) {
                 case 1:
                     String ticketInfo = msg.getData().getString(TICKET_INFO);
-                    mScandata_view.setText(ticketInfo);
+                    int type = msg.getData().getInt("info");
+                    mScandata_view.setText(ticketInfo + " 类型" +type);
+                    switch (type) {
+                        case 152:
+                            mBCRCodeType.setText("PDF417");
+                            break;
+                        case 151:
+                            mBCRCodeType.setText("DataMatrix");
+                            break;
+                        case 101:
+                            mBCRCodeType.setText("I2of5");
+                            break;
+                        case 157:
+                            mBCRCodeType.setText("QR");
+                            break;
+                        case 102:
+                            mBCRCodeType.setText("EAN");
+                            break;
+                        case 110:
+                            mBCRCodeType.setText("Code39");
+                            break;
+                        case 107:
+                            mBCRCodeType.setText("Code128");
+                            break;
+                        default:
+                            break;
+
+                    }
             }
 
         }
@@ -243,13 +273,15 @@ public class BarcodeReaderFragment extends Fragment {
                 while (isScan) {
                     while (tbcr.BCRScanIsComplete() == true) {
                         byte[] ticketInfo = tbcr.BCRGetTicketInfo();
+                        int a = ticketInfo[0] & 0xFF;
                         try {
 
-                                String ticketMsg = new String(ticketInfo, 0, ticketInfo.length, "GBK");
+                                String ticketMsg = new String(ticketInfo, 7, ticketInfo.length-7, "ASCII");
                                 Message message = new Message();
                                 message.what = 1;
                                 Bundle bundle=new Bundle();
                                 bundle.putString(TICKET_INFO, ticketMsg);
+                                bundle.putInt("info",a);
                                 message.setData(bundle);
                                 handler.sendMessage(message);
 
