@@ -1,15 +1,16 @@
 package com.example.lederui.developmenttest.fragment;
 
-
-import android.os.Bundle;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -17,58 +18,185 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-
-import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-
-
-import java.util.Set;
-
-import butterknife.BindView;
-
-
 import com.example.lederui.developmenttest.R;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.ztec.bcr.BarcoderReaderService;
 import com.ztec.bcr.TBarcoderReader;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Set;
 
 /**
  * Created by holyminier on 2017/4/21.
  */
 
 /** 条码识读Fragment */
-public class BarcodeReaderFragment extends Fragment implements View.OnClickListener{
+public class BarcodeReaderFragment extends Fragment {
 
-    @BindView(R.id.leix)
-    TextView mleix;
+    static {
+        System.loadLibrary("bcr");
+    }
 
-    TextView display;
-
-    @BindView(R.id.button_init)
-    TextView btn_1;
-
-    @BindView(R.id.button_sp)
-    TextView btn_6;
-    @BindView(R.id.button_lianx)
-    TextView btn_7;
-    @BindView(R.id.button_duanx)
-    TextView btn_8;
-    @BindView(R.id.connect_text)
-    TextView tv;
-
+    private View mView;
+    private GoogleApiClient client;
+    private TextView mBCRStatus;
+    private TextView mBCRCodeType;
+    private TextView mScandata_view;
+    private BarcoderReaderService bcrService;
+    private TBarcoderReader tbcr;
+    private Spinner mSprinner;
+    private boolean isScan = true;
+    private int mScanMode = 2; //2  自动模式 1 手动模式
+    private String TICKET_INFO = "ticketInfo";
 
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-//    static {
-//        System.loadLibrary("bcr");
-//    }
+        View view =  inflater.inflate(R.layout.fragment_barcode_reader, container, false);
+        mView = view;
+        tbcr = new TBarcoderReader();
 
-    /*
-    * Notifications from BarcoderReaderService will be received here.
-    */
+        InitView();
+
+        return view;
+    }
+
+
+    private void InitView() {
+
+        client = new GoogleApiClient.Builder(getContext()).addApi(AppIndex.API).build();
+        mBCRStatus = (TextView) mView.findViewById(R.id.bcr_status);
+        mBCRCodeType = (TextView) mView.findViewById(R.id.bcr_codetype);
+        mScandata_view = (TextView) mView.findViewById(R.id.bcrscanData_view);
+        mSprinner = (Spinner) mView.findViewById(R.id.scanmode_spinner);
+        mSprinner.setSelection(0,true);
+        mSprinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0){
+                    stopScan();
+                    mScanMode = 2;
+                    StartScan();
+                }else if(position == 1){
+                    stopScan();
+                    mScanMode = 1;
+                    StartScan();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setFilters();  // Start listening notifications from BarcoderReaderService
+        startService(BarcoderReaderService.class, usbConnection, null); // Start BarcoderReaderService(if it was not started before) and Bind it
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getContext().unregisterReceiver(mUsbReceiver);
+        getContext().unbindService(usbConnection);
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
+    @Override
+    public void onDestroy() {
+        tbcr.release();
+        super.onDestroy();
+    }
+
+    private void setFilters() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BarcoderReaderService.ACTION_USB_PERMISSION_GRANTED);
+        filter.addAction(BarcoderReaderService.ACTION_NO_USB);
+        filter.addAction(BarcoderReaderService.ACTION_USB_DISCONNECTED);
+        filter.addAction(BarcoderReaderService.ACTION_USB_NOT_SUPPORTED);
+        filter.addAction(BarcoderReaderService.ACTION_USB_PERMISSION_NOT_GRANTED);
+        getContext().registerReceiver(mUsbReceiver, filter);
+    }
+
+    private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
+        if (!BarcoderReaderService.SERVICE_CONNECTED) {
+            Intent startService = new Intent(getContext(), service);
+            if (extras != null && !extras.isEmpty()) {
+                Set<String> keys = extras.keySet();
+                for (String key : keys) {
+                    String extra = extras.getString(key);
+                    startService.putExtra(key, extra);
+                }
+            }
+            getContext().startService(startService);
+        }
+        Intent bindingIntent = new Intent(getContext(), service);
+        //绑定Service
+        getContext().bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
+    }
+
+
+        //BCR usb connect
+    private final ServiceConnection usbConnection = new ServiceConnection() {
+
+        //成功绑定服务后调用
+        @Override
+        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
+            bcrService = ((BarcoderReaderService.UsbBinder) arg1).getService();
+            tbcr.setService(bcrService);
+
+                //绑定后初始化
+            int ret = tbcr.BCRInit("", "");
+            if(ret == TBarcoderReader.NO_ERROR) {
+                //开启扫描
+                StartScan();
+            }else {
+                String errStr = tbcr.BCRGetLastErrorStr();
+                mBCRStatus.setText(errStr + " ");
+                Log.i("BCR", "init return " + ret + " errstr =" + errStr);
+            }
+
+        }
+
+        //解除绑定后调用
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            bcrService = null;
+            stopScan();
+        }
+    };
+
+
+
     private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -91,302 +219,103 @@ public class BarcodeReaderFragment extends Fragment implements View.OnClickListe
             }
         }
     };
-    private BarcoderReaderService bcrService;
-
-    private TBarcoderReader tbcr;
-
-    private Spinner spn_list;
 
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     */
-   // private GoogleApiClient client;
-
-    private final ServiceConnection usbConnection = new ServiceConnection() {
+    private Handler handler = new Handler() {
         @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            bcrService = ((BarcoderReaderService.UsbBinder) arg1).getService();
-            tbcr.setService(bcrService);
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 1:
+                    String ticketInfo = msg.getData().getString(TICKET_INFO);
+                    int type = msg.getData().getInt("info");
+                    mScandata_view.setText(ticketInfo + " 类型" +type);
+                    switch (type) {
+                        case 152:
+                            mBCRCodeType.setText("PDF417");
+                            break;
+                        case 151:
+                            mBCRCodeType.setText("DataMatrix");
+                            break;
+                        case 101:
+                            mBCRCodeType.setText("I2of5");
+                            break;
+                        case 157:
+                            mBCRCodeType.setText("QR");
+                            break;
+                        case 102:
+                            mBCRCodeType.setText("EAN");
+                            break;
+                        case 110:
+                            mBCRCodeType.setText("Code39");
+                            break;
+                        case 107:
+                            mBCRCodeType.setText("Code128");
+                            break;
+                        default:
+                            break;
 
-        }
+                    }
+            }
 
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            bcrService = null;
         }
     };
-    private int mode;
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_barcode_reader, container, false);
 
-
-
-        mleix = (TextView)view.findViewById(R.id.leix);
-        btn_1 = (Button) view.findViewById(R.id.button_init);
-        //btn_2 = (Button) findViewById(R.id.button_close);
-        // btn_5 = (Button) findViewById(R.id.button_exec);
-        btn_6 = (Button) view.findViewById(R.id.button_sp);
-        tv = (TextView) view.findViewById(R.id.connect_text);
-        btn_7 = (Button) view.findViewById(R.id.button_lianx);
-        btn_7.setOnClickListener(new View.OnClickListener() {
+    //init BCR
+    private void StartScan(){
+        mBCRStatus.setText("正常");
+//        tbcr.BCRStartScan();
+        boolean ret = tbcr.BCRSetScanMode(mScanMode);
+        Log.i("BCR", "BCRSetScanMode return= " +ret + "mScanMode="+ mScanMode);
+        isScan = true;
+        new Thread(new Runnable() {
             @Override
-            public void onClick(View v) {
+            public void run() {
+                while (isScan) {
+                    while (tbcr.BCRScanIsComplete() == true) {
+                        byte[] ticketInfo = tbcr.BCRGetTicketInfo();
+                        int a = ticketInfo[0] & 0xFF;
+                        try {
 
-                buttonzd();//自动
-            }
-        });
+                                String ticketMsg = new String(ticketInfo, 7, ticketInfo.length-7, "ASCII");
+                                Message message = new Message();
+                                message.what = 1;
+                                Bundle bundle=new Bundle();
+                                bundle.putString(TICKET_INFO, ticketMsg);
+                                bundle.putInt("info",a);
+                                message.setData(bundle);
+                                handler.sendMessage(message);
 
-        btn_8 = (Button) view.findViewById(R.id.button_duanx);
-        btn_8.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                button01();
-            }
-        });
-        //spn_list = (Spinner) findViewById(R.id.spinner);
-        tbcr = new TBarcoderReader();
+                        } catch (UnsupportedEncodingException e) {
+                                throw new InternalError();
+                            }
 
-        display = (TextView) view.findViewById(R.id.textView_func);
-        // dataView =(TextView) findViewById(R.id.textView1);
-        // Example of a call to a native method
-        //TextView tv = (TextView) view.findViewById(R.id.textViewTitle);
-        //tv.setText("测试体彩通信接口");
-
-        View.OnClickListener cl_handler = new View.OnClickListener() {
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.button_init:
-                        int ret = tbcr.BCRInit("", "");
-                        if (ret == TBarcoderReader.NO_ERROR) {
-                            tv.setText("已连接");
-                            display.setText("初始化" +" "+ "OK");
-                        } else {
-                            tv.setText("未连接");
                         }
-                        break;
-
-                    case R.id.button_close:
-                        tbcr.BCRClose();
-                        // tv = (TextView) findViewById(R.id.connect_text);
-                        //tv.setText("未连接");
-                        break;
-
-
-                    case R.id.button_sp:
-
-                        display.setText(""+buttonsp());
-
-
+                    }
                 }
-
-            }
-        };
-        btn_1.setOnClickListener(cl_handler);
-        //btn_2.setOnClickListener(cl_handler);
-        //btn_5.setOnClickListener(cl_handler);
-        btn_6.setOnClickListener(cl_handler);
-
-
-
-
-
-        return  view;
-    }
-
-//    @Override
-//    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-//        super.onActivityCreated(savedInstanceState);
-//        //tbcr.BCRInit("", "");
-//
-////        if (ret == TBarcoderReader.NO_ERROR) {
-////            tv.setText("已连接");
-////            display.setText("初始化" +" "+ "OK");
-////        } else {
-////            tv.setText("未连接");
-////        }
-//
-//
-//    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setFilters();  // Start listening notifications from BarcoderReaderService
-        startService(BarcoderReaderService.class, usbConnection, null); // Start BarcoderReaderService(if it was not started before) and Bind it
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        getContext().unregisterReceiver(mUsbReceiver);
-        getContext().unbindService(usbConnection);
-
-    }
-    private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
-        if (!BarcoderReaderService.SERVICE_CONNECTED) {
-            Intent startService = new Intent(getContext(), service);
-            if (extras != null && !extras.isEmpty()) {
-                Set<String> keys = extras.keySet();
-                for (String key : keys) {
-                    String extra = extras.getString(key);
-                    startService.putExtra(key, extra);
-                }
-            }
-            getContext().startService(startService);
-        }
-        Intent bindingIntent = new Intent(getContext(), service);
-        getContext().bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-    private void setFilters() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(BarcoderReaderService.ACTION_USB_PERMISSION_GRANTED);
-        filter.addAction(BarcoderReaderService.ACTION_NO_USB);
-        filter.addAction(BarcoderReaderService.ACTION_USB_DISCONNECTED);
-        filter.addAction(BarcoderReaderService.ACTION_USB_NOT_SUPPORTED);
-        filter.addAction(BarcoderReaderService.ACTION_USB_PERMISSION_NOT_GRANTED);
-        getContext().registerReceiver(mUsbReceiver, filter);
-    }
-
-    public void OnDestroy(){
-        tbcr.release();
+            }).start();
     }
 
 
-    public  String buttonsp(){
-
-        /**汝嫣**/
-        byte[]  TicketInfo= tbcr.BCRGetTicketInfo();
-        String sp = null;
-        try {
-            byte D = TicketInfo[0];
-            int i = D;
-            i = D & 0xff;
-            Log.e("eeee", TicketInfo.toString());
-            sp = new String(TicketInfo);
-
-            mleix.setText(""+i);
-        } catch (Exception e) {
-
-            e.printStackTrace();
-        }
-        return sp;
+    private void stopScan() {
+        isScan = false;
     }
 
-    public  void  buttonzd(){
-
-
-        tbcr.BCRSetScanMode(2);
-
-
-
-    }
-
-    public void button01(){
-        tbcr.BCRSetScanMode(1);
-    }
-
-    public void execBCRFunction() {
-        boolean ret;
-        String s = spn_list.getSelectedItem().toString();
-        // TextView tv = (TextView) findViewById(R.id.textView_func);
-
-
-        switch (s) {
-            case "BCRGetLastErrorCode":
-                int errcode = tbcr.BCRGetLastErrorCode();
-                // tv.setText(s + " " + Integer.toString(errcode));
-                break;
-
-            case "BCRQueryCapability":
-                int cap = tbcr.BCRQueryCapability();
-                //tv.setText(s + " " + Integer.toString(cap, 10));
-                break;
-
-            case "BCRGetLastErrorStr":
-                String errStr = tbcr.BCRGetLastErrorStr();
-                //tv.setText(s + " " + errStr);
-                break;
-
-            case "BCRAimOn":
-                ret = tbcr.BCRAimOn();
-                //tv.setText(s + " " + Boolean.toString(ret));
-                break;
-
-            case "BCRAimOff":
-                ret = tbcr.BCRAimOff();
-                //tv.setText(s + " " + Boolean.toString(ret));
-                break;
-
-            case "BCREnable":
-                ret = tbcr.BCREnable();
-                //tv.setText(s + " " + Boolean.toString(ret));
-                break;
-
-            case "BCRDisable":
-                ret = tbcr.BCRDisable();
-                //tv.setText(s + " " + Boolean.toString(ret));
-                break;
-
-
-            default:
-                break;
-
-        }
-    }
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      */
-//    public Action getIndexApiAction() {
-//        Thing object = new Thing.Builder()
-//                .setName("Main Page") // TODO: Define a title for the content shown.
-//                // TODO: Make sure this auto-generated URL is correct.
-//                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-//                .build();
-//        return new Action.Builder(Action.TYPE_VIEW)
-//                .setObject(object)
-//                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-//                .build();
-//    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        //client.connect();
-        //AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        // client.disconnect();
-    }
 
-    @Override
-    public void onClick(View view) {
-        //tbcr.BCRInit("", "");
-    }
-
-//
-//    public static void wshow(Context context){
-//        TBarcoderReader ww = null;
-//        Activity act = (Activity) context;
-//        ww.BCRInit("", "");
-//
-//    }
-
-    public static void wshow(AdapterView.OnItemClickListener onItemClickListener) {
-        TBarcoderReader ww = null;
-//       Activity act = (Activity) ;
-        ww.BCRInit("", "");
-    }
 }

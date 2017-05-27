@@ -33,6 +33,13 @@ android {
 
 
 
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+    }
+
+
     externalNativeBuild {
         cmake {
             path "CMakeLists.txt"
@@ -46,11 +53,6 @@ android {
         }
     }
 
-    repositories {
-        flatDir {
-            dirs 'libs'
-        }
-    }
 
 
 }
@@ -68,8 +70,12 @@ dependencies {
     compile files('libs/Amap_2DMap_V4.2.0_20170209.jar')
     compile files('libs/AMap_Location_V3.3.0_20170118.jar')
     compile files('libs/org.dtools.javaini-v1.1.00.jar')
-    compile(name: 'libbcr', ext: 'aar')
+    compile(name:'libbcr', ext:'aar')
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+
+
     compile files('libs/zxing-1.6-core.jar')
     compile 'com.android.support:design:25.3.1'
     compile project(':vitamio')
+
 }

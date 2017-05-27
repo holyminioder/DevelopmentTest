@@ -117,7 +117,7 @@ bool PrintPDF417() {
 
     //*****************************************************************************************************************
     //打印彩票数据
-    returnValueBool = byPSetLeftMargin(10);//设置左边界
+    returnValueBool = byPSetLeftMargin(0x0010);//设置左边界
     if(!returnValueBool)
     {
         printf("PrinterSetLeftMargin failed!\n");
@@ -140,10 +140,10 @@ bool PrintPDF417() {
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("体彩<全国联网排列3>\n\n");//打印字符串
+    returnValueInt = byPPrintString("演示票<全国联网排列3>\n\n");//打印字符串
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('体彩<全国联网排列3>') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('演示票<全国联网排列3>') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
@@ -202,15 +202,15 @@ bool PrintPDF417() {
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("直 选 票");//打印字符串
+    returnValueInt = byPPrintString("单 式 票");//打印字符串
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('直 选 票') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('单 式 票') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
     byPFeedLine(1);//进纸
-    returnValueInt = byPPrintString("① 3 2 2");//打印字符串
+    returnValueInt = byPPrintString("① 3 3 2");//打印字符串
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
         printf("PrinterPrintString('① 3 2 2') failed, return code: %d\n", returnValueInt);
@@ -219,34 +219,34 @@ bool PrintPDF417() {
 
     byPFeedLine(1);//进纸
 
-    returnValueInt = byPPrintString("② . . .");//打印字符串
+    returnValueInt = byPPrintString("② 5 8 1");//打印字符串
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('② . . .') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('② 5 8 1') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
     byPFeedLine(1);//进纸
-    returnValueInt = byPPrintString("③ . . .");//打印字符串
+    returnValueInt = byPPrintString("③ 3 3 2");//打印字符串
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('③ . . .') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('③ 3 3 2') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
     byPFeedLine(1);//进纸
-    returnValueInt = byPPrintString("④ . . .");//打印字符串
+    returnValueInt = byPPrintString("④ 5 8 3");//打印字符串
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('④ . . .') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('④ 5 8 3') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
     byPFeedLine(1);//进纸
-    returnValueInt = byPPrintString("⑤ . . .");//打印字符串
+    returnValueInt = byPPrintString("⑤ 3 3 2");//打印字符串
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('⑤ . . .') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('⑤ 3 3 2') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
@@ -301,7 +301,7 @@ bool PrintPDF417() {
     //*****************************************************************************************************************
     //打印条码
     memcpy(mbarCode, barCode, sizeof(barCode));
-    returnValueInt = byPrintPDF417(16, 50, 4, 4, 3, barCode, 32, 2);
+    returnValueInt = byPrintPDF417(15, 38, 20 , 6, 3, barCode, 32, 2);
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
         printf("PrinterPrintPDF417('%s') failed, return code: %d\n", barCode, returnValueInt);
@@ -351,26 +351,7 @@ int PrintBarcodeTicket(int codeType)
         goto ExitLine;
     }
 
-    //*****************************************************************************************************************
-    //设备初始化
-//    returnValueInt = byPInit("/sdcard","/sdcard");
-//    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
-//    {
-//        printf("PrinterInit failed, return code: %d\n", returnValueInt);
-//        goto ExitLine;
-//    }
-//    else {
-//        LOGI("Printer Init ok");
-//    }
 
-    //*****************************************************************************************************************
-    //判断设备状态是否正常
-//	returnValueBool = byPPrinterIsReady();
-//	if(!returnValueBool)
-//	{
-//		printf("PrinterSetLeftMargin failed!\n");
-//		goto ExitLine;
-//	}
 
     //*****************************************************************************************************************
     //打印彩票数据
@@ -682,7 +663,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
 
     PInit("/sdcard", "/sdcard");
     PSetCutterMode(mode);
-    if (PrintPDF417() != NO_ERROR)
+    if (PrintPDF417() != PRINTER_NO_ERROR)
         return false;
     return true;
 }
@@ -723,8 +704,10 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
         returnValueInt = byPPrintString("测试字符串");//打印字符串
         byPFeedLine(4);
         returnValueInt =byPPrintString("zxcvbnmlkjhgfdsaqwertyuiopZXCVBNMLKJHGFDSAQWERTYUIOP0123456789[]{}-=_+,./<>?`1~!@#$%^&*()");
+        byPFeedLine(4);
+        byPSetFont(0x00, 0x30, 0x01);
+        byPPrintString("1 4 3 8");
         PCutPaper();
-    LOGI("print string");
 
     if(returnValueInt != NO_ERROR){
         return false;
@@ -892,20 +875,20 @@ JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterI
     return env->NewStringUTF(info);
 }
 
-JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrinterStatus
+JNIEXPORT jint JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrinterStatus
         (JNIEnv *env, jobject) {
 
-        //isReady 接口有问题 使用init判断
-        int ret = PInit("/sdcard","/sdcard");
-        LOGI("printer ret =" + ret);
-        if (ret != PRINTER_NO_ERROR) {
-            LOGI("printer ret 2=" + ret);
-            char err[256] = {0x00};
-            byPGetLastErrorStr(err, 200);
-            return env->NewStringUTF(err);
-        }
+        bool ret = byPPrinterIsReady();
+        int errcode = 0;
 
-        return  env->NewStringUTF("正常");
+        if (!ret) {
+            LOGI("byPPrinterIsReady return=%d" , ret);
+              errcode= byPGetLastErrorCode();
+              return errcode;
+        }
+        LOGI("printerret =%d ,errcode = %d" ,ret,errcode);
+
+    return errcode;
 }
 
 JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetAuthority

@@ -10,4 +10,8 @@
         <item>1280*752</item>
         <item>1024*768</item>
     </string-array>
+    <string-array name="bcrScanModeArr">
+        <item>自动模式</item>
+        <item>手动模式</item>
+    </string-array>
 </resources>

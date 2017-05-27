@@ -1,7 +1,13 @@
 package com.example.lederui.developmenttest.fragment;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,7 +24,6 @@ import android.widget.ToggleButton;
 
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.data.PrinterInterface;
-
 import org.dtools.ini.BasicIniFile;
 import org.dtools.ini.IniFile;
 import org.dtools.ini.IniFileReader;
@@ -27,12 +32,16 @@ import org.dtools.ini.IniItem;
 import org.dtools.ini.IniSection;
 
 import java.io.File;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static android.app.Activity.RESULT_OK;
+import static android.content.ContentValues.TAG;
 import static com.example.lederui.developmenttest.data.PrinterInterface.GetLastErrStr;
 
 /**
@@ -61,6 +70,8 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
     @BindView(R.id.btn_noblackmark) Button mBtnNoBlackMark;
     @BindView(R.id.printSpeedTextView) TextView mPrintSpeedView;
     @BindView(R.id.cutSpeedTextView) TextView mCutSpeedView;
+    @BindView(R.id.printer_status) TextView mPrinterStatusView;
+    @BindView(R.id.choice_imagefile) Button mBtnChoice_imagefile;
 
 
 
@@ -73,6 +84,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
     private String mPDFCode;
     private CountDownTimer mCountDownTimer;
     private ToggleButton mToggleBtn;
+    private Handler mHandler = null;
 
 
     @Nullable
@@ -165,6 +177,8 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
         mBtnBlackMark.performClick();
         mBtnHalfCut.performClick();
 
+
+
     }
 
     public void InitDev() {
@@ -175,12 +189,67 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             isInit = false;
             Log.i("printerfragment","PrinterFragment printer init false");
         }
+
+
+
+        // 打印機狀態
+        mHandler = new Handler();
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                final int printStatus = mPrintInterface.PrinterStatus();
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+
+                        switch (printStatus){
+                            case 0:
+                                mPrinterStatusView.setText("打印机状态：" + "正常");
+                                break;
+                            case 1:
+                                mPrinterStatusView.setText("打印机状态：" + "找不到打印机");
+                                break;
+                            case 2:
+                                mPrinterStatusView.setText("打印机状态：" + "数据线故障");
+                                break;
+                            case 3:
+                                mPrinterStatusView.setText("打印机状态：" + "电源线故障");
+                                break;
+                            case 4:
+                                mPrinterStatusView.setText("打印机状态：" + "打印机忙");
+                                break;
+                            case 5:
+                                mPrinterStatusView.setText("打印机状态：" + "超时");
+                                break;
+                            case 8:
+                                mPrinterStatusView.setText("打印机状态：" + "打印机上盖被打卡");
+                                break;
+                            case 9:
+                                mPrinterStatusView.setText("打印机状态：" + "纸卷错误");
+                                break;
+                            case 10:
+                                mPrinterStatusView.setText("打印机状态：" + "纸将尽");
+                                break;
+                            case 11:
+                                mPrinterStatusView.setText("打印机状态：" + "其他错误");
+                                break;
+                            case 500:
+                                mPrinterStatusView.setText("打印机状态：" + "正常");
+                                break;
+                            default:break;
+                        }
+                    }
+                });
+            }
+        }, 3000, 1000*5);
     }
 
 
     @OnClick({R.id.btn_allcut,R.id.btn_noblackmark,R.id.btn_printSample,R.id.btn_printString,R.id.btn_printImage
     ,R.id.btn_printSmallBlackBar,R.id.btn_printBigBlackBar,R.id.btn_printContinue,R.id.btn_printCode
-    ,R.id.btn_printPageMode,R.id.btn_printSpeedtest, R.id.btn_CutPaperSpeedtest })
+    ,R.id.btn_printPageMode,R.id.btn_printSpeedtest, R.id.btn_CutPaperSpeedtest, R.id.choice_imagefile })
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -254,6 +323,9 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             case R.id.btn_CutPaperSpeedtest:
                 TestCutPaperSpeed();
                 break;
+            case  R.id.choice_imagefile:
+                showFileChooser();
+                break;
 
             default:
                 break;
@@ -272,7 +344,8 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             timer2 = System.currentTimeMillis();
             long diff = timer2 - timer1;
             Log.i("printer", "difftime=" + diff);
-            if(diff > 10*1000)
+            if(diff > 60*1000)
+
                 break;
             mPrintInterface.PrintSample(mCutMode);
             count++;
@@ -341,6 +414,71 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
         }
 
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        switch (requestCode) {
+            case FILE_SELECT_CODE:
+                if (resultCode == RESULT_OK) {
+                    // Get the Uri of the selected file
+                    Uri uri = data.getData();
+                    Log.d(TAG, "File Uri: " + uri.toString());
+                    getPath(getContext(), uri);
+//                    Log.i("image path =" , path);
+                }
+                break;
+
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private static final int FILE_SELECT_CODE = 0;
+    private void showFileChooser() {
+
+        File file = new File("/mnt/sdcard/");
+        if(null==file || !file.exists()){
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("image/*");
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setDataAndType(Uri.fromFile(file), "image/*");
+
+        try {
+            startActivityForResult( Intent.createChooser(intent, "请选择图像"), FILE_SELECT_CODE);
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Potentially direct the user to the Market with a Dialog
+            Toast.makeText(getContext(), "Please install a File Manager.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    private  String getPath(Context context, Uri uri) {
+
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+            // MediaStore.Images.Media.DATA = "_data" , Path to the file on disk.
+            String[] projection = {MediaStore.Images.Media.DATA};
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver().query(uri, projection, null, null, null);
+                int column_index = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
+                Log.i("image", "column_index=" + column_index);
+                if (cursor !=null && cursor.moveToFirst()) {
+                    Log.i(" path ==",cursor.getString(column_index)+"");
+                    return cursor.getString(column_index);
+                }else  {
+                    Log.i("image","cursor == null");
+                }
+            } catch (Exception e) {
+                // Eat it  Or Log it.
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
     }
 
 
