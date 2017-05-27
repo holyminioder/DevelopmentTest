@@ -5,10 +5,16 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
+    <Button
+        android:id="@+id/touch_revise"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TouchScreenTest"/>
-
+        android:paddingTop="@dimen/text_spacing"
+        android:paddingBottom="@dimen/text_spacing"
+        android:paddingLeft="@dimen/bottom_text_padding"
+        android:paddingRight="@dimen/bottom_text_padding"
+        android:background="@drawable/btn_style_five_selector"
+        android:textColor="@android:color/white"
+        android:text="@string/touch_revise"/>
 
 </LinearLayout>

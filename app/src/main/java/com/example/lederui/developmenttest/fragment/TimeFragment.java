@@ -97,7 +97,7 @@ public class TimeFragment extends Fragment {
             String datetime = "";
             datetime = datetimes.toString();
             DataOutputStream os = new DataOutputStream(process.getOutputStream());
-            os.writeBytes("setprop persist.sys.timezone GMT+16:00\n");
+            os.writeBytes("setprop persist.sys.timezone GMT+08:00\n");
             os.writeBytes("/system/bin/date -s " + datetime + "\n");
             os.writeBytes("clock -w\n");
             os.writeBytes("exit\n");

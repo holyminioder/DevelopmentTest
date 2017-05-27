@@ -64,7 +64,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.VideoViewActivity"></activity>
+        <activity android:name=".activity.VideoViewActivity"/>
+        <activity android:name=".activity.TouchReviseActivity"/>
 
         <service
             android:name="com.ztec.bcr.BarcoderReaderService"

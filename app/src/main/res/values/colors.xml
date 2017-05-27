@@ -7,4 +7,6 @@
 
     <color name="action_bar_color">#56a4fc</color>
     <color name="bottom_color">#8b8bbe</color>
+    <color name="text_content1">#ffffff</color>
+    <color name="text_Welcome">#a9c858</color>
 </resources>
