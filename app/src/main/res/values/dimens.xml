@@ -21,11 +21,14 @@
     <dimen name="system_text_width">150dp</dimen>
     <dimen name="activity_main_right_height">130dp</dimen>
     <dimen name="button_padding">22dp</dimen>
+    <dimen name="view_width">720dp</dimen>
 
     <dimen name="main_board_msg_text">18sp</dimen>
 
     <dimen name="printer_button_margin">100dp</dimen>
     <dimen name="printer_button_height">70dp</dimen>
     <dimen name="printer_button_marginTop">40dp</dimen>
+
+    <dimen name="seek_bar_height">5dp</dimen>
 
 </resources>

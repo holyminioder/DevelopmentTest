@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mPrinterLib = new PrinterInterface();
-//        initDev();
+        initDev();
         initDate();
 
 

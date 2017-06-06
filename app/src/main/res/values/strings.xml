@@ -73,4 +73,6 @@
     <string name="hint_hour">请输入时，如08</string>
     <string name="hint_minute">请输入分，如00</string>
     <string name="hint_second">请输入秒，如35</string>
+
+    <string name="volume_now">"当前音量："</string>
 </resources>

@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
@@ -14,12 +15,12 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.lederui.developmenttest.R;
@@ -53,9 +54,17 @@ public class SoundTestFragment extends Fragment {
     @BindView(R.id.sod_goon)
     Button mSodGoon;
     Unbinder unbinder;
+    @BindView(R.id.btn_sub)
+    Button mBtnSub;
+    @BindView(R.id.seek_bar)
+    SeekBar mSeekBar;
+    @BindView(R.id.btn_add)
+    Button mBtnAdd;
+
     private MediaPlayer mPlayer;
     private String filePath;
     private boolean pause = false;
+    private AudioManager mAudioManager;
 
     @Nullable
     @Override
@@ -63,6 +72,10 @@ public class SoundTestFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_sound_test, container, false);
         unbinder = ButterKnife.bind(this, view);
         mPlayer = new MediaPlayer();
+        mAudioManager = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);//初始化音量管理
+        mSeekBar.setMax(mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));//设置滑动条最大值
+        mSeekBar.setProgress(mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC));//设置滑动条当前数值
+        mSeekBar.setOnSeekBarChangeListener(mListener);
         return view;
     }
 
@@ -72,8 +85,29 @@ public class SoundTestFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.sod_browse, R.id.sod_play, R.id.sod_stop, R.id.sod_pause, R.id.sod_goon})
+    //滑动条滑动事件
+    private SeekBar.OnSeekBarChangeListener mListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, AudioManager.FLAG_PLAY_SOUND);//修改音量
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
+
+    @OnClick({R.id.sod_browse, R.id.sod_play, R.id.sod_stop, R.id.sod_pause, R.id.sod_goon, R.id.btn_sub, R.id.btn_add})
     public void onViewClicked(View view) {
+        int volume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        int maxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        int num = 1;
         switch (view.getId()) {
             case R.id.sod_browse:
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -94,7 +128,7 @@ public class SoundTestFragment extends Fragment {
                 }
                 break;
             case R.id.sod_stop:
-                if (mPlayer.isPlaying()){
+                if (mPlayer.isPlaying()) {
                     mPlayer.stop();
                     Toast.makeText(getContext(), "停止播放", Toast.LENGTH_LONG).show();
                 }
@@ -107,15 +141,38 @@ public class SoundTestFragment extends Fragment {
                 }
                 break;
             case R.id.sod_goon:
-                if (pause){
+                if (pause) {
                     mPlayer.start();
                     pause = false;
                     Toast.makeText(getContext(), "继续播放", Toast.LENGTH_LONG).show();
                 }
                 break;
+            case R.id.btn_sub://减小音量
+                if (volume - num >= 0){
+                    int bad = volume - num;
+                    mSeekBar.setProgress(bad);
+                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, bad, AudioManager.FLAG_PLAY_SOUND);
+                }else {
+                    volume = 0;
+                    mSeekBar.setProgress(volume);
+                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, AudioManager.FLAG_PLAY_SOUND);
+                }
+                break;
+            case R.id.btn_add://加大音量
+                if (volume + num <= maxVolume){
+                    int add = volume + num;
+                    mSeekBar.setProgress(add);
+                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, add, AudioManager.FLAG_PLAY_SOUND);
+                }else {
+                    volume = maxVolume;
+                    mSeekBar.setProgress(volume);
+                    mAudioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, AudioManager.FLAG_PLAY_SOUND);
+                }
+                break;
         }
     }
 
+    //播放音乐
     private void play(int playPosition) {
         try {
             mPlayer.reset();// 把各项参数恢复到初始状态
@@ -128,7 +185,7 @@ public class SoundTestFragment extends Fragment {
     }
 
     final class MyPreparedListener implements
-            android.media.MediaPlayer.OnPreparedListener {
+            MediaPlayer.OnPreparedListener {
         private int playPosition;
 
         public MyPreparedListener(int playPosition) {
@@ -255,8 +312,8 @@ public class SoundTestFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden){
-            if (mPlayer.isPlaying()){
+        if (hidden) {
+            if (mPlayer.isPlaying()) {
                 mPlayer.stop();
             }
         }

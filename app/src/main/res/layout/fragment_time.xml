@@ -179,19 +179,21 @@
             android:id="@+id/btn_ensure"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/bottom_text_padding"
-            android:background="@drawable/btn_sure_selector"
-            android:paddingLeft="@dimen/status_bar"
-            android:paddingRight="@dimen/status_bar"
+            android:background="@drawable/btn_style_five_selector"
+            android:paddingLeft="@dimen/text_spacing"
+            android:paddingRight="@dimen/text_spacing"
+            android:textColor="@android:color/white"
             android:text="@string/sure"/>
 
         <Button
             android:id="@+id/btn_netTime"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/bottom_text_padding"
-            android:background="@drawable/btn_sure_selector"
-            android:paddingLeft="@dimen/status_bar"
-            android:paddingRight="@dimen/status_bar"
-            android:layout_marginLeft="@dimen/status_bar"
+            android:background="@drawable/btn_style_five_selector"
+            android:paddingLeft="@dimen/text_spacing"
+            android:paddingRight="@dimen/text_spacing"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="@dimen/text_spacing"
             android:text="@string/get_net_time"/>
 
     </LinearLayout>

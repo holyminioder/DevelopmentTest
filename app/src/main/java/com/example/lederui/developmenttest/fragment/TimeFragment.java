@@ -1,6 +1,5 @@
 package com.example.lederui.developmenttest.fragment;
 
-import android.app.AlarmManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.lederui.developmenttest.R;
+import com.example.lederui.developmenttest.utils.UtilsManager;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -32,8 +32,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-import static android.content.Context.ALARM_SERVICE;
 
 /**
  * Created by holyminier on 2017/4/21.
@@ -87,8 +85,18 @@ public class TimeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_time, container, false);
         unbinder = ButterKnife.bind(this, view);
-        new Thread(runnable).start();
+        iniitSet();
         return view;
+    }
+
+    private void iniitSet() {
+        boolean available = UtilsManager.isNetworkAvailable(getContext());
+        if (available){
+            Toast.makeText(getContext(), "网络可用", Toast.LENGTH_LONG).show();
+            new Thread(runnable).start();
+        }else {
+            Toast.makeText(getContext(), "网络不可用", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void setSystemTime(Context cxt, String datetimes) {
@@ -97,7 +105,7 @@ public class TimeFragment extends Fragment {
             String datetime = "";
             datetime = datetimes.toString();
             DataOutputStream os = new DataOutputStream(process.getOutputStream());
-            os.writeBytes("setprop persist.sys.timezone GMT+08:00\n");
+//            os.writeBytes("setprop persist.sys.timezone GMT-08:00\n");
             os.writeBytes("/system/bin/date -s " + datetime + "\n");
             os.writeBytes("clock -w\n");
             os.writeBytes("exit\n");
@@ -155,7 +163,7 @@ public class TimeFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
+        super.onDestroyView(); 
         unbinder.unbind();
     }
 }
