@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -93,8 +95,14 @@ public class NetworkFragment extends Fragment {
 
                 mToWeb.getSettings().setSupportZoom(true);
                 mToWeb.getSettings().setBuiltInZoomControls(true);
+                mToWeb.getSettings().setDomStorageEnabled(true);
 
                 mToWeb.setWebViewClient(new WebViewClient() {
+                    @Override
+                    public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
+                        handler.proceed();
+                    }
+
                     @Override
                     public boolean shouldOverrideUrlLoading(WebView view, String url) {
                         view.loadUrl(url);

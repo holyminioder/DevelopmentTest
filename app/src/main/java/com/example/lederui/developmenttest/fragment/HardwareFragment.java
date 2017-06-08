@@ -68,7 +68,9 @@ public class HardwareFragment extends Fragment {
         sb.append("存储容量：");
         sb.append(MainBoardMessage.getStorageSize() + "\n" + "\n");
         sb.append("USB口数量：");
-        sb.append(MainBoardMessage.getUsbInterface(getContext()));
+        sb.append(MainBoardMessage.getUsbInterface(getContext()) + "\n" + "\n");
+        sb.append("网卡数量：");
+        sb.append(MainBoardMessage.getNetworkCardCount() + "");
 
         mMainMessage.setText(sb.toString());
         if (TextUtils.isEmpty(sb)) {

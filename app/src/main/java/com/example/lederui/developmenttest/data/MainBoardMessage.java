@@ -3,14 +3,13 @@ package com.example.lederui.developmenttest.data;
 import android.app.Activity;
 import android.content.Context;
 import android.hardware.usb.UsbDevice;
-import android.hardware.usb.UsbInterface;
 import android.hardware.usb.UsbManager;
-import android.os.Build;
 import android.os.Environment;
-import android.os.Handler;
 import android.os.StatFs;
 import android.util.DisplayMetrics;
 import android.util.Log;
+
+import com.example.lederui.developmenttest.utils.UtilsManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,8 +21,6 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.regex.Pattern;
 
 /**
@@ -214,5 +211,20 @@ public class MainBoardMessage {
             e.printStackTrace();
         }
         return rate + "";
+    }
+
+    public static int getNetworkCardCount(){
+        String wireless = UtilsManager.getMACAddress("wlan0");
+        String wireless1 = UtilsManager.getMACAddress("wlan1");
+        String wired = UtilsManager.getMACAddress("eth0");
+        String wired1 = UtilsManager.getMACAddress("eth1");
+        int count = 0;
+        String[] macAddress = new String[]{wired, wired1, wireless, wireless1};
+        for (int i = 0; i < macAddress.length; i++){
+            if (macAddress[i] != ""){
+                count++;
+            }
+        }
+        return count;
     }
 }

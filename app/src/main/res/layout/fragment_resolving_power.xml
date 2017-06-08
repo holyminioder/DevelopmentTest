@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="@dimen/system_text_width"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/resolving_power_text_size"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="@string/current_resolution"/>
@@ -24,7 +24,9 @@
         <EditText
             android:id="@+id/resolving_power"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/resolving_power_text_height"
+            android:layout_marginLeft="@dimen/status_bar"
+            android:paddingLeft="@dimen/status_bar"
             android:text="@string/resolving_power"
             android:background="@drawable/frame_shape"/>
 
@@ -40,20 +42,27 @@
         <TextView
             android:layout_width="@dimen/system_text_width"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/resolving_power_text_size"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="@string/set_resolution"/>
 
         <Spinner
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/resolving_power_text_height"
+            android:layout_marginLeft="@dimen/status_bar"
             android:entries="@array/spinnerArr"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:background="@drawable/frame_shape"/>
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/text_spacing"
+            android:paddingRight="@dimen/text_spacing"
+            android:textColor="@android:color/white"
+            android:background="@drawable/btn_style_five_selector"
+            android:layout_marginLeft="@dimen/text_spacing"
             android:text="@string/sure"/>
 
     </LinearLayout>
