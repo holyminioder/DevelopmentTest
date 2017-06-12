@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -21,10 +20,10 @@ import com.example.lederui.developmenttest.data.PrinterInterface;
 import com.example.lederui.developmenttest.data.StringManager;
 import com.example.lederui.developmenttest.fragment.BakingMachineFragment;
 import com.example.lederui.developmenttest.fragment.BarcodeReaderFragment;
+import com.example.lederui.developmenttest.fragment.BatteryFragment;
 import com.example.lederui.developmenttest.fragment.BrightnessFragment;
 import com.example.lederui.developmenttest.fragment.EditionFragment;
 import com.example.lederui.developmenttest.fragment.HardwareFragment;
-import com.example.lederui.developmenttest.fragment.BatteryFragment;
 import com.example.lederui.developmenttest.fragment.LocationFragment;
 import com.example.lederui.developmenttest.fragment.MainScreenTestFragment;
 import com.example.lederui.developmenttest.fragment.NetworkFragment;
@@ -167,6 +166,8 @@ public class MainActivity extends AppCompatActivity {
         mCpuTemperature.setTypeface(mTypeFace);
         mVoltage.setTypeface(mTypeFace);
 
+        mPrinterState.setVisibility(View.INVISIBLE);
+
         //默认选中诊断程序
         initBackground(mDiagnoseProcedure);
         mListView.setVisibility(View.VISIBLE);
@@ -193,16 +194,6 @@ public class MainActivity extends AppCompatActivity {
             throw new SecurityException();
         }
 
-
-
-
-        if(!mPrinterLib.PrintInit()){
-            Log.i("printer","init false");
-            mPrinterState.setText("打印机状态：异常"  );
-        }else {
-            Log.i("printer","init ok");
-            mPrinterState.setText("打印机状态：正常"  );
-        }
     }
 
     //主分类的点击事件

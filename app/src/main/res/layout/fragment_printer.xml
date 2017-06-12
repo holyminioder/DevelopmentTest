@@ -12,8 +12,9 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@+id/cut_layout"
         android:text="打印机状态"
-        android:textSize="15sp"
-        android:layout_marginLeft="10dp"/>
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginLeft="15dp"/>
 
     <android.support.percent.PercentRelativeLayout
         android:id="@+id/cut_layout"
@@ -47,7 +48,6 @@
             app:layout_widthPercent="15%"
             android:text="半切"
             android:textSize="@dimen/text_size"
-
             android:background="@drawable/btn_color_printer1"
             android:textColor="@android:color/white"
             />
@@ -207,8 +207,10 @@
             app:layout_widthPercent="18%"
             app:layout_heightPercent = "5%"
             android:layout_alignLeft="@+id/btn_printCode"
-             android:layout_below="@+id/btn_printCode"
-            android:layout_marginTop="4dp"/>
+            android:layout_below="@+id/btn_printCode"
+            android:textSize="20dip"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/kuang"/>
 
         <Button
             android:id="@+id/btn_printPageMode"
@@ -239,7 +241,8 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_alignLeft="@+id/btn_printSpeedtest"
-            android:layout_below="@+id/btn_printSpeedtest"
+            android:layout_alignBaseline="@+id/spinner_codeType"
+            android:textStyle="bold"
             android:text="打印速度"/>
 
         <Button
@@ -258,8 +261,9 @@
             android:id="@+id/cutSpeedTextView"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
-            android:layout_below="@+id/btn_CutPaperSpeedtest"
+            android:layout_alignBaseline="@+id/spinner_codeType"
             android:layout_alignLeft="@+id/btn_CutPaperSpeedtest"
+            android:textStyle="bold"
             android:text="切纸速度"/>
 
 

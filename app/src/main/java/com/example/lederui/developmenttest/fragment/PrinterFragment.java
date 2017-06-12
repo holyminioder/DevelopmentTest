@@ -177,6 +177,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
         mBtnBlackMark.performClick();
         mBtnHalfCut.performClick();
 
+        mBtnChoice_imagefile.setVisibility(View.INVISIBLE);
 
 
     }
@@ -359,26 +360,27 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
 
 
     private void TestCutPaperSpeed() {
-//        long timer1 = System.currentTimeMillis();
-//        Log.i("test", "time1=" + timer1);
-//        int count = 0;
-//
-//        mPrintInterface.SetCutMode(1);
-//        mPrintInterface.PrintString("test");
-//        while (count < 4) {
-//            PrintString("s");
-//            count++;
-//            delay(500);
-//        }
+        long timer1 = System.currentTimeMillis();
+        long timer2;
+        Log.i("test", "time1=" + timer1);
+        int count = 0;
 
-//        long timer2 = System.currentTimeMillis();
-//        Log.i("test", "time2=" + timer2);
-//        long diff = timer2 - timer1;
-//        Log.i("test", "difftime=" + diff);
-//        int speed =  20*60*1000/(int)diff; // 102*15*1000/diff;
-//        Log.i("test", "speed = " + speed);
-//
-//        mPrintSpeedView.setText("切纸速度="+speed+"切/分钟\n" );
+        mPrintInterface.SetCutMode(1);
+        mPrintInterface.PrintString("test");
+
+        while (true){
+            timer2 = System.currentTimeMillis();
+            long diff = timer2 - timer1;
+//            Log.i("printer", "difftime=" + diff);
+
+            if(diff > 60*1000)
+                break;
+
+            mPrintInterface.PrintString("cut test");
+            count++;
+        }
+
+        mCutSpeedView.setText("切纸速度="+count+"切/分钟\n" );
     }
 
 
