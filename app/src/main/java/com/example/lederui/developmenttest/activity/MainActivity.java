@@ -24,7 +24,7 @@ import com.example.lederui.developmenttest.fragment.BarcodeReaderFragment;
 import com.example.lederui.developmenttest.fragment.BrightnessFragment;
 import com.example.lederui.developmenttest.fragment.EditionFragment;
 import com.example.lederui.developmenttest.fragment.HardwareFragment;
-import com.example.lederui.developmenttest.fragment.KeyBoardFragment;
+import com.example.lederui.developmenttest.fragment.BatteryFragment;
 import com.example.lederui.developmenttest.fragment.LocationFragment;
 import com.example.lederui.developmenttest.fragment.MainScreenTestFragment;
 import com.example.lederui.developmenttest.fragment.NetworkFragment;
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private SystemFragment mSystemFragment;
     private TimeFragment mTimeFragment;
     private TouchScreenTestFragment mTouchScreenFragment;
-    private KeyBoardFragment mKeyBoardFragment;
+    private BatteryFragment mBatteryFragment;
     private SoundFragment mSoundFragment;
 
     @Override
@@ -298,7 +298,7 @@ public class MainActivity extends AppCompatActivity {
                                     out.writeBytes("reboot -p\n");
                                     out.writeBytes("exit\n");
                                     out.flush();
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -474,8 +474,8 @@ public class MainActivity extends AppCompatActivity {
         if (mTouchScreenFragment != null) {
             transaction.hide(mTouchScreenFragment);
         }
-        if (mKeyBoardFragment != null) {
-            transaction.hide(mKeyBoardFragment);
+        if (mBatteryFragment != null) {
+            transaction.hide(mBatteryFragment);
         }
         if (mSoundFragment != null) {
             transaction.hide(mSoundFragment);
@@ -673,12 +673,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void initKeyBoardFragment() {
         mFt = getSupportFragmentManager().beginTransaction();
-        if (mKeyBoardFragment == null) {
-            mKeyBoardFragment = new KeyBoardFragment();
-            mFt.add(R.id.container, mKeyBoardFragment);
+        if (mBatteryFragment == null) {
+            mBatteryFragment = new BatteryFragment();
+            mFt.add(R.id.container, mBatteryFragment);
         }
         hideFragment(mFt);
-        mFt.show(mKeyBoardFragment);
+        mFt.show(mBatteryFragment);
         mFt.commit();
     }
 

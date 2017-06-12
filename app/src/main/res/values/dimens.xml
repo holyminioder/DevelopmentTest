@@ -18,7 +18,7 @@
     <dimen name="text_spacing">20dp</dimen>
     <dimen name="button_margin_left">100dp</dimen>
     <dimen name="current_resolution_editText">233dp</dimen>
-    <dimen name="system_text_width">150dp</dimen>
+    <dimen name="system_text_width">160dp</dimen>
     <dimen name="activity_main_right_height">130dp</dimen>
     <dimen name="button_padding">22dp</dimen>
     <dimen name="view_width">720dp</dimen>

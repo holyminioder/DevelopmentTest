@@ -16,14 +16,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/resolving_power_text_size"
+            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="@string/year"/>
 
         <EditText
             android:id="@+id/et_year"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/resolving_power_text_height"
+            android:layout_marginLeft="@dimen/status_bar"
+            android:paddingLeft="@dimen/status_bar"
             android:background="@drawable/frame_shape"
             android:textSize="@dimen/list_view_text_size"
             android:inputType="number"
@@ -43,14 +46,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/resolving_power_text_size"
+            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="@string/month"/>
 
         <EditText
             android:id="@+id/et_month"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/resolving_power_text_height"
+            android:layout_marginLeft="@dimen/status_bar"
+            android:paddingLeft="@dimen/status_bar"
             android:background="@drawable/frame_shape"
             android:textSize="@dimen/list_view_text_size"
             android:inputType="number"
@@ -70,14 +76,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/resolving_power_text_size"
+            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="@string/day"/>
 
         <EditText
             android:id="@+id/et_day"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/resolving_power_text_height"
+            android:layout_marginLeft="@dimen/status_bar"
+            android:paddingLeft="@dimen/status_bar"
             android:background="@drawable/frame_shape"
             android:textSize="@dimen/list_view_text_size"
             android:inputType="number"
@@ -97,14 +106,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/resolving_power_text_size"
+            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="@string/hour"/>
 
         <EditText
             android:id="@+id/et_hour"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/resolving_power_text_height"
+            android:layout_marginLeft="@dimen/status_bar"
+            android:paddingLeft="@dimen/status_bar"
             android:background="@drawable/frame_shape"
             android:textSize="@dimen/list_view_text_size"
             android:inputType="number"
@@ -124,14 +136,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/resolving_power_text_size"
+            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="@string/minute"/>
 
         <EditText
             android:id="@+id/et_minute"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/resolving_power_text_height"
+            android:layout_marginLeft="@dimen/status_bar"
+            android:paddingLeft="@dimen/status_bar"
             android:background="@drawable/frame_shape"
             android:textSize="@dimen/list_view_text_size"
             android:inputType="number"
@@ -151,14 +166,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/resolving_power_text_size"
+            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="@string/second"/>
 
         <EditText
             android:id="@+id/et_second"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/resolving_power_text_height"
+            android:layout_marginLeft="@dimen/status_bar"
+            android:paddingLeft="@dimen/status_bar"
             android:background="@drawable/frame_shape"
             android:textSize="@dimen/list_view_text_size"
             android:inputType="number"
@@ -170,7 +188,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="@dimen/text_spacing"
+        android:layout_marginTop="@dimen/resolving_power_text_height"
         android:layout_below="@id/ll_second"
         android:gravity="center_horizontal"
         app:layout_widthPercent="30%">
@@ -178,22 +196,24 @@
         <Button
             android:id="@+id/btn_ensure"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/bottom_text_padding"
+            android:layout_height="wrap_content"
             android:background="@drawable/btn_style_five_selector"
-            android:paddingLeft="@dimen/text_spacing"
-            android:paddingRight="@dimen/text_spacing"
+            android:paddingLeft="@dimen/resolving_power_text_height"
+            android:paddingRight="@dimen/resolving_power_text_height"
+            android:textSize="@dimen/text_size"
             android:textColor="@android:color/white"
             android:text="@string/sure"/>
 
         <Button
             android:id="@+id/btn_netTime"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/bottom_text_padding"
+            android:layout_height="wrap_content"
             android:background="@drawable/btn_style_five_selector"
-            android:paddingLeft="@dimen/text_spacing"
-            android:paddingRight="@dimen/text_spacing"
+            android:paddingLeft="@dimen/resolving_power_text_height"
+            android:paddingRight="@dimen/resolving_power_text_height"
             android:textColor="@android:color/white"
-            android:layout_marginLeft="@dimen/text_spacing"
+            android:textSize="@dimen/text_size"
+            android:layout_marginLeft="@dimen/resolving_power_text_height"
             android:text="@string/get_net_time"/>
 
     </LinearLayout>

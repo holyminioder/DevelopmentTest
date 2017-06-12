@@ -13,7 +13,8 @@ import com.example.lederui.developmenttest.R;
  * Created by holyminier on 2017/4/26.
  */
 
-public class KeyBoardFragment extends Fragment {
+/**电池Fragment*/
+public class BatteryFragment extends Fragment {
 
     @Nullable
     @Override

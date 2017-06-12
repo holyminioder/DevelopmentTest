@@ -16,7 +16,7 @@
         <TextView
             android:layout_width="@dimen/system_text_width"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/resolving_power_text_size"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="@string/android_version"/>
@@ -24,7 +24,9 @@
         <EditText
             android:id="@+id/versions"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/resolving_power_text_height"
+            android:layout_marginLeft="@dimen/status_bar"
+            android:paddingLeft="@dimen/status_bar"
             android:text="@string/version"
             android:background="@drawable/frame_shape"/>
 
@@ -41,7 +43,7 @@
         <TextView
             android:layout_width="@dimen/system_text_width"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
+            android:textSize="@dimen/resolving_power_text_size"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:text="@string/SE_Android"/>
@@ -49,7 +51,9 @@
         <EditText
             android:id="@+id/jurisdiction"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/resolving_power_text_height"
+            android:layout_marginLeft="@dimen/status_bar"
+            android:paddingLeft="@dimen/status_bar"
             android:text="@string/jurisdiction"
             android:background="@drawable/frame_shape"/>
 

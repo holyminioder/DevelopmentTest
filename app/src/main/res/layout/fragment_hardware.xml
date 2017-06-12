@@ -68,8 +68,6 @@
             android:textSize="18sp"
             android:layout_marginTop="20dp"/>
 
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -84,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold"
-            android:text="@string/ticket_reader"
+            android:text="@string/barcode_gun"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/button_margin_bottom"
             android:textSize="@dimen/text_size"/>
@@ -103,7 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textStyle="bold"
-            android:text="@string/barcode_gun"
+            android:text="@string/ticket_reader"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/button_margin_bottom"
             android:textSize="@dimen/text_size"/>
