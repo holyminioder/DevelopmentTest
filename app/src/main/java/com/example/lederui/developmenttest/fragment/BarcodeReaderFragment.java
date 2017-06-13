@@ -228,7 +228,7 @@ public class BarcodeReaderFragment extends Fragment {
                 case 1:
                     String ticketInfo = msg.getData().getString(TICKET_INFO);
                     int type = msg.getData().getInt("info");
-                    mScandata_view.setText(ticketInfo + " 类型" +type);
+                    mScandata_view.setText(ticketInfo);
                     switch (type) {
                         case 152:
                             mBCRCodeType.setText("PDF417");
