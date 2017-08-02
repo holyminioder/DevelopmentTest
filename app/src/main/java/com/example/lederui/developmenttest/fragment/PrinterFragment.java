@@ -24,6 +24,7 @@ import android.widget.ToggleButton;
 
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.data.PrinterInterface;
+
 import org.dtools.ini.BasicIniFile;
 import org.dtools.ini.IniFile;
 import org.dtools.ini.IniFileReader;
@@ -185,10 +186,12 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
     public void InitDev() {
         if(mPrintInterface.PrintInit()) {
             isInit = true;
-            Log.i("printerfragment","PrinterFragment printer init ok");
+            Log.i("printerfragment","PrinterFragment printer init ok " );
+
         }else {
             isInit = false;
             Log.i("printerfragment","PrinterFragment printer init false");
+
         }
 
 
@@ -244,7 +247,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                     }
                 });
             }
-        }, 3000, 1000*5);
+        }, 3000, 1000*3);
     }
 
 
@@ -341,6 +344,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
         int count = 0;
         boolean stop = false;
 
+
         while (true){
             timer2 = System.currentTimeMillis();
             long diff = timer2 - timer1;
@@ -366,17 +370,16 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
         int count = 0;
 
         mPrintInterface.SetCutMode(1);
-        mPrintInterface.PrintString("test");
 
         while (true){
             timer2 = System.currentTimeMillis();
             long diff = timer2 - timer1;
-//            Log.i("printer", "difftime=" + diff);
 
             if(diff > 60*1000)
                 break;
 
-            mPrintInterface.PrintString("cut test");
+//            mPrintInterface.PrintString("cut test");
+            mPrintInterface.CutPaper();
             count++;
         }
 

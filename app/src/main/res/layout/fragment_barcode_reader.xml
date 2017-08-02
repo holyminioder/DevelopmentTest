@@ -25,7 +25,8 @@
         app:layout_widthPercent="60%"
         app:layout_heightPercent="70%"
         android:background="#D2CBCB"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/textview_status0"
@@ -101,9 +102,11 @@
         android:layout_alignLeft="@+id/bcr_status"
         app:layout_widthPercent="20%"
         app:layout_heightPercent="20%"
-        android:entries="@array/bcrScanModeArr"
         android:textStyle="bold"
+        android:spinnerMode="dropdown"
+
         />
+
 
 
 

@@ -33,22 +33,20 @@ public class MainBoardMessage {
     public static String getCpuInfo() {
         String str1 = "/proc/cpuinfo";
         String str2 = "";
-        String[] cpuinfo = {"", ""};
         String[] arrayOfString;
         try {
             FileReader reader = new FileReader(str1);
             BufferedReader buffer = new BufferedReader(reader, 8192);
             str2 = buffer.readLine();
-            arrayOfString = str2.split("s+");
-            for (int i = 2; i < arrayOfString.length; i++) {
-                cpuinfo[0] = cpuinfo[0] + arrayOfString[i] + "";
-            }
+            arrayOfString = str2.split(":");
+            str2 = arrayOfString[1] +"";
             reader.close();
             buffer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return cpuinfo[0];
+
+        return str2;
     }
 
     //获取cpu核心数
@@ -99,10 +97,13 @@ public class MainBoardMessage {
         String result = "N/A";
         try {
             FileReader fr = new FileReader(
-                    "/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq");
+                    "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
             BufferedReader br = new BufferedReader(fr);
             String text = br.readLine();
+            if(text != "")
             result = text.trim();
+
+            Log.i("hw", "result = " + result);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

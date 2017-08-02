@@ -210,7 +210,7 @@
             android:layout_below="@+id/btn_printCode"
             android:textSize="20dip"
             android:layout_marginTop="4dp"
-            android:background="@drawable/kuang"/>
+            android:background="@drawable/kuang2"/>
 
         <Button
             android:id="@+id/btn_printPageMode"
@@ -243,6 +243,7 @@
             android:layout_alignLeft="@+id/btn_printSpeedtest"
             android:layout_alignBaseline="@+id/spinner_codeType"
             android:textStyle="bold"
+            android:textSize="20dp"
             android:text="打印速度"/>
 
         <Button
@@ -264,6 +265,7 @@
             android:layout_alignBaseline="@+id/spinner_codeType"
             android:layout_alignLeft="@+id/btn_CutPaperSpeedtest"
             android:textStyle="bold"
+            android:textSize="20dp"
             android:text="切纸速度"/>
 
 

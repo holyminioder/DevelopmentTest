@@ -136,6 +136,9 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
 JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetPDFCode
         (JNIEnv *, jobject);
 
+JNIEXPORT jint JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetLastErrCode
+        (JNIEnv *, jobject);
+
 
 
 #ifdef __cplusplus

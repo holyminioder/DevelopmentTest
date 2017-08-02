@@ -19,6 +19,8 @@ public class PrinterInterface {
 
     public  static native  String GetLastErrStr();
 
+    public  static  native  int GetLastErrCode();
+
     public native boolean SetCutMode(int mode);
 
     //change ini file , set allcut or halfcut

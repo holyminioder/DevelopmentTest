@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -77,7 +78,12 @@ public class BarcodeReaderFragment extends Fragment {
         mBCRStatus = (TextView) mView.findViewById(R.id.bcr_status);
         mBCRCodeType = (TextView) mView.findViewById(R.id.bcr_codetype);
         mScandata_view = (TextView) mView.findViewById(R.id.bcrscanData_view);
+
+        ArrayAdapter spinnerAdapter = ArrayAdapter.createFromResource(getContext(), R.array.bcrScanModeArr, R.layout.custom_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSprinner = (Spinner) mView.findViewById(R.id.scanmode_spinner);
+        mSprinner.setAdapter(spinnerAdapter);
+
         mSprinner.setSelection(0,true);
         mSprinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -99,6 +105,9 @@ public class BarcodeReaderFragment extends Fragment {
 
             }
         });
+
+
+
     }
 
 

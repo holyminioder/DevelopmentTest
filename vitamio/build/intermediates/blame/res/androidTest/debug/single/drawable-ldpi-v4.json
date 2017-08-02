@@ -1,13 +1,5 @@
 [
     {
-        "merged": "D:\\Java\\AndroidProjects\\DEV\\DevelopmentTest\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-ldpi-v4\\ic_launcher.png",
-        "source": "D:\\Java\\AndroidProjects\\DEV\\DevelopmentTest\\vitamio\\build\\intermediates\\bundles\\debug\\res\\drawable-ldpi-v4\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\holyminier\\androidproject\\androidkf\\gitClone\\DevelopmentTest\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-ldpi-v4\\ic_launcher.png",
-        "source": "C:\\Users\\holyminier\\androidproject\\androidkf\\gitClone\\DevelopmentTest\\vitamio\\build\\intermediates\\bundles\\debug\\res\\drawable-ldpi-v4\\ic_launcher.png"
-    },
-    {
         "merged": "D:\\Java\\AndroidProjects\\DevelopmentTest\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-ldpi-v4\\ic_launcher.png",
         "source": "D:\\Java\\AndroidProjects\\DevelopmentTest\\vitamio\\build\\intermediates\\bundles\\debug\\res\\drawable-ldpi-v4\\ic_launcher.png"
     }
