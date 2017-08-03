@@ -20,29 +20,29 @@ extern "C"
 
 
 /**********************************************************************************************************************
-* Printerï¿½ï¿½ï¿½ï¿½ï¿½ë¶¨ï¿½ï¿½
+* Printer????????
 **********************************************************************************************************************/
 #define	PRINTER_START_CODE			0x00
 #define	PRINTER_NO_ERROR			0x00
-#define	PRINTER_TIME_OUT			(PRINTER_NO_ERROR - 0x01)		//ï¿½ï¿½Ê±
-#define	PRINTER_DATA_ERROR			(PRINTER_NO_ERROR - 0x02)		//ï¿½ï¿½ï¿½ï¿½ï¿½ß¹ï¿½ï¿½ï¿½
-#define	PRINTER_PAPER_ERROR			(PRINTER_NO_ERROR - 0x03)		//Ö½ï¿½ï¿½ï¿½ï¿½ï¿½
-#define	PRINTER_POWER_ERROR			(PRINTER_NO_ERROR - 0x04)		//ï¿½ï¿½Ô´ï¿½ß¹ï¿½ï¿½ï¿½
-#define	PRINTER_COVER_ERROR			(PRINTER_NO_ERROR - 0x05)		//ï¿½Ï¸Ç´ï¿½
-#define	PRINTER_PAPER_JAM			(PRINTER_NO_ERROR - 0x06)		//ï¿½ï¿½Ö½
-#define	PRINTER_NOT_COMPLETE			(PRINTER_NO_ERROR - 0x07)		//ï¿½ï¿½Ò»ï¿½ï¿½Ó¡Î´ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ú´ï¿½Ó¡×´Ì¬)
-#define	PRINTER_OTHER_ERROR			(PRINTER_NO_ERROR - 0x08)		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ú´ï¿½ï¿½ï¿½ï¿½)
-#define	PRINTER_TABPAR_NONE			(PRINTER_NO_ERROR - 0x09)		//ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
-#define	PRINTER_HAVE_NOT_INIT		(PRINTER_NO_ERROR - 0x0A)		//Î´ï¿½ï¿½Ê¼ï¿½ï¿½
-//#define	PRINTER_INVALID_ARGUMNET		(PRINTER_NO_ERROR - 0x0B)		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§
-#define 	PRINTER_MODE_SWITCH_ERROR		(PRINTER_NO_ERROR - 0x0C)		//Ä£Ê½ï¿½Ð»ï¿½ï¿½ï¿½ï¿½ï¿½
-#define 	PRINTER_HEAD_ERROR			(PRINTER_NO_ERROR - 0x0D)		//ï¿½ï¿½Ó¡Í·Ì§ï¿½ï¿½
-#define 	PRINTER_CUT_ERROR			(PRINTER_NO_ERROR - 0x0E)		//ï¿½Ðµï¿½ï¿½ï¿½ï¿½ï¿½
-#define	PRINTER_NOT_FULL			(PRINTER_NO_ERROR - 0x10)		//ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-#define	PRINTER_FORBID			(PRINTER_NO_ERROR - 0x11)		//ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½Ö¹(Ò»Æ±Ò»ï¿½Ø´ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½)
-#define	PRINTER_NOSUPPORT			(PRINTER_NO_ERROR - 0x12)		//ï¿½ï¿½Ö§ï¿½ï¿½
-#define	PRINTER_MIN_CODE			(PRINTER_NO_ERROR - 0x13)		//ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Öµ
-#define	PRINTER_INVALID_ERROR_CODE		(PRINTER_NO_ERROR - 0x14)		//ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+#define	PRINTER_TIME_OUT			(PRINTER_NO_ERROR - 0x01)		//???
+#define	PRINTER_DATA_ERROR			(PRINTER_NO_ERROR - 0x02)		//?????????
+#define	PRINTER_PAPER_ERROR			(PRINTER_NO_ERROR - 0x03)		//??????
+#define	PRINTER_POWER_ERROR			(PRINTER_NO_ERROR - 0x04)		//????????
+#define	PRINTER_COVER_ERROR			(PRINTER_NO_ERROR - 0x05)		//????
+#define	PRINTER_PAPER_JAM			(PRINTER_NO_ERROR - 0x06)		//???
+#define	PRINTER_NOT_COMPLETE			(PRINTER_NO_ERROR - 0x07)		//??????¦Ä???(????????)
+#define	PRINTER_OTHER_ERROR			(PRINTER_NO_ERROR - 0x08)		//????????(??????)
+#define	PRINTER_TABPAR_NONE			(PRINTER_NO_ERROR - 0x09)		//???????
+#define	PRINTER_HAVE_NOT_INIT		(PRINTER_NO_ERROR - 0x0A)		//¦Ä?????
+//#define	PRINTER_INVALID_ARGUMNET		(PRINTER_NO_ERROR - 0x0B)		//??????§¹
+#define 	PRINTER_MODE_SWITCH_ERROR		(PRINTER_NO_ERROR - 0x0C)		//???§Ý?????
+#define 	PRINTER_HEAD_ERROR			(PRINTER_NO_ERROR - 0x0D)		//???????
+#define 	PRINTER_CUT_ERROR			(PRINTER_NO_ERROR - 0x0E)		//?§Ö?????
+#define	PRINTER_NOT_FULL			(PRINTER_NO_ERROR - 0x10)		//?????????
+#define	PRINTER_FORBID			(PRINTER_NO_ERROR - 0x11)		//????????(???????????)
+#define	PRINTER_NOSUPPORT			(PRINTER_NO_ERROR - 0x12)		//?????
+#define	PRINTER_MIN_CODE			(PRINTER_NO_ERROR - 0x13)		//??§³?????
+#define	PRINTER_INVALID_ERROR_CODE		(PRINTER_NO_ERROR - 0x14)		//??§¹??????
 
 
 int	returnValueInt = PRINTER_NO_ERROR;
@@ -88,7 +88,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
 
 bool PrintPDF417() {
     //*****************************************************************************************************************
-    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+    //??????????????
     int		returnValueInt = PRINTER_NO_ERROR;
     bool		returnValueBool = false;
     bool		returnValue = false;
@@ -98,26 +98,26 @@ bool PrintPDF417() {
     int 		begin = 0;
 
     //*****************************************************************************************************************
-    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£Ê½
+    //????????
     if(!byPSetLineMode())
     {
         goto ExitLine;
     }
 
     //*****************************************************************************************************************
-    //ï¿½ï¿½ï¿½Ãµ×²ï¿½ï¿½ß¾ï¿½
+    //?????????
     if(!byPSetBottomMargin(200))
     {
         goto ExitLine;
     }
 
     //*****************************************************************************************************************
-    //ï¿½Ð¶ï¿½ï¿½è±¸×´Ì¬ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½
+    //?§Ø??õô?????????
 //    byPPrinterIsReady();
 
     //*****************************************************************************************************************
-    //ï¿½ï¿½Ó¡ï¿½ï¿½Æ±ï¿½ï¿½ï¿½ï¿½
-    returnValueBool = byPSetLeftMargin(0x0010);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½
+    //??????????
+    returnValueBool = byPSetLeftMargin(0x0010);//????????
     if(!returnValueBool)
     {
         printf("PrinterSetLeftMargin failed!\n");
@@ -125,7 +125,7 @@ bool PrintPDF417() {
         goto ExitLine;
     }
 
-    returnValueBool = byPSetLineSpace(10);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½
+    returnValueBool = byPSetLineSpace(10);//?????§Ú?
     if(!returnValueBool)
     {
         printf("PrinterSetLineSpace(36) failed!\n");
@@ -133,59 +133,59 @@ bool PrintPDF417() {
         goto ExitLine;
     }
 
-    returnValueBool = byPSetFont(0x00, 0x11,0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    returnValueBool = byPSetFont(0x00, 0x11,0x01);//????????
     if(!returnValueBool)
     {
         printf("PrinterSetLineSpace(0x33,0x10,0x01) failed!\n");
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("ï¿½ï¿½Ê¾Æ±<È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3>\n\n");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("ÑÝÊ¾Æ±<È«¹úÁªÍøÅÅÁÐ3>\n\n");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½Ê¾Æ±<È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3>') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('ÑÝÊ¾Æ±<È«¹úÁªÍøÅÅÁÐ3>') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    returnValueBool = byPSetLineSpace(14);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½
+    returnValueBool = byPSetLineSpace(14);//?????§Þ??
     if(!returnValueBool)
     {
         printf("PrinterSetLineSpace(24) failed!\n");
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueBool = byPSetFont(0x00,0x00,0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueBool = byPSetFont(0x00,0x00,0x01);//????????
     if(!returnValueBool)
     {
         printf("PrinterSetFont(0x00,0x00,0x01) failed!\n");
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("35073110603460810054   d2WIvi   64319331\n");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("35073110603460810054   d2WIvi   64319331\n");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
         printf("PrinterPrintString('35073110603460810054') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("ï¿½ï¿½ï¿½Ûµï¿½:06034      06073ï¿½ï¿½ 2006/03/22ï¿½ï¿½ï¿½ï¿½");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("ÏúÊÛµã:06034      06073ÆÚ 2006/03/22¿ª½±");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ï¿½Ûµï¿½:06034') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('ÏúÊÛµã:06034') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
     byPPrintString("\n");
 
-    returnValueInt = byPPrintString("ï¿½ï¿½:1  ï¿½Ï¼ï¿½:2Ôª       2006/03/22 12:26:49\n");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("±¶:1  ºÏ¼Æ:2Ôª       2006/03/22 12:26:49\n");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½:1  ï¿½Ï¼ï¿½:2Ôª') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('±¶:1  ºÏ¼Æ:2Ôª') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
     //begin = systick();
-    returnValueInt = byPPrintIsComplete(5);//ï¿½Ð¶Ï´ï¿½Ó¡ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintIsComplete(5);//?§Ø?????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
         printf("PrinterPrintIsComplete('%s') failed, return code: %d\n", barCode, returnValueInt);
@@ -194,7 +194,7 @@ bool PrintPDF417() {
     //    begin = systick() - begin;
     printf("PrinterPrintIsComplete(2)-time is %d\n",begin);
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
+    byPFeedLine(1);//???
     returnValueBool = byPSetFont(0x00,0x10,0x01);
     if(!returnValueBool)
     {
@@ -202,55 +202,55 @@ bool PrintPDF417() {
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("ï¿½ï¿½ Ê½ Æ±");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("µ¥ Ê½ Æ±");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ Ê½ Æ±') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('µ¥ Ê½ Æ±') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ 3 3 2");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("¢Ù 3 3 2");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ 3 2 2') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('¢Ù 3 3 2') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
+    byPFeedLine(1);//???
 
-    returnValueInt = byPPrintString("ï¿½ï¿½ 5 8 1");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("¢Ú 5 8 1");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ 5 8 1') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('¢Ú 5 8 1') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ 3 3 2");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("¢Û 3 3 2");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ 3 3 2') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('¢Û 3 3 2') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ 5 8 3");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("¢Ü 5 8 3");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ 5 8 3') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('¢Ü 5 8 3') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ 3 3 2");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("¢Ý 3 3 2");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ 3 3 2') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('¢Ý 3 3 2') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(2);//ï¿½ï¿½Ö½
+    byPFeedLine(2);//???
     returnValueBool = byPSetFont(0x00,0x00,0x01);
     if(!returnValueBool)
 
@@ -259,47 +259,47 @@ bool PrintPDF417() {
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("ï¿½ç»°ï¿½ï¿½Ñ¯:123456ï¿½ï¿½ï¿½Å²ï¿½Ñ¯:ï¿½ï¿½ï¿½ï¿½1234ï¿½ï¿½ï¿½ï¿½4321");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("µç»°²éÑ¯:123456¶ÌÐÅ²éÑ¯:ÊäÈë1234·¢ÖÁ4321");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ç»°ï¿½ï¿½Ñ¯') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('µç»°²éÑ¯') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½Å£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("£ª£ª£ª£ªºúÍ¬£ª£ªºÅ£ª£ª´óÏÃ");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('£ª£ª£ª£ª') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("\n\n\n");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("\n\n\n");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('£ª£ª£ª£ª') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
     //*****************************************************************************************************************
-    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //????????????
     memset(barCode, 0x00, sizeof(barCode));
     barCodeLength = (rand() % 21);
     barCodeLength = (barCodeLength < 10) ? 10 : barCodeLength;
     for(ii = 0; ii < barCodeLength; ii++)
     {
-        if(ii < (barCodeLength / 2))//ï¿½ï¿½ï¿½ï¿½
+        if(ii < (barCodeLength / 2))//????
         {
             barCode[ii] = (rand() % 10) + '0';
         }
-        else//ï¿½ï¿½Ä¸
+        else//???
         {
             barCode[ii] = rand() % 27 + 'A';
         }
     }
 
     //*****************************************************************************************************************
-    //ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½
+    //???????
     memcpy(mbarCode, barCode, sizeof(barCode));
     returnValueInt = byPrintPDF417(15, 38, 20 , 6, 3, barCode, 32, 2);
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
@@ -308,7 +308,7 @@ bool PrintPDF417() {
         goto ExitLine;
     }
 
-    byPCutPaper();//ï¿½ï¿½Ö½
+    byPCutPaper();//???
 
     returnValue = true;
     ExitLine:
@@ -330,7 +330,7 @@ JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterI
 int PrintBarcodeTicket(int codeType)
 {
     //*****************************************************************************************************************
-    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¼ï¿½ï¿½
+    //??????????????
     int	returnValueInt = PRINTER_NO_ERROR;
     int	returnValueBool = true;
     char   barCode[256] = {0x00};
@@ -341,10 +341,10 @@ int PrintBarcodeTicket(int codeType)
     int 	begin = 0;
 
     //*****************************************************************************************************************
-    //ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //???????????????
     //printf(Printer_Barcode_Item);
     //printf("Please input your select(0-9):");
-    //scanf("%d",&codeType);ClearStdin//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //scanf("%d",&codeType);ClearStdin//????????
     if(codeType < 0 || codeType > 9)
     {
         printf("The selection error!\n");
@@ -354,131 +354,131 @@ int PrintBarcodeTicket(int codeType)
 
 
     //*****************************************************************************************************************
-    //ï¿½ï¿½Ó¡ï¿½ï¿½Æ±ï¿½ï¿½ï¿½ï¿½
-    byPSetAreaWidth(0x300); //ï¿½ï¿½ï¿½Ã´ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½
-    returnValueBool = byPSetLeftMargin(0x10);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½
+    //??????????
+    byPSetAreaWidth(0x300); //??????????
+    returnValueBool = byPSetLeftMargin(0x10);//????????
     if(!returnValueBool)
     {
         printf("PrinterSetLeftMargin failed!\n");
         goto ExitLine;
     }
 
-    returnValueBool = byPSetLineSpace(36);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½
+    returnValueBool = byPSetLineSpace(36);//?????§Ú?
     if(!returnValueBool)
     {
         printf("PrinterSetLineSpace(36) failed!\n");
         goto ExitLine;
     }
 
-    returnValueBool = byPSetFont(0x00,0x10,0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    returnValueBool = byPSetFont(0x00,0x10,0x01);//????????
     if(!returnValueBool)
     {
         printf("PrinterSetLineSpace(0x00,0x10,0x01) failed!\n");
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("ï¿½ï¿½ï¿½<È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3>");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("Ìå²Ê<È«¹úÁªÍøÅÅÁÐ3>");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ï¿½<È«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½3>') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('Ìå²Ê<È«¹úÁªÍøÅÅÁÐ3>') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(3);//ï¿½ï¿½Ö½
-    returnValueBool = byPSetLineSpace(24);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½
+    byPFeedLine(3);//???
+    returnValueBool = byPSetLineSpace(24);//?????§Þ??
     if(!returnValueBool)
     {
         printf("PrinterSetLineSpace(24) failed!\n");
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueBool = byPSetFont(0x00,0x00,0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueBool = byPSetFont(0x00,0x00,0x01);//????????
     if(!returnValueBool)
     {
         printf("PrinterSetFont(0x00,0x00,0x01) failed!\n");
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("35073110603460810054   d2WIvi   64319331");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("35073110603460810054   d2WIvi   64319331");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
         printf("PrinterPrintString('35073110603460810054') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ï¿½Ûµï¿½:06034      06073ï¿½ï¿½ 2006/03/22ï¿½ï¿½ï¿½ï¿½");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("ÏúÊÛµã:06034      06073ÆÚ 2006/03/22¿ª½±");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ï¿½Ûµï¿½:06034') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('ÏúÊÛµã:06034') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½:1  ï¿½Ï¼ï¿½:2Ôª       2006/03/22 12:26:49");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("±¶:1  ºÏ¼Æ:2Ôª       2006/03/22 12:26:49");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½:1  ï¿½Ï¼ï¿½:2Ôª') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('±¶:1  ºÏ¼Æ:2Ôª') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueBool = byPSetFont(0x00,0x10,0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueBool = byPSetFont(0x00,0x10,0x01);//????????
     if(!returnValueBool)
     {
         printf("PrinterSetFont(0x00,0x10,0x01) failed!\n");
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("Ö± Ñ¡ Æ±");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("Ö± Ñ¡ Æ±");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
         printf("PrinterPrintString('Ö± Ñ¡ Æ±') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ 3 2 2");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("¢Ù 3 2 2");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ 3 2 2') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('¢Ù 3 2 2') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ . . .");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("¢Ú . . .");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ . . .') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('¢Ú . . .') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ . . .");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("¢Û . . .");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ . . .') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('¢Û . . .') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ . . .");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("¢Ü . . .");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ . . .') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('¢Ü . . .') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ . . .");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("¢Ý . . .");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ . . .') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('¢Ý . . .') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
+    byPFeedLine(1);//???
     returnValueBool = byPSetFont(0x00,0x00,0x01);
     if(!returnValueBool)
     {
@@ -486,31 +486,31 @@ int PrintBarcodeTicket(int codeType)
         goto ExitLine;
     }
 
-    returnValueInt = byPPrintString("ï¿½ç»°ï¿½ï¿½Ñ¯:123456ï¿½ï¿½ï¿½Å²ï¿½Ñ¯:ï¿½ï¿½ï¿½ï¿½1234ï¿½ï¿½ï¿½ï¿½4321");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    returnValueInt = byPPrintString("µç»°²éÑ¯:123456¶ÌÐÅ²éÑ¯:ÊäÈë1234·¢ÖÁ4321");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ç»°ï¿½ï¿½Ñ¯') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('µç»°²éÑ¯') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(1);//ï¿½ï¿½Ö½
-    returnValueInt = byPPrintString("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½Å£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+    byPFeedLine(1);//???
+    returnValueInt = byPPrintString("£ª£ª£ª£ªºúÍ¬£ª£ªºÅ£ª£ª´óÏÃ");//????????
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
-        printf("PrinterPrintString('ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½') failed, return code: %d\n", returnValueInt);
+        printf("PrinterPrintString('£ª£ª£ª£ª') failed, return code: %d\n", returnValueInt);
         goto ExitLine;
     }
 
-    byPFeedLine(3);//ï¿½ï¿½Ö½
+    byPFeedLine(3);//???
 
     //*****************************************************************************************************************
-    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    //????????????
     memset(barCode, 0x00, sizeof(barCode));
     switch(codeType)
     {
         case 0://ITF
         {
-            barCodeLength = (2 * (rand() % 128 + 1));//1-255(Å¼ï¿½ï¿½)
+            barCodeLength = (2 * (rand() % 128 + 1));//1-255(???)
             barCodeLength = (barCodeLength > 8) ? 8 : barCodeLength;
             for(ii = 0; ii < barCodeLength; ii++)
             {
@@ -525,7 +525,7 @@ int PrintBarcodeTicket(int codeType)
             barCode[0] = (rand() % 4 + 65);//65-68(A-D)
             for(ii = 1; ii < barCodeLength - 1; ii++)
             {
-                barCode[ii] = 48 + (rand() % (57 - 48 + 1));//48-57(ï¿½ï¿½ï¿½ï¿½Ê¾)
+                barCode[ii] = 48 + (rand() % (57 - 48 + 1));//48-57(?????)
             }
             barCode[barCodeLength - 1] = (rand() % 4 + 65);//65-68(A-D or (TE*N))
         }
@@ -544,16 +544,16 @@ int PrintBarcodeTicket(int codeType)
         {
             setType = 65 + (rand() % (67 - 65 + 1));//65-67
             printf("setType: %d\n",setType);
-            if(setType == 0x43)//ï¿½Ö·ï¿½ï¿½ï¿½C
+            if(setType == 0x43)//?????C
             {
-                barCodeLength = (2 * (rand() % 127 + 2));//2-255(Å¼ï¿½ï¿½)
+                barCodeLength = (2 * (rand() % 127 + 2));//2-255(???)
                 barCodeLength = (barCodeLength > 12) ? 12 : barCodeLength;
                 for(ii = 0; ii < barCodeLength; ii++)
                 {
                     barCode[ii] = '0' + (rand() % ('9' - '0' + 1));//0-9
                 }
             }
-            else//ï¿½Ö·ï¿½ï¿½ï¿½A\B
+            else//?????A\B
             {
                 barCodeLength = (rand() % (255 - 2 + 1) + 2);//2-255
                 barCodeLength = (barCodeLength > 8) ? 8 : barCodeLength;
@@ -628,7 +628,7 @@ int PrintBarcodeTicket(int codeType)
     }
 
     //*****************************************************************************************************************
-    //ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½
+    //???????
     if(codeType != 4)
     {
         returnValueInt = byPrint1DBar(3, 60, barCode, codeType, setType);
@@ -639,10 +639,10 @@ int PrintBarcodeTicket(int codeType)
             goto ExitLine;
         }
     }
-    byPCutPaper();//ï¿½ï¿½Ö½
+    byPCutPaper();//???
 
     //*****************************************************************************************************************
-    //ï¿½Ð¶Ï´ï¿½Ó¡ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
+    //?§Ø?????????
     returnValueInt = byPPrintIsComplete(5);
     ExitLine:
         return  false;
@@ -676,8 +676,8 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
     bool returnValueBool = true;
     char	errStr[256] = {0x00};
 
-        byPSetAreaWidth(0x300); //ï¿½ï¿½ï¿½Ã´ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½
-        returnValueBool = byPSetLeftMargin(0x10);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½
+        byPSetAreaWidth(0x300); //??????????
+        returnValueBool = byPSetLeftMargin(0x10);//????????
         if(!returnValueBool)
         {
             printf("PrinterSetLeftMargin failed!\n");
@@ -685,7 +685,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
             return false;
 
         }
-        returnValueBool = byPSetLineSpace(36);//ï¿½ï¿½ï¿½ï¿½ï¿½Ð¸ï¿½
+        returnValueBool = byPSetLineSpace(36);//?????§Ú?
         if(!returnValueBool)
         {
             printf("PrinterSetLineSpace(36) failed!\n");
@@ -693,7 +693,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
             return false;
         }
 
-        returnValueBool = byPSetFont(0x00,0x10,0x01);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        returnValueBool = byPSetFont(0x00,0x10,0x01);//????????
         if(!returnValueBool)
         {
             printf("PrinterSetLineSpace(0x00,0x10,0x01) failed!\n");
@@ -701,7 +701,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
             return false;
         }
 
-        returnValueInt = byPPrintString("ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½");//ï¿½ï¿½Ó¡ï¿½Ö·ï¿½ï¿½ï¿½
+        returnValueInt = byPPrintString("²âÊÔ×Ö·û´®");//????????
         byPFeedLine(4);
         returnValueInt =byPPrintString("zxcvbnmlkjhgfdsaqwertyuiopZXCVBNMLKJHGFDSAQWERTYUIOP0123456789[]{}-=_+,./<>?`1~!@#$%^&*()");
         byPFeedLine(4);
@@ -791,25 +791,25 @@ JNIEXPORT bool JNICALL Java_com_example_lederui_developmenttest_data_PrinterInte
     bool ret = true;
     PSetPageMode(400 , 700 , 40 , 40);
     PSetAngle(90);
-    PPrintString("ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±1ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±2ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±3ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±4");
+    PPrintString("ÖÐ¹úÌåÓý²ÊÆ±1ÖÐ¹úÌåÓý²ÊÆ±2ÖÐ¹úÌåÓý²ÊÆ±3ÖÐ¹úÌåÓý²ÊÆ±4");
     PPrintPage();
     ret = PCutPaper();
 
     PSetPageMode(400 , 700 , 40 , 40);
     PSetAngle(180);
-    PPrintString("ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±1ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±2ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±3ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±4");
+    PPrintString("ÖÐ¹úÌåÓý²ÊÆ±1ÖÐ¹úÌåÓý²ÊÆ±2ÖÐ¹úÌåÓý²ÊÆ±3ÖÐ¹úÌåÓý²ÊÆ±4");
     PPrintPage();
     ret = PCutPaper();
 
     PSetPageMode(400 , 700 , 40 , 40);
     PSetAngle(270);
-    PPrintString("ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±1ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±2ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±3ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±4");
+    PPrintString("ÖÐ¹úÌåÓý²ÊÆ±1ÖÐ¹úÌåÓý²ÊÆ±2ÖÐ¹úÌåÓý²ÊÆ±3ÖÐ¹úÌåÓý²ÊÆ±4");
     PPrintPage();
     ret = PCutPaper();
 
     PSetPageMode(400 , 700 , 40 , 40);
     PSetAngle(0);
-    PPrintString("ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±1ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±2ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±3ï¿½Ð¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±4");
+    PPrintString("ÖÐ¹úÌåÓý²ÊÆ±1ÖÐ¹úÌåÓý²ÊÆ±2ÖÐ¹úÌåÓý²ÊÆ±3ÖÐ¹úÌåÓý²ÊÆ±4");
     PPrintPage();
     ret = PCutPaper();
 
