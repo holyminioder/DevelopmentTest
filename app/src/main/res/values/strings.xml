@@ -46,6 +46,7 @@
     <string name="set_resolution">设置分辨率：</string>
 
     <string name="sure">修改系统时间</string>
+    <string name="resolving_modify">修改分辨率</string>
     <string name="get_net_time">获取网络时间</string>
     <string name="now_location">我的位置</string>
     <string name="ethernetOrWifi">以太网或wifi测试</string>

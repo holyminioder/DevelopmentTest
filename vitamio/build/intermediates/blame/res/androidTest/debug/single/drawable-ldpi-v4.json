@@ -1,5 +1,9 @@
 [
     {
+        "merged": "E:\\git_clone\\DevelopmentTest\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-ldpi-v4\\ic_launcher.png",
+        "source": "E:\\git_clone\\DevelopmentTest\\vitamio\\build\\intermediates\\bundles\\debug\\res\\drawable-ldpi-v4\\ic_launcher.png"
+    },
+    {
         "merged": "D:\\Java\\AndroidProjects\\DevelopmentTest\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-ldpi-v4\\ic_launcher.png",
         "source": "D:\\Java\\AndroidProjects\\DevelopmentTest\\vitamio\\build\\intermediates\\bundles\\debug\\res\\drawable-ldpi-v4\\ic_launcher.png"
     }

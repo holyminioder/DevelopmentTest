@@ -1,5 +1,9 @@
 [
     {
+        "merged": "E:\\git_clone\\DevelopmentTest\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\mediacontroller.xml",
+        "source": "E:\\git_clone\\DevelopmentTest\\vitamio\\build\\intermediates\\bundles\\debug\\res\\layout\\mediacontroller.xml"
+    },
+    {
         "merged": "D:\\Java\\AndroidProjects\\DevelopmentTest\\vitamio\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\mediacontroller.xml",
         "source": "D:\\Java\\AndroidProjects\\DevelopmentTest\\vitamio\\build\\intermediates\\bundles\\debug\\res\\layout\\mediacontroller.xml"
     }

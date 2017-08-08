@@ -1,6 +1,7 @@
 package com.example.lederui.developmenttest.data;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
@@ -137,8 +138,9 @@ public class MainBoardMessage {
     public static String getStorageSize() {
         long rom = getTotalInternalMemorySize();
         long sdCard = getSDCardMemory();
-        long storage = rom + sdCard;
-        String storageSize = formatFileSize(storage, false);
+        long ram = getRAMMemory();
+        long storage = rom + sdCard + ram;
+        String storageSize = formatFileSize(storage, true);
         return storageSize;
     }
 
@@ -151,11 +153,11 @@ public class MainBoardMessage {
         if (size < 1024 && size > 0) {
             fileSizeString = df.format((double) size) + "B";
         } else if (size < 1024 * 1024) {
-            fileSizeString = df.format((double) size / 1024) + "K";
+            fileSizeString = df.format((double) size / 1024) + "KB";
         } else if (size < 1024 * 1024 * 1024) {
-            fileSizeString = df.format((double) size / (1024 * 1024)) + "M";
+            fileSizeString = df.format((double) size / (1024 * 1024)) + "MB";
         } else {
-            fileSizeString = df.format((double) size / (1024 * 1024 * 1024)) + "G";
+            fileSizeString = df.format((double) size / (1024 * 1024 * 1024)) + "GB";
         }
         return fileSizeString;
     }
@@ -167,6 +169,21 @@ public class MainBoardMessage {
         long blockSize = stat.getBlockSize();
         long totalBlocks = stat.getBlockCount();
         return totalBlocks * blockSize;
+    }
+
+    private static Context mContext;
+
+    public static void getContext(Context context){
+        mContext = context;
+    }
+
+    //获取RAM总内存大小
+    public static long getRAMMemory(){
+        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        am.getMemoryInfo(mi);
+        long total = mi.totalMem;
+        return total;
     }
 
     //sdCard大小
@@ -219,6 +236,7 @@ public class MainBoardMessage {
         String wireless1 = UtilsManager.getMACAddress("wlan1");
         String wired = UtilsManager.getMACAddress("eth0");
         String wired1 = UtilsManager.getMACAddress("eth1");
+        Log.e("MAC地址：", wired + "," + wired1 + "," + wireless + "," + wireless1 + ",");
         int count = 0;
         String[] macAddress = new String[]{wired, wired1, wireless, wireless1};
         for (int i = 0; i < macAddress.length; i++){

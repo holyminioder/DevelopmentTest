@@ -63,7 +63,7 @@
             android:textColor="@android:color/white"
             android:background="@drawable/btn_style_five_selector"
             android:layout_marginLeft="@dimen/text_spacing"
-            android:text="@string/sure"/>
+            android:text="@string/resolving_modify"/>
 
     </LinearLayout>
 

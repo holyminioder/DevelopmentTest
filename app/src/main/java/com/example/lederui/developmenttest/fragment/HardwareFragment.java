@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +28,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.ztec.bcr.BarcoderReaderService;
 import com.ztec.bcr.TBarcoderReader;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,11 +65,35 @@ public class HardwareFragment extends Fragment {
     TextView mBCRStatus;
     @BindView(R.id.print_status_view)
     TextView mPrinterStatusView;
+    @BindView(R.id.net_card_speed)
+    TextView netCardSpeed;
 
     private PrinterInterface mPrinterLib;
     private BarcoderReaderService bcrService;
     private TBarcoderReader tbcr;
     private GoogleApiClient client;
+    private static int first = 0;
+    private Timer timer;
+    private TimerTask task;
+
+    BufferedReader reader = null;
+    BufferedReader statuReader = null;
+    String ethSpeed = "最大传输速度";
+    String netStatus = "运行状态";
+    StringBuffer buffer;
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 1) {
+                String speed = msg.getData().getString("speed");
+                String state = msg.getData().getString("state");
+                buffer = new StringBuffer();
+                buffer.append("以太网状态：").append(state + "\n" + "\n");
+                buffer.append("网卡速度：").append(speed);
+                netCardSpeed.setText(buffer.toString());
+            }
+        }
+    };
 
 
     @Nullable
@@ -70,12 +101,14 @@ public class HardwareFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hardware, container, false);
         unbinder = ButterKnife.bind(this, view);
+        MainBoardMessage.getContext(getContext());
 
         client = new GoogleApiClient.Builder(getContext()).addApi(AppIndex.API).build();
         tbcr = new TBarcoderReader();
         mPrinterLib = new PrinterInterface();
 
         getMainBoardInfo();
+        startTimer();
         getBCRHWInfo();
 
         //调用接口返回 errDevice data line error
@@ -118,7 +151,6 @@ public class HardwareFragment extends Fragment {
     }
 
 
-
     private void getMainBoardInfo() {
         StringBuffer sb = new StringBuffer();
         sb.append("CPU型号：");
@@ -143,7 +175,6 @@ public class HardwareFragment extends Fragment {
         }
 
 
-
     }
 
     private void getBCRHWInfo() {
@@ -153,23 +184,23 @@ public class HardwareFragment extends Fragment {
 
     //获取打印机硬件信息
     private void getPrinterHWInfo() {
-         if(mPrinterLib.PrintInit()){
-             mPrinterStatusView.setText("正常");
-             String[] str ;
-             String hwinfo = mPrinterLib.GetPrintHwInfo();
-             if(hwinfo != ""){
-                 str = hwinfo.split("\n");
-                 hwinfo = "";//清空 ，排版
-                 for(int i = 0;i<str.length;i++){
-                     hwinfo += str[i] +"\n"+"\n";
-                 }
+        if (mPrinterLib.PrintInit()) {
+            mPrinterStatusView.setText("正常");
+            String[] str;
+            String hwinfo = mPrinterLib.GetPrintHwInfo();
+            if (hwinfo != "") {
+                str = hwinfo.split("\n");
+                hwinfo = "";//清空 ，排版
+                for (int i = 0; i < str.length; i++) {
+                    hwinfo += str[i] + "\n" + "\n";
+                }
 
-             }
+            }
 
-             mPrinterHwInfoView.setText(hwinfo + "");
-         }else{
-             mPrinterStatusView.setText("异常");
-         }
+            mPrinterHwInfoView.setText(hwinfo + "");
+        } else {
+            mPrinterStatusView.setText("异常");
+        }
     }
 
     //BCR usb connect
@@ -183,21 +214,21 @@ public class HardwareFragment extends Fragment {
 
             //绑定后初始化
             int ret = tbcr.BCRInit("", "");
-            if(ret == TBarcoderReader.NO_ERROR) {
+            if (ret == TBarcoderReader.NO_ERROR) {
                 String hwinfo = "";
-                String[] str ;
+                String[] str;
                 hwinfo = tbcr.BCRGetHWInformation();
-                if(hwinfo != ""){
+                if (hwinfo != "") {
                     str = hwinfo.split("\n");
                     hwinfo = "";//清空 ，排版
-                    for(int i = 0;i<str.length;i++){
-                        hwinfo += str[i] +"\n"+"\n";
+                    for (int i = 0; i < str.length; i++) {
+                        hwinfo += str[i] + "\n" + "\n";
                     }
 
                 }
                 mBCRHwInfoView.setText(hwinfo);
                 mBCRStatus.setText("正常");
-            }else {
+            } else {
                 String errStr = tbcr.BCRGetLastErrorStr();
                 mBCRStatus.setText(errStr + " ");
             }
@@ -211,7 +242,6 @@ public class HardwareFragment extends Fragment {
 
         }
     };
-
 
 
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
@@ -232,7 +262,6 @@ public class HardwareFragment extends Fragment {
     }
 
 
-
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
                 .setName("Main Page") // TODO: Define a title for the content shown.
@@ -243,5 +272,67 @@ public class HardwareFragment extends Fragment {
                 .setObject(object)
                 .setActionStatus(Action.STATUS_TYPE_COMPLETED)
                 .build();
+    }
+
+    private void startTimer(){
+        if (timer == null){
+            timer = new Timer();
+        }
+        if (task == null){
+            task = new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        reader = new BufferedReader(new FileReader("sys/class/net/eth0/speed"));
+                        ethSpeed = reader.readLine();
+                        statuReader = new BufferedReader(new FileReader("sys/class/net/eth0/operstate"));
+                        netStatus = statuReader.readLine();
+                        Log.e("EthSpeed and NetState", ethSpeed + " , " + netStatus);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    Message message = new Message();
+                    Bundle bundle = new Bundle();
+                    message.what = 1;
+                    bundle.putString("speed", ethSpeed);
+                    bundle.putString("state", netStatus);
+                    message.setData(bundle);
+                    handler.sendMessage(message);
+                }
+            };
+        }
+        if (timer != null && task != null) {
+            timer.schedule(task, 100, 1000);
+        }
+    }
+
+    private void stopTimer(){
+        if (timer != null){
+            timer.cancel();
+            timer = null;
+        }
+        if (task != null){
+            task.cancel();
+            task = null;
+        }
+        first = 3;
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        first++;
+        Log.e("first", first + "");
+        if (hidden){
+            if (first == 3) {
+                stopTimer();
+            }
+        }
+        else {
+            if (first == 4){
+                startTimer();
+                first = 2;
+            }
+        }
     }
 }

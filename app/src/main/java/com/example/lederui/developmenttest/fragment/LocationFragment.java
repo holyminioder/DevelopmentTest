@@ -189,7 +189,7 @@ public class LocationFragment extends Fragment implements LocationSource, AMapLo
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden == true){
+        if (hidden){
             mLocationClient.stopLocation();
         }else {
             location();

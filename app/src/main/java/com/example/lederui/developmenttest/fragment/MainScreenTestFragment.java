@@ -1,9 +1,12 @@
 package com.example.lederui.developmenttest.fragment;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -22,6 +25,9 @@ import android.widget.Toast;
 
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.activity.VideoViewActivity;
+
+import java.util.Collections;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,6 +54,11 @@ public class MainScreenTestFragment extends Fragment {
     @BindView(R.id.et_performance)
     Button mEtPerformance;
     Unbinder unbinder;
+
+    private PackageManager mPackageManager;
+    private List<ResolveInfo> mAllApps;
+    private Context context = getContext();
+    private static boolean isOk = false;
 
     @Nullable
     @Override
@@ -77,6 +88,29 @@ public class MainScreenTestFragment extends Fragment {
                 VideoViewActivity.open(getContext(), path);
                 break;
             case R.id.et_performance:
+                Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+                mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+                mPackageManager = getActivity().getPackageManager();
+                mAllApps = mPackageManager.queryIntentActivities(mainIntent,0);
+                Collections.sort(mAllApps, new ResolveInfo.DisplayNameComparator(mPackageManager));
+                for (ResolveInfo res : mAllApps){
+                    String pkg = res.activityInfo.packageName;
+                    String cls = res.activityInfo.name;
+
+                    if (pkg.contains("com.aatt.fpsm")){
+                        isOk = true;
+                        ComponentName component = new ComponentName(pkg, cls);
+                        Intent jumpIntent = new Intent();
+                        jumpIntent.setComponent(component);
+                        jumpIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().startActivity(jumpIntent);
+                    }
+                }
+                if (isOk){
+                    Toast.makeText(getActivity(),"跳转成功",Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(getActivity(),"您未能成功打开FPS Meter,请下载或手动进入FPS Meter进行业务操作",Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
@@ -90,7 +124,7 @@ public class MainScreenTestFragment extends Fragment {
             if ("file".equalsIgnoreCase(uri.getScheme())){
                 path = uri.getPath();
                 mEtPath.setText(path);
-                Toast.makeText(getContext(), path+"1111", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), path, Toast.LENGTH_SHORT).show();
                 return;
             }
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
@@ -100,7 +134,7 @@ public class MainScreenTestFragment extends Fragment {
             }else {
                 path = getRealPathFromURI(uri);
                 mEtPath.setText(path);
-                Toast.makeText(getContext(), path+"222222", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), path, Toast.LENGTH_SHORT).show();
             }
         }
     }

@@ -91,7 +91,7 @@ public class NetworkFragment extends Fragment {
             case R.id.btn_skip_web:
                 mLlFail.setVisibility(View.INVISIBLE);
                 String url = mEtUrl.getText().toString();
-                mToWeb.loadUrl("http://" + url);
+                mToWeb.loadUrl("https://" + url);
 
                 mToWeb.getSettings().setSupportZoom(true);
                 mToWeb.getSettings().setBuiltInZoomControls(true);
