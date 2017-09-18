@@ -15,7 +15,7 @@
     <string name="setting">设置</string>
     <string name="barcode_gun">条码枪</string>
     <string name="main_board">主板</string>
-    <string name="main_board_status">主板正常</string>
+    <string name="main_board_status">正常</string>
     
     <string name="cpu_seizure_rate">CPU占用率：</string>
     <string name="cpu_temperature">CPU温度：</string>
@@ -61,6 +61,8 @@
     <string name="pause">暂停</string>
     <string name="goon">继续</string>
     <string name="touch_revise">触屏校准</string>
+    <string name="print">开始打印</string>
+    <string name="machinePause">视频暂停</string>
 
     <string name="year">年：</string>
     <string name="month">月：</string>

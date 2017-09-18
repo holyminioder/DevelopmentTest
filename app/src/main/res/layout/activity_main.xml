@@ -26,7 +26,7 @@
             android:layout_height="0dp"
             android:layout_alignParentLeft="true"
             app:layout_heightPercent="100%"
-            app:layout_widthPercent="14.3%">
+            app:layout_widthPercent="16.8%">
         </ListView>
 
         <FrameLayout

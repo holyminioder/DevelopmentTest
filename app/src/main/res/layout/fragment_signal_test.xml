@@ -5,10 +5,16 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <TextView
+    <ImageView
+        android:id="@+id/wifi_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SignalTest"/>
+        android:src="@drawable/id_default1_grey" />
+
+    <TextView
+        android:id="@+id/signal_strength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

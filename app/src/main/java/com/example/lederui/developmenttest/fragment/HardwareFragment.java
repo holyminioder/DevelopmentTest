@@ -89,7 +89,11 @@ public class HardwareFragment extends Fragment {
                 String state = msg.getData().getString("state");
                 buffer = new StringBuffer();
                 buffer.append("以太网状态：").append(state + "\n" + "\n");
-                buffer.append("网卡速度：").append(speed);
+                if ("down".equals(state)){
+                    buffer.append("网卡速度：100M");
+                }else {
+                    buffer.append("网卡速度：").append(speed).append("M");
+                }
                 netCardSpeed.setText(buffer.toString());
             }
         }
@@ -163,14 +167,16 @@ public class HardwareFragment extends Fragment {
         sb.append(MainBoardMessage.getTotalRam() + "\n" + "\n");
         sb.append("存储容量：");
         sb.append(MainBoardMessage.getStorageSize() + "\n" + "\n");
-        sb.append("USB口数量：");
+        sb.append("USB接口数量：");
         sb.append(MainBoardMessage.getUsbInterface(getContext()) + "\n" + "\n");
+        sb.append("屏幕分辨率：");
+        sb.append(MainBoardMessage.getMetris(getActivity()) + "\n" + "\n");
         sb.append("网卡数量：");
         sb.append(MainBoardMessage.getNetworkCardCount() + "");
 
         mMainMessage.setText(sb.toString());
         if (TextUtils.isEmpty(sb)) {
-            mMainBoardStatus.setText("主板异常");
+            mMainBoardStatus.setText("异常");
             mMainBoardStatus.setTextColor(getResources().getColor(R.color.read_color));
         }
 
@@ -322,7 +328,6 @@ public class HardwareFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         first++;
-        Log.e("first", first + "");
         if (hidden){
             if (first == 3) {
                 stopTimer();
