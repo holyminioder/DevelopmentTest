@@ -1,15 +1,8 @@
 package com.example.lederui.developmenttest.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -21,18 +14,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lederui.developmenttest.R;
+import com.example.lederui.developmenttest.activity.MainActivity;
+import com.example.lederui.developmenttest.data.BCRInterface;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.ztec.bcr.BarcoderReaderService;
-import com.ztec.bcr.TBarcoderReader;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Set;
 
 /**
  * Created by holyminier on 2017/4/21.
@@ -42,7 +34,7 @@ import java.util.Set;
 public class BarcodeReaderFragment extends Fragment {
 
     static {
-        System.loadLibrary("bcr");
+        System.loadLibrary("HWICgltBCR");
     }
 
     private View mView;
@@ -51,11 +43,15 @@ public class BarcodeReaderFragment extends Fragment {
     private TextView mBCRCodeType;
     private TextView mScandata_view;
     private BarcoderReaderService bcrService;
-    private TBarcoderReader tbcr;
     private Spinner mSprinner;
     private boolean isScan = true;
     private int mScanMode = 2; //2  自动模式 1 手动模式
     private String TICKET_INFO = "ticketInfo";
+    private BCRInterface mBCRInerface = new BCRInterface();
+    byte[] ScanData = new byte[4096];
+    private int ticketLength = 0;
+    private String TICKETINFO= "";
+    private String DATA_TYPE = "datatype";
 
 
     @Nullable
@@ -64,7 +60,8 @@ public class BarcodeReaderFragment extends Fragment {
 
         View view =  inflater.inflate(R.layout.fragment_barcode_reader, container, false);
         mView = view;
-        tbcr = new TBarcoderReader();
+        initBCR();
+        startScan();
 
         InitView();
 
@@ -89,13 +86,17 @@ public class BarcodeReaderFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
-                    stopScan();
+                    mBCRInerface.BCRStopScan();
                     mScanMode = 2;
-                    StartScan();
+                    boolean ret = mBCRInerface.BCRSetScanMode(mScanMode);
+                    Log.i("BCR", "BCRSetScanMode return= " +ret + "mScanMode="+ mScanMode);
+                    mBCRInerface.BCRStartScan();
                 }else if(position == 1){
-                    stopScan();
+                    mBCRInerface.BCRStopScan();
                     mScanMode = 1;
-                    StartScan();
+                    boolean ret = mBCRInerface.BCRSetScanMode(mScanMode);
+                    Log.i("BCR", "BCRSetScanMode return= " +ret + "mScanMode="+ mScanMode);
+                    mBCRInerface.BCRStartScan();
                 }
 
             }
@@ -121,15 +122,12 @@ public class BarcodeReaderFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setFilters();  // Start listening notifications from BarcoderReaderService
-        startService(BarcoderReaderService.class, usbConnection, null); // Start BarcoderReaderService(if it was not started before) and Bind it
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getContext().unregisterReceiver(mUsbReceiver);
-        getContext().unbindService(usbConnection);
+
     }
 
 
@@ -142,92 +140,9 @@ public class BarcodeReaderFragment extends Fragment {
 
     @Override
     public void onDestroy() {
-        tbcr.release();
         super.onDestroy();
     }
 
-    private void setFilters() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(BarcoderReaderService.ACTION_USB_PERMISSION_GRANTED);
-        filter.addAction(BarcoderReaderService.ACTION_NO_USB);
-        filter.addAction(BarcoderReaderService.ACTION_USB_DISCONNECTED);
-        filter.addAction(BarcoderReaderService.ACTION_USB_NOT_SUPPORTED);
-        filter.addAction(BarcoderReaderService.ACTION_USB_PERMISSION_NOT_GRANTED);
-        getContext().registerReceiver(mUsbReceiver, filter);
-    }
-
-    private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
-        if (!BarcoderReaderService.SERVICE_CONNECTED) {
-            Intent startService = new Intent(getContext(), service);
-            if (extras != null && !extras.isEmpty()) {
-                Set<String> keys = extras.keySet();
-                for (String key : keys) {
-                    String extra = extras.getString(key);
-                    startService.putExtra(key, extra);
-                }
-            }
-            getContext().startService(startService);
-        }
-        Intent bindingIntent = new Intent(getContext(), service);
-        //绑定Service
-        getContext().bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-    }
-
-
-        //BCR usb connect
-    private final ServiceConnection usbConnection = new ServiceConnection() {
-
-        //成功绑定服务后调用
-        @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            bcrService = ((BarcoderReaderService.UsbBinder) arg1).getService();
-            tbcr.setService(bcrService);
-
-                //绑定后初始化
-            int ret = tbcr.BCRInit("", "");
-            if(ret == TBarcoderReader.NO_ERROR) {
-                //开启扫描
-                StartScan();
-            }else {
-                String errStr = tbcr.BCRGetLastErrorStr();
-                mBCRStatus.setText(errStr + " ");
-                Log.i("BCR", "init return " + ret + " errstr =" + errStr);
-            }
-
-        }
-
-        //解除绑定后调用
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            bcrService = null;
-            stopScan();
-        }
-    };
-
-
-
-    private final BroadcastReceiver mUsbReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            switch (intent.getAction()) {
-                case BarcoderReaderService.ACTION_USB_PERMISSION_GRANTED: // USB PERMISSION GRANTED
-                    Toast.makeText(context, "USB Ready", Toast.LENGTH_SHORT).show();
-                    break;
-                case BarcoderReaderService.ACTION_USB_PERMISSION_NOT_GRANTED: // USB PERMISSION NOT GRANTED
-                    Toast.makeText(context, "USB Permission not granted", Toast.LENGTH_SHORT).show();
-                    break;
-                case BarcoderReaderService.ACTION_NO_USB: // NO USB CONNECTED
-                    Toast.makeText(context, "No USB connected", Toast.LENGTH_SHORT).show();
-                    break;
-                case BarcoderReaderService.ACTION_USB_DISCONNECTED: // USB DISCONNECTED
-                    Toast.makeText(context, "USB disconnected", Toast.LENGTH_SHORT).show();
-                    break;
-                case BarcoderReaderService.ACTION_USB_NOT_SUPPORTED: // USB NOT SUPPORTED
-                    Toast.makeText(context, "USB device not supported", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
 
 
     private Handler handler = new Handler() {
@@ -264,49 +179,93 @@ public class BarcodeReaderFragment extends Fragment {
                             break;
 
                     }
+                    break;
+                case 2:
+                    String err = msg.getData().getString("ErrStr");
+                    mBCRStatus.setText(err);
+
             }
 
         }
     };
 
-    //init BCR
-    private void StartScan(){
-        mBCRStatus.setText("正常");
-//        tbcr.BCRStartScan();
-        boolean ret = tbcr.BCRSetScanMode(mScanMode);
-        Log.i("BCR", "BCRSetScanMode return= " +ret + "mScanMode="+ mScanMode);
-        isScan = true;
+    private void initBCR(){
+        int flag = mBCRInerface.BCRInit();
+        if(flag != 0){
+            String errStr = mBCRInerface.BCRGetLastErrorStr();
+            Log.e(MainActivity.TAG,errStr);
+
+            Message message = new Message();
+            message.what = 2;
+            Bundle bundle = new Bundle();
+            bundle.putString("ErrStr",errStr);
+            message.setData(bundle);
+            handler.sendMessage(message);
+        }else{
+            isScan = true;
+            Message message = new Message();
+            message.what = 2;
+            Bundle bundle = new Bundle();
+            bundle.putString("ErrStr","OK");
+            message.setData(bundle);
+            handler.sendMessage(message);
+            Log.e(MainActivity.TAG,"init ok");
+            mBCRInerface.BCRSetScanMode(2);//自动模式
+        }
+    }
+
+    private void startScan(){
+
+        mBCRInerface.BCRStartScan();
+
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while (isScan) {
-                    while (tbcr.BCRScanIsComplete() == true) {
-                        byte[] ticketInfo = tbcr.BCRGetTicketInfo();
-                        int a = ticketInfo[0] & 0xFF;
+                while (isScan){
+                    while (isScan){
+                        if(mBCRInerface.BCRScanIsComplete()){
+                            //添加beep会get不到数据？？
+                            mBCRInerface.BCRBeep(0);
+                            Log.i(MainActivity.TAG, "BCRScanIsComplete");
+                            break;
+                        }
+                        //500ms轮询一次
                         try {
-
-                                String ticketMsg = new String(ticketInfo, 7, ticketInfo.length-7, "ASCII");
-                                Message message = new Message();
-                                message.what = 1;
-                                Bundle bundle=new Bundle();
-                                bundle.putString(TICKET_INFO, ticketMsg);
-                                bundle.putInt("info",a);
-                                message.setData(bundle);
-                                handler.sendMessage(message);
-
-                        } catch (UnsupportedEncodingException e) {
-                                throw new InternalError();
-                            }
-
+                            Thread.sleep(500);
+                        }catch (InterruptedException e){
+                            e.printStackTrace();
                         }
                     }
+                    byte[] ticketinfo = new byte[4096];
+                    Integer len = new Integer(0);
+                    mBCRInerface.BCRGetDataLength(len);
+                    int length = mBCRInerface.BCRGetTicketInfo(ticketinfo, 4096);
+                    ScanData = ticketinfo;
+                    ticketLength = len;
+                    Log.i(MainActivity.TAG,"BCRGetTicketInfo"+"\nlength="+len);
+                    if(len > 0){
+                        int type = ticketinfo[0] & 0xff;
+                        try {
+                            String ticketmsg = new String(ticketinfo, 7, len, "gbk");
+                            String tmpstr= new String(ScanData, 7, length, "gbk");
+                            Log.i(MainActivity.TAG, "ticketinfo =="+ticketmsg);
+                            Message message = new Message();
+                            message.what = 1;
+                            Bundle bundle = new Bundle();
+                            bundle.putString(TICKET_INFO,ticketmsg);
+                            bundle.putInt(DATA_TYPE,type);
+                            message.setData(bundle);
+                            handler.sendMessage(message);
+
+                        }catch (UnsupportedEncodingException e){
+                            e.printStackTrace();
+                        }
+                    }
+
                 }
-            }).start();
-    }
+            }
+        }).start();
 
-
-    private void stopScan() {
-        isScan = false;
     }
 
 

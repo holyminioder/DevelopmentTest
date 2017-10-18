@@ -38,7 +38,7 @@
 extern "C" {
 #endif
 
-jstring Java_com_example_jnidemo_MainActivity_stringFromJNI( JNIEnv *env,  jobject /* this */);
+//jstring Java_com_example_jnidemo_MainActivity_stringFromJNI( JNIEnv *env,  jobject /* this */);
 /**********************************************************************************************************************
 * ���:		2.4
 * ���ܣ�	��ʼ����ӡ��,��ɻ�������,��ֽ��λ�ȹ���.

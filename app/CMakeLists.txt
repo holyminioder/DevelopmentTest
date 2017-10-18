@@ -38,9 +38,10 @@ add_library(libusb1.0 SHARED IMPORTED)
 set_target_properties(libusb1.0  PROPERTIES
         IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libusb1.0.so")
 
-add_library(libbcr SHARED IMPORTED)
-set_target_properties(libbcr  PROPERTIES
-                IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libbcr.so")
+add_library(libHWICgltBCR SHARED IMPORTED)
+set_target_properties(libHWICgltBCR  PROPERTIES
+                IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libHWICgltBCR.so")
+
 
 
 set(CMAKE_CXX_FLAGS "-std=c++11")
@@ -56,6 +57,17 @@ add_library( # Sets the name of the library.
              # Associated headers in the same location as their source
              # file are automatically included.
              src/main/cpp/native-printer.cpp )
+
+add_library( # Sets the name of the library.
+             native-hscanner
+
+             # Sets the library as a shared library.
+             SHARED
+
+             # Provides a relative path to your source file(s).
+             # Associated headers in the same location as their source
+             # file are automatically included.
+             src/main/cpp/native-hscanner.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by
@@ -80,13 +92,20 @@ find_library( # Sets the name of the path variable.
 # build script, prebuilt third-party libraries, or system libraries.
 
 target_link_libraries( # Specifies the target library.
+                       native-hscanner
+                       libHWICgltBCR
+
+                       # Links the target library to the log library
+                       # included in the NDK.
+                       ${log-lib} )
+
+target_link_libraries( # Specifies the target library.
                        native-printer
                        libscanprn
                        libConfigFileINI
                        libflog
                        libusb1.0
                        libbitmap
-                       libbcr
                        # Links the target library to the log library
                        # included in the NDK.
 

@@ -3,6 +3,7 @@ package com.example.lederui.developmenttest.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -44,6 +45,7 @@ import butterknife.Unbinder;
 import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 import static com.example.lederui.developmenttest.data.PrinterInterface.GetLastErrStr;
+import static com.example.lederui.developmenttest.data.PrinterInterface.PrintInit;
 
 /**
  * Created by holyminier on 2017/4/21.
@@ -121,7 +123,10 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             public void onTick(long millisUntilFinished) {
                 // TODO Auto-generated method stub
                 Log.d("runable", "running");
-                mPrintInterface.PrintAllString(0);
+                if(!mPrintInterface.PrintSample(mCutMode)) {
+                    String str = GetLastErrStr();
+                    Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -135,7 +140,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
 
 
 
-        final String[] mCodeItems = {"PDF417","QR","EAN","code39","code128"};
+        final String[] mCodeItems = {"PDF417","QR","EAN","code39","code128","Interleaved 2 of 5"};
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_item, mCodeItems);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         mSpinner = (Spinner)mView.findViewById(R.id.spinner_codeType);
@@ -184,7 +189,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
     }
 
     public void InitDev() {
-        if(mPrintInterface.PrintInit()) {
+        if(PrintInit()) {
             isInit = true;
             Log.i("printerfragment","PrinterFragment printer init ok " );
 
@@ -193,7 +198,6 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             Log.i("printerfragment","PrinterFragment printer init false");
 
         }
-
 
 
         // 打印機狀態
@@ -207,47 +211,50 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                     @Override
                     public void run() {
 
-
+                        if(printStatus != 0){
+                            mPrinterStatusView.setTextColor(Color.RED);
+                        }
                         switch (printStatus){
                             case 0:
-                                mPrinterStatusView.setText("打印机状态：" + "正常");
+                                mPrinterStatusView.setTextColor(Color.BLACK);
+                                mPrinterStatusView.setText("正常");
                                 break;
                             case 1:
-                                mPrinterStatusView.setText("打印机状态：" + "找不到打印机");
+                                mPrinterStatusView.setText("找不到打印机");
                                 break;
                             case 2:
-                                mPrinterStatusView.setText("打印机状态：" + "数据线故障");
+                                mPrinterStatusView.setText("数据线故障");
                                 break;
                             case 3:
-                                mPrinterStatusView.setText("打印机状态：" + "电源线故障");
+                                mPrinterStatusView.setText("电源线故障");
                                 break;
                             case 4:
-                                mPrinterStatusView.setText("打印机状态：" + "打印机忙");
+                                mPrinterStatusView.setText("打印机忙");
                                 break;
                             case 5:
-                                mPrinterStatusView.setText("打印机状态：" + "超时");
+                                mPrinterStatusView.setText("超时");
                                 break;
                             case 8:
-                                mPrinterStatusView.setText("打印机状态：" + "打印机上盖被打卡");
+                                mPrinterStatusView.setText("打印机上盖被打开");
                                 break;
                             case 9:
-                                mPrinterStatusView.setText("打印机状态：" + "纸卷错误");
+                                mPrinterStatusView.setText("纸卷错误");
                                 break;
                             case 10:
-                                mPrinterStatusView.setText("打印机状态：" + "纸将尽");
+                                mPrinterStatusView.setText("卡纸");
                                 break;
                             case 11:
-                                mPrinterStatusView.setText("打印机状态：" + "其他错误");
+                                mPrinterStatusView.setText("纸将尽");
                                 break;
                             case 500:
-                                mPrinterStatusView.setText("打印机状态：" + "正常");
+                                mPrinterStatusView.setText("其他错误");
                                 break;
                             default:break;
                         }
                     }
                 });
             }
-        }, 3000, 1000*3);
+        }, 2000, 1000*2);
     }
 
 
@@ -275,8 +282,8 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                     String str = GetLastErrStr();
                     Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
                 }
-                mPDFCode = mPrintInterface.GetPDFCode();
-                Log.i("printer","btn_printSample mpdfcode = " + mPDFCode);
+//                mPDFCode = mPrintInterface.GetPDFCode();
+//                Log.i("printer","btn_printSample mpdfcode = " + mPDFCode);
 
                 break;
             case R.id.btn_printString:
@@ -343,16 +350,18 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
         long timer2;
         int count = 0;
         boolean stop = false;
-
+        mPrintSpeedView.setText("正在打印...");
 
         while (true){
             timer2 = System.currentTimeMillis();
             long diff = timer2 - timer1;
             Log.i("printer", "difftime=" + diff);
             if(diff > 60*1000)
-
                 break;
-            mPrintInterface.PrintSample(mCutMode);
+
+            if(mPrintInterface.PrintSample(mCutMode) == false)
+                return;
+
             count++;
         }
 
@@ -360,16 +369,20 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
 
         mPrintSpeedView.setText("打印速度="+count+"张/分钟\n");
 
+
+
     }
 
 
     private void TestCutPaperSpeed() {
-        long timer1 = System.currentTimeMillis();
-        long timer2;
-        Log.i("test", "time1=" + timer1);
-        int count = 0;
 
-        mPrintInterface.SetCutMode(1);
+        long timer2;
+        int count = 0;
+//        boolean initflag = mPrintInterface.PrintInit();
+        boolean flag = mPrintInterface.SetCutMode(1);
+
+        long timer1 = System.currentTimeMillis();
+        Log.i("test", "time1=" + timer1);
 
         while (true){
             timer2 = System.currentTimeMillis();
@@ -377,6 +390,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
 
             if(diff > 60*1000)
                 break;
+
 
 //            mPrintInterface.PrintString("cut test");
             mPrintInterface.CutPaper();

@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
     private TouchScreenTestFragment mTouchScreenFragment;
     private BatteryFragment mBatteryFragment;
     private SoundFragment mSoundFragment;
+    public static String TAG = "DEVELOPMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mPrinterLib = new PrinterInterface();
-        initDev();
+//        initDev();
         initDate();
 
 
@@ -353,11 +354,11 @@ public class MainActivity extends AppCompatActivity {
                         mListView.setItemChecked(position, true);
                         initLocationFragment();
                         break;
-                    case 8://条码识读
-                        mListView.setItemChecked(position, true);
-                        initBarcodeReaderFragment();
-                        break;
-                    case 9://系统信息
+//                    case 8://条码识读
+//                        mListView.setItemChecked(position, true);
+//                        initBarcodeReaderFragment();
+//                        break;
+                    case 8://系统信息
                         mListView.setItemChecked(position, true);
                         initSystemFragment();
                         break;

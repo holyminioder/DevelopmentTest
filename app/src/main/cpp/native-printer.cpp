@@ -97,6 +97,14 @@ bool PrintPDF417() {
     int		ii = 0;
     int 		begin = 0;
 
+
+    bool ret = byPPrinterIsReady();
+    int errcode = 0;
+
+    if (!ret) {
+        return false;
+    }
+
     //*****************************************************************************************************************
     //????????
     if(!byPSetLineMode())
@@ -185,14 +193,14 @@ bool PrintPDF417() {
     }
 
     //begin = systick();
-    returnValueInt = byPPrintIsComplete(5);//?§Ø?????????
-    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
-    {
-        printf("PrinterPrintIsComplete('%s') failed, return code: %d\n", barCode, returnValueInt);
-        goto ExitLine;
-    }
-    //    begin = systick() - begin;
-    printf("PrinterPrintIsComplete(2)-time is %d\n",begin);
+//    returnValueInt = byPPrintIsComplete(5);//?§Ø?????????
+//    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+//    {
+//        printf("PrinterPrintIsComplete('%s') failed, return code: %d\n", barCode, returnValueInt);
+//        goto ExitLine;
+//    }
+//    //    begin = systick() - begin;
+//    printf("PrinterPrintIsComplete(2)-time is %d\n",begin);
 
     byPFeedLine(1);//???
     returnValueBool = byPSetFont(0x00,0x10,0x01);
@@ -302,6 +310,7 @@ bool PrintPDF417() {
     //???????
     memcpy(mbarCode, barCode, sizeof(barCode));
     returnValueInt = byPrintPDF417(15, 38, 20 , 6, 3, barCode, 32, 2);
+//    returnValueInt = byPrintPDF417(10, 10, 1 , 1, 3, barCode, 32, 2);
     if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
     {
         printf("PrinterPrintPDF417('%s') failed, return code: %d\n", barCode, returnValueInt);
@@ -631,8 +640,9 @@ int PrintBarcodeTicket(int codeType)
     //???????
     if(codeType != 4)
     {
-        returnValueInt = byPrint1DBar(3, 60, barCode, codeType, setType);
+        returnValueInt = byPrint1DBar(5, 80, barCode, codeType, setType);
         printf("barCodeLength: %d\n",barCodeLength);
+
         if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
         {
             printf("PrinterPrint1DBar('%s') failed, return code: %d\n", barCode, returnValueInt);
@@ -643,7 +653,7 @@ int PrintBarcodeTicket(int codeType)
 
     //*****************************************************************************************************************
     //?§Ø?????????
-    returnValueInt = byPPrintIsComplete(5);
+
     ExitLine:
         return  false;
     return TRUE;
@@ -661,7 +671,10 @@ JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterI
 JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintSample
         (JNIEnv *, jobject, jint mode) {
 
-    PInit("/sdcard", "/sdcard");
+//    PInit("/sdcard", "/sdcard");
+    int ret = byPGetLastErrorCode();
+    if(ret != 0)
+        return false;
     PSetCutterMode(mode);
     if (PrintPDF417() != PRINTER_NO_ERROR)
         return false;
@@ -705,7 +718,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
         byPFeedLine(4);
         returnValueInt =byPPrintString("zxcvbnmlkjhgfdsaqwertyuiopZXCVBNMLKJHGFDSAQWERTYUIOP0123456789[]{}-=_+,./<>?`1~!@#$%^&*()");
         byPFeedLine(4);
-        byPSetFont(0x00, 0x30, 0x01);
+        byPSetFont(0x00, 0x11, 0x01);
         byPPrintString("1 4 3 8");
         PCutPaper();
 
@@ -775,6 +788,8 @@ JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterI
         case 4://code128
             PrintBarcodeTicket(3);
             break;
+        case 5:
+            PrintBarcodeTicket(0);
         default:
             break;
     }
@@ -879,14 +894,13 @@ JNIEXPORT jint JNICALL Java_com_example_lederui_developmenttest_data_PrinterInte
         (JNIEnv *env, jobject) {
 
         bool ret = byPPrinterIsReady();
-        int errcode = 0;
+        int errcode = byPGetLastErrorCode();
 
-        if (!ret) {
-            LOGI("byPPrinterIsReady return=%d" , ret);
-              errcode= byPGetLastErrorCode();
+        if (errcode != 0 || ret == false) {
+            LOGI("byPGetLastErrorCode return=%d" , errcode);
               return errcode;
         }
-        LOGI("printerret =%d ,errcode = %d" ,ret,errcode);
+        LOGI("errcode = %d" ,errcode);
 
     return errcode;
 }
