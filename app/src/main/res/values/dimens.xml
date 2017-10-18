@@ -22,6 +22,7 @@
     <dimen name="activity_main_right_height">130dp</dimen>
     <dimen name="button_padding">22dp</dimen>
     <dimen name="view_width">720dp</dimen>
+    <dimen name="spanner_width">120dp</dimen>
 
     <dimen name="main_board_msg_text">18sp</dimen>
 

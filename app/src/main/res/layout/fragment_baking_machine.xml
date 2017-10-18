@@ -1,14 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:gravity="center"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="BakingMachine"/>
+    <com.example.lederui.developmenttest.view.SimpleVideoPlayer
+        android:id="@+id/simpleVideoPlayer"
+        android:layout_width="0dp"
+        android:layout_marginTop="@dimen/status_bar"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/black"
+        app:layout_heightPercent="83%"
+        app:layout_widthPercent="90%"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="90%"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:layout_below="@id/simpleVideoPlayer"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/text_spacing"
+            android:paddingBottom="@dimen/text_spacing"
+            android:paddingLeft="@dimen/bottom_text_padding"
+            android:paddingRight="@dimen/bottom_text_padding"
+            android:background="@drawable/btn_style_five_selector"
+            android:textColor="@android:color/white"
+            android:layout_marginRight="@dimen/button_margin_left"
+            android:text="@string/machinePause"/>
+
+        <Button
+            android:id="@+id/print"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/text_spacing"
+            android:paddingBottom="@dimen/text_spacing"
+            android:paddingLeft="@dimen/bottom_text_padding"
+            android:paddingRight="@dimen/bottom_text_padding"
+            android:background="@drawable/btn_style_five_selector"
+            android:textColor="@android:color/white"
+            android:layout_marginRight="@dimen/status_bar"
+            android:text="@string/print"/>
+
+        <Spinner
+            android:id="@+id/select_num"
+            android:layout_width="@dimen/spanner_width"
+            android:layout_height="@dimen/activity_main_bottom_high"
+            android:entries="@array/selectNum"
+            android:layout_marginRight="@dimen/button_margin_left"
+            android:background="@drawable/kuang2"/>
+
+        <TextView
+            android:id="@+id/printer_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size"
+            android:textStyle="bold"
+            android:text="@string/printer_state"/>
+
+    </LinearLayout>
 
 
-</LinearLayout>
+</android.support.percent.PercentRelativeLayout>

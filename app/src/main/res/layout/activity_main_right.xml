@@ -114,18 +114,18 @@
             android:background="@drawable/btn_color_normal"
             android:text="@string/ticket_reader"/>
 
-        <TextView
-            android:id="@+id/keyboard"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:textSize="@dimen/text_size"
-            android:paddingTop="@dimen/button_padding"
-            android:paddingBottom="@dimen/button_padding"
-            android:textColor="@android:color/white"
-            android:background="@drawable/btn_color_normal"
-            android:text="@string/keyboard"/>
+        <!--<TextView-->
+            <!--android:id="@+id/keyboard"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:textSize="@dimen/text_size"-->
+            <!--android:paddingTop="@dimen/button_padding"-->
+            <!--android:paddingBottom="@dimen/button_padding"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:background="@drawable/btn_color_normal"-->
+            <!--android:text="@string/keyboard"/>-->
 
         <TextView
             android:id="@+id/toast_chance"

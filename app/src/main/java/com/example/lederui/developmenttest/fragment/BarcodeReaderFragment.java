@@ -22,7 +22,6 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.ztec.bcr.BarcoderReaderService;
 
 import java.io.UnsupportedEncodingException;
 
@@ -42,7 +41,6 @@ public class BarcodeReaderFragment extends Fragment {
     private TextView mBCRStatus;
     private TextView mBCRCodeType;
     private TextView mScandata_view;
-    private BarcoderReaderService bcrService;
     private Spinner mSprinner;
     private boolean isScan = true;
     private int mScanMode = 2; //2  自动模式 1 手动模式

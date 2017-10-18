@@ -75,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
     TextView mTicketReader;
     @BindView(R.id.setting)
     TextView mSetting;
-    @BindView(R.id.keyboard)
-    TextView mKeyboard;
+//    @BindView(R.id.keyboard)
+//    TextView mKeyboard;
     @BindView(R.id.printer_state)
     TextView mPrinterState;
     @BindView(R.id.cpu_occupancy)
@@ -135,28 +135,26 @@ public class MainActivity extends AppCompatActivity {
     private void initDate() {
         //CPU使用率
         mHandler = new Handler();
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                final String occupancy = MainBoardMessage.cpuOccupancy();
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mCpuOccupancy.setText("CPU占用率：" + occupancy + "%");
-                    }
-                });
-            }
-        }, 1000, 3000);
-
-
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                final String occupancy = MainBoardMessage.cpuOccupancy();
+//                mHandler.post(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mCpuOccupancy.setText("CPU占用率：" + occupancy + "%");
+//                    }
+//                });
+//            }
+//        }, 1000, 3000);
 
         mTypeFace = Typeface.createFromAsset(getAssets(), "fonts/simhei.ttf");
         mDiagnoseProcedure.setTypeface(mTypeFace);
         mPrinter.setTypeface(mTypeFace);
         mScannerGun.setTypeface(mTypeFace);
         mTicketReader.setTypeface(mTypeFace);
-        mKeyboard.setTypeface(mTypeFace);
+//        mKeyboard.setTypeface(mTypeFace);
         mToastChance.setTypeface(mTypeFace);
         mSetting.setTypeface(mTypeFace);
         mExit.setTypeface(mTypeFace);
@@ -167,6 +165,7 @@ public class MainActivity extends AppCompatActivity {
         mCpuTemperature.setTypeface(mTypeFace);
         mVoltage.setTypeface(mTypeFace);
 
+        mCpuOccupancy.setVisibility(View.INVISIBLE);
         mPrinterState.setVisibility(View.INVISIBLE);
 
         //默认选中诊断程序
@@ -198,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //主分类的点击事件
-    @OnClick({R.id.diagnose_procedure, R.id.printer, R.id.ticket_reader, R.id.keyboard, R.id.scanner_gun, R.id.toast_chance, R.id.setting, R.id.exit, R.id.restart, R.id.shutdown})
+    @OnClick({R.id.diagnose_procedure, R.id.printer, R.id.ticket_reader, R.id.scanner_gun, R.id.toast_chance, R.id.setting, R.id.exit, R.id.restart, R.id.shutdown})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.diagnose_procedure://诊断程序
@@ -225,11 +224,11 @@ public class MainActivity extends AppCompatActivity {
                 mListView.setVisibility(View.INVISIBLE);
                 initTicketReaderFragment();
                 break;
-            case R.id.keyboard://键盘
-                initBackground(mKeyboard);
-                mListView.setVisibility(View.INVISIBLE);
-                initKeyBoardFragment();
-                break;
+//            case R.id.keyboard://键盘
+//                initBackground(mKeyboard);
+//                mListView.setVisibility(View.INVISIBLE);
+//                initKeyBoardFragment();
+//                break;
             case R.id.toast_chance://烤机程序
                 initBackground(mToastChance);
                 mListView.setVisibility(View.INVISIBLE);
@@ -406,7 +405,7 @@ public class MainActivity extends AppCompatActivity {
         mScannerGun.setBackgroundResource(R.drawable.btn_color_normal);
         mToastChance.setBackgroundResource(R.drawable.btn_color_normal);
         mSetting.setBackgroundResource(R.drawable.btn_color_normal);
-        mKeyboard.setBackgroundResource(R.drawable.btn_color_normal);
+//        mKeyboard.setBackgroundResource(R.drawable.btn_color_normal);
         textView.setBackgroundResource(R.drawable.btn_color_pressed);
     }
 

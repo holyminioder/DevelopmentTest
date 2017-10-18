@@ -1,13 +1,8 @@
 package com.example.lederui.developmenttest.fragment;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,12 +20,9 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.ztec.bcr.BarcoderReaderService;
-import com.ztec.bcr.TBarcoderReader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -69,8 +61,6 @@ public class HardwareFragment extends Fragment {
     TextView netCardSpeed;
 
     private PrinterInterface mPrinterLib;
-    private BarcoderReaderService bcrService;
-    private TBarcoderReader tbcr;
     private GoogleApiClient client;
     private static int first = 0;
     private Timer timer;
@@ -89,7 +79,11 @@ public class HardwareFragment extends Fragment {
                 String state = msg.getData().getString("state");
                 buffer = new StringBuffer();
                 buffer.append("以太网状态：").append(state + "\n" + "\n");
-                buffer.append("网卡速度：").append(speed);
+                if ("down".equals(state)){
+                    buffer.append("网卡速度：100M");
+                }else {
+                    buffer.append("网卡速度：").append(speed).append("M");
+                }
                 netCardSpeed.setText(buffer.toString());
             }
         }
@@ -104,7 +98,7 @@ public class HardwareFragment extends Fragment {
         MainBoardMessage.getContext(getContext());
 
         client = new GoogleApiClient.Builder(getContext()).addApi(AppIndex.API).build();
-        tbcr = new TBarcoderReader();
+
         mPrinterLib = new PrinterInterface();
 
         getMainBoardInfo();
@@ -133,13 +127,12 @@ public class HardwareFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        startService(BarcoderReaderService.class, usbConnection, null);
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        getContext().unbindService(usbConnection);
+
     }
 
 
@@ -163,14 +156,16 @@ public class HardwareFragment extends Fragment {
         sb.append(MainBoardMessage.getTotalRam() + "\n" + "\n");
         sb.append("存储容量：");
         sb.append(MainBoardMessage.getStorageSize() + "\n" + "\n");
-        sb.append("USB口数量：");
+        sb.append("USB接口数量：");
         sb.append(MainBoardMessage.getUsbInterface(getContext()) + "\n" + "\n");
+        sb.append("屏幕分辨率：");
+        sb.append(MainBoardMessage.getMetris(getActivity()) + "\n" + "\n");
         sb.append("网卡数量：");
         sb.append(MainBoardMessage.getNetworkCardCount() + "");
 
         mMainMessage.setText(sb.toString());
         if (TextUtils.isEmpty(sb)) {
-            mMainBoardStatus.setText("主板异常");
+            mMainBoardStatus.setText("异常");
             mMainBoardStatus.setTextColor(getResources().getColor(R.color.read_color));
         }
 
@@ -179,7 +174,7 @@ public class HardwareFragment extends Fragment {
 
     private void getBCRHWInfo() {
         //开启条码枪服务 获取硬件信息
-        startService(BarcoderReaderService.class, usbConnection, null);
+
     }
 
     //获取打印机硬件信息
@@ -203,63 +198,7 @@ public class HardwareFragment extends Fragment {
         }
     }
 
-    //BCR usb connect
-    private final ServiceConnection usbConnection = new ServiceConnection() {
 
-        //成功绑定服务后调用
-        @Override
-        public void onServiceConnected(ComponentName arg0, IBinder arg1) {
-            bcrService = ((BarcoderReaderService.UsbBinder) arg1).getService();
-            tbcr.setService(bcrService);
-
-            //绑定后初始化
-            int ret = tbcr.BCRInit("", "");
-            if (ret == TBarcoderReader.NO_ERROR) {
-                String hwinfo = "";
-                String[] str;
-                hwinfo = tbcr.BCRGetHWInformation();
-                if (hwinfo != "") {
-                    str = hwinfo.split("\n");
-                    hwinfo = "";//清空 ，排版
-                    for (int i = 0; i < str.length; i++) {
-                        hwinfo += str[i] + "\n" + "\n";
-                    }
-
-                }
-                mBCRHwInfoView.setText(hwinfo);
-                mBCRStatus.setText("正常");
-            } else {
-                String errStr = tbcr.BCRGetLastErrorStr();
-                mBCRStatus.setText(errStr + " ");
-            }
-
-        }
-
-        //解除绑定后调用
-        @Override
-        public void onServiceDisconnected(ComponentName arg0) {
-            bcrService = null;
-
-        }
-    };
-
-
-    private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {
-        if (!BarcoderReaderService.SERVICE_CONNECTED) {
-            Intent startService = new Intent(getContext(), service);
-            if (extras != null && !extras.isEmpty()) {
-                Set<String> keys = extras.keySet();
-                for (String key : keys) {
-                    String extra = extras.getString(key);
-                    startService.putExtra(key, extra);
-                }
-            }
-            getContext().startService(startService);
-        }
-        Intent bindingIntent = new Intent(getContext(), service);
-        //绑定Service
-        getContext().bindService(bindingIntent, serviceConnection, Context.BIND_AUTO_CREATE);
-    }
 
 
     public Action getIndexApiAction() {
@@ -322,7 +261,6 @@ public class HardwareFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         first++;
-        Log.e("first", first + "");
         if (hidden){
             if (first == 3) {
                 stopTimer();
