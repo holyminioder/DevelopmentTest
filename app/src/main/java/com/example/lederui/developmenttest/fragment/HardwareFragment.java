@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.lederui.developmenttest.R;
+import com.example.lederui.developmenttest.data.BCRInterface;
 import com.example.lederui.developmenttest.data.MainBoardMessage;
 import com.example.lederui.developmenttest.data.PrinterInterface;
 import com.google.android.gms.appindexing.Action;
@@ -23,6 +24,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.UnsupportedEncodingException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -38,10 +40,6 @@ import butterknife.Unbinder;
  * 硬件信息Fragment
  */
 public class HardwareFragment extends Fragment {
-
-    static {
-        System.loadLibrary("bcr");
-    }
 
     @BindView(R.id.main_board_message)
     TextView mMainMessage;
@@ -172,9 +170,43 @@ public class HardwareFragment extends Fragment {
 
     }
 
-    private void getBCRHWInfo() {
-        //开启条码枪服务 获取硬件信息
+    private void getBCRHWInfo()   {
+        //开启条码枪 获取硬件信息
+        BCRInterface bcrInterface = new BCRInterface();
+        int ret = bcrInterface.BCRInit();
+        if(ret != 0){
+            String err = bcrInterface.BCRGetLastErrorStr();
+            mBCRStatus.setText("异常:"+err);
+        }else{
+            mBCRStatus.setText("正常");
+            byte[] info = new byte[1024];
+            boolean flag = bcrInterface.BCRGetHWInformation(info, 1024);
+            if(flag){
+                try{
+                    String hwinfo = new String(info,"gbk");
+                    String[] str;
+                    if (hwinfo != "") {
+                        str = hwinfo.split("\n");
+                        hwinfo = "";//清空 ，排版
+                        for (int i = 0; i < str.length; i++) {
+                            hwinfo += str[i] + "\n" + "\n";
+                        }
 
+                    }
+
+                    mBCRHwInfoView.setText("\n"+hwinfo);
+
+                }catch (UnsupportedEncodingException e){
+                    e.printStackTrace();
+                }
+
+
+            }else{
+                String err = bcrInterface.BCRGetLastErrorStr();
+                mBCRHwInfoView.setText(err);
+            }
+
+        }
     }
 
     //获取打印机硬件信息
