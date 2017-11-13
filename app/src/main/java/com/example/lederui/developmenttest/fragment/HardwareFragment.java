@@ -1,5 +1,8 @@
 package com.example.lederui.developmenttest.fragment;
 
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.pm.ConfigurationInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -86,6 +89,7 @@ public class HardwareFragment extends Fragment {
             }
         }
     };
+    private String mVersion;
 
 
     @Nullable
@@ -98,6 +102,10 @@ public class HardwareFragment extends Fragment {
         client = new GoogleApiClient.Builder(getContext()).addApi(AppIndex.API).build();
 
         mPrinterLib = new PrinterInterface();
+
+        ActivityManager am = (ActivityManager) getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        ConfigurationInfo info = am.getDeviceConfigurationInfo();
+        mVersion = info.getGlEsVersion();
 
         getMainBoardInfo();
         startTimer();
@@ -147,7 +155,7 @@ public class HardwareFragment extends Fragment {
         sb.append("CPU型号：");
         sb.append(MainBoardMessage.getCpuInfo() + "\n" + "\n");
         sb.append("CPU主频：");
-        sb.append(MainBoardMessage.getCurCpuFreq() + " GHZ" + "\n" + "\n");
+        sb.append("0.996GHZ" + "\n" + "\n");
         sb.append("CPU核心数：");
         sb.append(MainBoardMessage.getNumCores() + "\n" + "\n");
         sb.append("内存容量：");
@@ -156,8 +164,8 @@ public class HardwareFragment extends Fragment {
         sb.append(MainBoardMessage.getStorageSize() + "\n" + "\n");
         sb.append("USB接口数量：");
         sb.append(MainBoardMessage.getUsbInterface(getContext()) + "\n" + "\n");
-        sb.append("屏幕分辨率：");
-        sb.append(MainBoardMessage.getMetris(getActivity()) + "\n" + "\n");
+        sb.append("支持OpenGL ES：");
+        sb.append(mVersion + "\n" + "\n");
         sb.append("网卡数量：");
         sb.append(MainBoardMessage.getNetworkCardCount() + "");
 

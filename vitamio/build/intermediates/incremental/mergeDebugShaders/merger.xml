@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="main"><source path="D:\Java\AndroidProjects\DevelopmentTest-bcr\vitamio\src\main\shaders"/></dataSet><dataSet config="debug"><source path="D:\Java\AndroidProjects\DevelopmentTest-bcr\vitamio\src\debug\shaders"/></dataSet></merger>
+<merger version="3"><dataSet config="main"><source path="E:\Software\DevelopmentTest\vitamio\src\main\shaders"/></dataSet><dataSet config="debug"><source path="E:\Software\DevelopmentTest\vitamio\src\debug\shaders"/></dataSet></merger>

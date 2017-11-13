@@ -45,12 +45,7 @@ public class SignalTestFragment extends Fragment {
     TextView strength;
     Unbinder unbinder;
 
-    private static final int NETWORKTYPE_WIFI = 0;
-    private static final int NETWORKTYPE_4G = 1;
-    private static final int NETWORKTYPE_2G = 2;
-    private static final int NETWORKTYPE_NONE = 3;
     public TelephonyManager mTelephonyManager;
-    public PhoneStatListener mListener;
     private WifiInfo wifiInfo = null;       //获得的Wifi信息
     private WifiManager wifiManager = null; //Wifi管理器
     private int level;                      //信号强度值
@@ -80,19 +75,15 @@ public class SignalTestFragment extends Fragment {
                 case 5:
                     wifiImage.setImageResource(R.drawable.id_default1_grey);
                     strength.setText("信号强度：" + level);
-//                    Toast.makeText(WIFIActivity.this,
-//                            "信号强度：" + level + " 无信号", Toast.LENGTH_SHORT)
-//                            .show();
                     break;
                 default:
                     //以防万一
                     wifiImage.setImageResource(R.drawable.id_default1_grey);
                     strength.setText("信号强度：" + level);
-//                    Toast.makeText(WIFIActivity.this, "无信号",
-//                            Toast.LENGTH_SHORT).show();
             }
         }
     };
+    private Timer mTimer;
 
     @Nullable
     @Override
@@ -102,9 +93,7 @@ public class SignalTestFragment extends Fragment {
         //获取telephonyManager
         mTelephonyManager = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
         //开始监听
-        mListener = new PhoneStatListener();
-        //监听信号强度
-        mTelephonyManager.listen(mListener, PhoneStatListener.LISTEN_SIGNAL_STRENGTHS);
+        getWiFiStrenght();
         return view;
     }
 
@@ -112,81 +101,34 @@ public class SignalTestFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+        mTimer.cancel();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mTelephonyManager.listen(mListener, PhoneStatListener.LISTEN_SIGNAL_STRENGTHS);
     }
     @Override
     public void onPause() {
         super.onPause();
-        //用户不在当前页面时，停止监听
-        mTelephonyManager.listen(mListener, PhoneStatListener.LISTEN_NONE);
     }
-    private class PhoneStatListener extends PhoneStateListener {
-        //获取信号强度
-        @Override
-        public void onSignalStrengthsChanged(SignalStrength signalStrength) {
-            super.onSignalStrengthsChanged(signalStrength);
-            //获取网络信号强度
-            //获取0-4的5种信号级别，越大信号越好,但是api23开始才能用
-            // int level = signalStrength.getLevel();
-            int gsmSignalStrength = signalStrength.getGsmSignalStrength();
-            //获取网络类型
-            int netWorkType = getNetWorkType(getContext());
-            switch (netWorkType) {
-                case NETWORKTYPE_WIFI:
-                    getWiFiStrenght();
-                    break;
-                case NETWORKTYPE_2G:
-                    strength.setText("当前网络为2G移动网络,信号强度为：" + gsmSignalStrength);
-                    break;
-                case NETWORKTYPE_4G:
-                    strength.setText("当前网络为4G移动网络,信号强度为：" + gsmSignalStrength);
-                    break;
-                case NETWORKTYPE_NONE:
-                    strength.setText("当前没有网络,信号强度为：" + gsmSignalStrength);
-                    break;
-                case -1:
-                    strength.setText("当前网络错误,信号强度为：" + gsmSignalStrength);
-                    break;
-            }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden){
+            mTimer.cancel();
+        }else {
+            getWiFiStrenght();
         }
-    }
-    public static int getNetWorkType(Context context) {
-        int mNetWorkType = -1;
-        ConnectivityManager manager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            String type = networkInfo.getTypeName();
-            if (type.equalsIgnoreCase("WIFI")) {
-                mNetWorkType = NETWORKTYPE_WIFI;
-            } else if (type.equalsIgnoreCase("MOBILE")) {
-                return isFastMobileNetwork(context) ? NETWORKTYPE_4G : NETWORKTYPE_2G;
-            }
-        } else {
-            mNetWorkType = NETWORKTYPE_NONE;//没有网络
-        }
-        return mNetWorkType;
-    }
-    /**判断网络类型*/
-    private static boolean isFastMobileNetwork(Context context) {
-        TelephonyManager telephonyManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (telephonyManager.getNetworkType() == TelephonyManager.NETWORK_TYPE_LTE) {
-            //这里只简单区分两种类型网络，认为4G网络为快速，但最终还需要参考信号值
-            return true;
-        }
-        return false;
     }
 
     private void getWiFiStrenght(){
         // 获得WifiManager
         wifiManager = (WifiManager) getContext().getSystemService(WIFI_SERVICE);
         // 使用定时器,每隔5秒获得一次信号强度值
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
+        mTimer = new Timer();
+        mTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 wifiInfo = wifiManager.getConnectionInfo();

@@ -140,7 +140,7 @@ public class MainBoardMessage {
         long sdCard = getSDCardMemory();
         long ram = getRAMMemory();
         long storage = rom + sdCard + ram;
-        String storageSize = formatFileSize(storage, true);
+        String storageSize = formatFileSize(storage, false);
         return storageSize;
     }
 
@@ -245,5 +245,40 @@ public class MainBoardMessage {
             }
         }
         return count;
+    }
+
+    //获取cpu温度
+    public static int getCpuTemp(){
+        String result = "N/A";
+        try {
+            FileReader fr = new FileReader("/sys/devices/virtual/thermal/thermal_zone0/temp");
+            BufferedReader br = new BufferedReader(fr);
+            String text = br.readLine();
+            if (text != "")
+                result = text.trim();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        int cpuTemp = Integer.parseInt(result);
+        return cpuTemp;
+    }
+
+    public static String getSEAndroid(){
+        StringBuffer buffer = null;
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process process = runtime.exec("getenforce");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            buffer =  new StringBuffer();
+            char[] buff = new char[1024];
+            int ch = 0;
+            while ((ch = reader.read(buff))!= -1){
+                buffer.append(buff, 0, ch);
+            }
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return buffer.toString();
     }
 }

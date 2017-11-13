@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import com.example.lederui.developmenttest.R;
+import com.example.lederui.developmenttest.data.MainBoardMessage;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +42,7 @@ public class SystemFragment extends Fragment {
 
     private void initView() {
         mVersions.setText(Build.VERSION.RELEASE);
+        mJurisdiction.setText(MainBoardMessage.getSEAndroid());
     }
 
     @Override

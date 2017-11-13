@@ -2,6 +2,7 @@ package com.example.lederui.developmenttest.fragment;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -184,114 +185,73 @@ public class BakingMachineFragment extends Fragment {
     }
 
     private void errorPrompt() {
+        final Handler handler = new Handler();
         timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                final int printStatus = mPrintInterface.PrinterStatus();
-                switch (printStatus) {
-                    case 0:
-                        str = "打印机状态：" + "正常";
-                        if (!normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            normalPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        final int printStatus = mPrintInterface.PrinterStatus();
+                        switch (printStatus) {
+                            case 0:
+                                printerStatus.setText("打印机状态：正常");
+//                                if (!normalPlay) {
+//                                    printerStatus.setText(str);
+//                                    simpleVideoPlayer.pauseMediaPlayer();
+//                                    normalPlay();
+//                                    simpleVideoPlayer.prepareMediaPlayer();
+//                                }
+                                break;
+                            case 1:
+                                printerStatus.setText("打印机状态：找不到打印机");
+//                                if (normalPlay) {
+//                                    printerStatus.setText(str);
+//                                    simpleVideoPlayer.pauseMediaPlayer();
+//                                    errorPlay();
+//                                    simpleVideoPlayer.prepareMediaPlayer();
+//                                }
+                                break;
+                            case 2:
+                                printerStatus.setText("打印机状态：数据线故障");
+                                break;
+                            case 3:
+                                printerStatus.setText("打印机状态：电源线故障");
+                                break;
+                            case 4:
+                                printerStatus.setText("打印机状态：打印机忙");
+                                break;
+                            case 5:
+                                printerStatus.setText("打印机状态：超时");
+                                break;
+                            case 8:
+                                printerStatus.setText("打印机状态：打印机上盖被打卡");
+                                break;
+                            case 9:
+                                printerStatus.setText("打印机状态：纸卷错误");
+                                break;
+                            case 10:
+                                printerStatus.setText("打印机状态：纸将尽");
+                                break;
+                            case 11:
+                                printerStatus.setText("打印机状态：其他错误");
+                                break;
+                            case 500:
+//                                str = "打印机状态：" + "正常";
+                                printerStatus.setText("打印机状态：正常");
+//                                if (!normalPlay) {
+//                                    printerStatus.setText(str);
+//                                    simpleVideoPlayer.pauseMediaPlayer();
+//                                    normalPlay();
+//                                    simpleVideoPlayer.prepareMediaPlayer();
+//                                }
+                                break;
+                            default:
+                                break;
                         }
-                        break;
-                    case 1:
-                        str = "打印机状态：" + "找不到打印机";
-                        if (normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            errorPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
-                        }
-                        break;
-                    case 2:
-                        str = "打印机状态：" + "数据线故障";
-                        if (normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            errorPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
-                        }
-                        break;
-                    case 3:
-                        str = "打印机状态：" + "电源线故障";
-                        if (normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            errorPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
-                        }
-                        break;
-                    case 4:
-                        str = "打印机状态：" + "打印机忙";
-                        if (normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            errorPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
-                        }
-                        break;
-                    case 5:
-                        str = "打印机状态：" + "超时";
-                        if (normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            errorPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
-                        }
-                        break;
-                    case 8:
-                        str = "打印机状态：" + "打印机上盖被打卡";
-                        if (normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            errorPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
-                        }
-                        break;
-                    case 9:
-                        str = "打印机状态：" + "纸卷错误";
-                        if (normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            errorPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
-                        }
-                        break;
-                    case 10:
-                        str = "打印机状态：" + "纸将尽";
-                        if (normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            errorPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
-                        }
-                        break;
-                    case 11:
-                        str = "打印机状态：" + "其他错误";
-                        if (normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            errorPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
-                        }
-                        break;
-                    case 500:
-                        str = "打印机状态：" + "正常";
-                        if (!normalPlay) {
-                            printerStatus.setText(str);
-                            simpleVideoPlayer.pauseMediaPlayer();
-                            normalPlay();
-                            simpleVideoPlayer.prepareMediaPlayer();
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                    }
+                });
             }
         }, 3000, 10000);
     }

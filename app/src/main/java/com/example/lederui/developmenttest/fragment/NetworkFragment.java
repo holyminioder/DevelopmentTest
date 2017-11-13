@@ -76,7 +76,7 @@ public class NetworkFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-        mToWeb.destroy();
+//        mToWeb.destroy();
     }
 
 

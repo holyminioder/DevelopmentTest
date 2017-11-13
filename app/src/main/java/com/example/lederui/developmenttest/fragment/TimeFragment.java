@@ -101,7 +101,7 @@ public class TimeFragment extends Fragment {
 
     public void setSystemTime(Context cxt, String datetimes) {
         try {
-            Process process = Runtime.getRuntime().exec("su");
+            Process process = Runtime.getRuntime().exec("xbsu");
             String datetime = "";
             datetime = datetimes.toString();
             DataOutputStream os = new DataOutputStream(process.getOutputStream());

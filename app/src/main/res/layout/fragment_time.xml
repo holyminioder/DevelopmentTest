@@ -191,7 +191,7 @@
         android:layout_marginTop="@dimen/resolving_power_text_height"
         android:layout_below="@id/ll_second"
         android:gravity="center_horizontal"
-        app:layout_widthPercent="30%">
+        app:layout_widthPercent="50%">
 
         <Button
             android:id="@+id/btn_ensure"

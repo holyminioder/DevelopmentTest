@@ -133,21 +133,20 @@ public class MainActivity extends AppCompatActivity {
     }
     //   界面初始化设置
     private void initDate() {
-        //CPU使用率
+        //CPU温度
         mHandler = new Handler();
-//        Timer timer = new Timer();
-//        timer.schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                final String occupancy = MainBoardMessage.cpuOccupancy();
-//                mHandler.post(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        mCpuOccupancy.setText("CPU占用率：" + occupancy + "%");
-//                    }
-//                });
-//            }
-//        }, 1000, 3000);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mCpuTemperature.setText("CPU温度：" + MainBoardMessage.getCpuTemp() + " ℃");
+                    }
+                });
+            }
+        }, 2000, 2000);
 
         mTypeFace = Typeface.createFromAsset(getAssets(), "fonts/simhei.ttf");
         mDiagnoseProcedure.setTypeface(mTypeFace);
@@ -265,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    Runtime.getRuntime().exec("su -c \"/system/bin/reboot\"");
+                                    Runtime.getRuntime().exec("xbsu -c \"/system/bin/reboot\"");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -284,7 +283,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    Process process = Runtime.getRuntime().exec("su");
+                                    Process process = Runtime.getRuntime().exec("xbsu");
                                     DataOutputStream out = new DataOutputStream(process.getOutputStream());
                                     out.writeBytes("reboot -p\n");
                                     out.writeBytes("exit\n");
