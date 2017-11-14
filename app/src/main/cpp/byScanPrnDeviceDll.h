@@ -496,6 +496,10 @@ bool __WINAPI PSetLineMode();
 **********************************************************************************************************************/
 int __WINAPI PPrintPage();
 
+//打印二维条码
+int __WINAPI PPrintQRCode(int module_width, int module_height, int border_size, int version, int
+err_correct_level,const char* databuf, int length);
+
 
 #ifdef	__cplusplus
 }

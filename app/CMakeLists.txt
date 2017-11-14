@@ -18,9 +18,9 @@ include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp)
 
 
 
-add_library(libscanprn SHARED IMPORTED)
-set_target_properties(libscanprn  PROPERTIES
-        IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libscanprn.so")
+add_library(libHWILatechPrinter SHARED IMPORTED)
+set_target_properties(libHWILatechPrinter  PROPERTIES
+        IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libHWILatechPrinter.so")
 
 add_library(libbitmap SHARED IMPORTED)
 set_target_properties(libbitmap  PROPERTIES
@@ -101,7 +101,7 @@ target_link_libraries( # Specifies the target library.
 
 target_link_libraries( # Specifies the target library.
                        native-printer
-                       libscanprn
+                       libHWILatechPrinter
                        libConfigFileINI
                        libflog
                        libusb1.0

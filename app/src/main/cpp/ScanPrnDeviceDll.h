@@ -170,7 +170,7 @@ extern "C" {
 *���ڲ���:	��
 *����ֵ��	�������     
 **********************************************************************************************************************/
-int __WINAPI byPInit(const char* input_dir, const char* output_dir);
+int __WINAPI PInit(const char* input_dir, const char* output_dir);
 
 /**********************************************************************************************************************
 * ���:	2.5
@@ -180,7 +180,7 @@ int __WINAPI byPInit(const char* input_dir, const char* output_dir);
 * ����ֵ:   	true:   �ɹ�
 *           	false:  ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetCutterMode(int const mode);
+bool __WINAPI PSetCutterMode(int const mode);
 
 /**********************************************************************************************************************
 * ���:	2.6
@@ -191,7 +191,7 @@ bool __WINAPI byPSetCutterMode(int const mode);
 *����ֵ:    	true    �ɹ�
 *           	false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPGetCutterMode(int* const mode);
+bool __WINAPI PGetCutterMode(int* const mode);
 
 /**********************************************************************************************************************
 * ���:	2.7
@@ -206,7 +206,7 @@ bool __WINAPI byPGetCutterMode(int* const mode);
 *����ֵ:   	true       �ɹ�
 *          	false      ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetFont(unsigned char const index, unsigned char const size, unsigned char const alignment);
+bool __WINAPI PSetFont(unsigned char const index, unsigned char const size, unsigned char const alignment);
 
 /**********************************************************************************************************************
 * ���:	2.8
@@ -216,7 +216,7 @@ bool __WINAPI byPSetFont(unsigned char const index, unsigned char const size, un
 *����ֵ:    	true      �ɹ�
 *           	false     ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetFontEmpha(unsigned char const n);
+bool __WINAPI PSetFontEmpha(unsigned char const n);
 
 /**********************************************************************************************************************
 * ���:	2.9
@@ -226,7 +226,7 @@ bool __WINAPI byPSetFontEmpha(unsigned char const n);
 *����ֵ:     	true    �ɹ�
 *             false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetLineSpace(unsigned char const size);
+bool __WINAPI PSetLineSpace(unsigned char const size);
 
 /**********************************************************************************************************************
 * ���:	2.10
@@ -236,7 +236,7 @@ bool __WINAPI byPSetLineSpace(unsigned char const size);
 *����ֵ:      true    �ɹ�
 *           false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetCharSpace(unsigned char const size);
+bool __WINAPI PSetCharSpace(unsigned char const size);
 
 /**********************************************************************************************************************
 * ���:	2.11
@@ -246,7 +246,7 @@ bool __WINAPI byPSetCharSpace(unsigned char const size);
 *����ֵ:      TRUE         �ɹ�
 *           FALSE        ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetLeftMargin(int const size);
+bool __WINAPI PSetLeftMargin(int const size);
 
 /**********************************************************************************************************************
 * ���:	2.12
@@ -256,7 +256,7 @@ bool __WINAPI byPSetLeftMargin(int const size);
 *����ֵ:      true    �ɹ�
 *           false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetAreaWidth(int const width);
+bool __WINAPI PSetAreaWidth(int const width);
 
 /**********************************************************************************************************************
 * ���:	2.13
@@ -273,7 +273,7 @@ bool __WINAPI byPSetAreaWidth(int const width);
 *                  MODE_SUPPORT_2DBAR	0x20    ֧�ִ�ӡ��ά����(PDF417)
 *		     MODE_SUPPORT_LOGO	0x40    ֧�ִ�ӡLOGO�Ĵ洢Ҫ��
 **********************************************************************************************************************/
-int __WINAPI byPQueryCapability();
+int __WINAPI PQueryCapability();
 
 /**********************************************************************************************************************
 * ���:	2.14
@@ -283,7 +283,7 @@ int __WINAPI byPQueryCapability();
 *����ֵ:      true      ����
 *           false     ��ӡ��״̬������
 **********************************************************************************************************************/
-bool __WINAPI byPPrinterIsReady();
+bool __WINAPI PPrinterIsReady();
 
 /**********************************************************************************************************************
 * ���:	2.15
@@ -294,7 +294,7 @@ bool __WINAPI byPPrinterIsReady();
 *����ֵ:     true    �ɹ�
 *          false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPGetDpi(int* const widthDpi,int* const heightDpi);
+bool __WINAPI PGetDpi(int* const widthDpi,int* const heightDpi);
 
 /**********************************************************************************************************************
 * ���:	2.16
@@ -304,7 +304,7 @@ bool __WINAPI byPGetDpi(int* const widthDpi,int* const heightDpi);
 *����ֵ:     true    �ɹ�
 *          false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPGetHWInformation(char* const hwInfo, unsigned int const length);
+bool __WINAPI PGetHWInformation(char* const hwInfo, unsigned int const length);
 
 /**********************************************************************************************************************
 * ���:	2.17
@@ -314,7 +314,7 @@ bool __WINAPI byPGetHWInformation(char* const hwInfo, unsigned int const length)
 *����ֵ��     true    �ɹ�
 *           false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPGetSWVersion(char* const swVersion, unsigned int const length);
+bool __WINAPI PGetSWVersion(char* const swVersion, unsigned int const length);
 
 /**********************************************************************************************************************
 * ���:	2.18
@@ -323,7 +323,7 @@ bool __WINAPI byPGetSWVersion(char* const swVersion, unsigned int const length);
 *���ڲ�����  ��
 *����ֵ��    ������
 **********************************************************************************************************************/
-int __WINAPI byPGetLastErrorCode();
+int __WINAPI PGetLastErrorCode();
 
 /**********************************************************************************************************************
 * ���:	2.19
@@ -332,7 +332,7 @@ int __WINAPI byPGetLastErrorCode();
 *���ڲ���:   errStr   �������������100���ַ�������������������\0��β
 *����ֵ��    ��
 **********************************************************************************************************************/
-void __WINAPI byPGetLastErrorStr(char* const errStr, unsigned int const length);
+void __WINAPI PGetLastErrorStr(char* const errStr, unsigned int const length);
 
 /**********************************************************************************************************************
 * ���:	2.20
@@ -341,7 +341,7 @@ void __WINAPI byPGetLastErrorStr(char* const errStr, unsigned int const length);
 *���ڲ���:   ��
 *����ֵ:     �������
 **********************************************************************************************************************/
-int __WINAPI byPPrintString(const char* const str);
+int __WINAPI PPrintString(const char* const str);
 
 /**********************************************************************************************************************
 * ���:	2.21
@@ -350,7 +350,7 @@ int __WINAPI byPPrintString(const char* const str);
 * ���ڲ���:	��
 * ����ֵ:	��
 **********************************************************************************************************************/
-void __WINAPI byPFeedLine(unsigned char const lineCount);
+void __WINAPI PFeedLine(unsigned char const lineCount);
 
 /**********************************************************************************************************************
 * ���:	2.22
@@ -360,7 +360,7 @@ void __WINAPI byPFeedLine(unsigned char const lineCount);
 *����ֵ:      true    �ɹ�
 *           false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPCutPaper();
+bool __WINAPI PCutPaper();
 
 /**********************************************************************************************************************
 * ���:	2.22
@@ -383,7 +383,7 @@ bool __WINAPI SetCutStyle(int style);
 * ���ڲ���:	��
 * ����ֵ:   	�������
 **********************************************************************************************************************/
-int __WINAPI byPrint1DBar(unsigned char width, unsigned char height, const char* const str, char codeType, char setType);
+int __WINAPI Print1DBar(unsigned char width, unsigned char height, const char* const str, char codeType, char setType);
 
 /**********************************************************************************************************************
 * ���:	2.24
@@ -400,7 +400,7 @@ int __WINAPI byPrint1DBar(unsigned char width, unsigned char height, const char*
 *���ڲ���:	��
 *����ֵ:     	�������
 **********************************************************************************************************************/
-int __WINAPI byPrintPDF417(int module_width, int module_height, int data_rows, int data_columns, int err_correct_level,const char* databuf, int length, int mode);
+int __WINAPI PrintPDF417(int module_width, int module_height, int data_rows, int data_columns, int err_correct_level,const char* databuf, int length, int mode);
 
 /**********************************************************************************************************************
 * ���:	2.25
@@ -414,7 +414,7 @@ int __WINAPI byPrintPDF417(int module_width, int module_height, int data_rows, i
 *����ֵ:      true      �ɹ�
 *           false     ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetUserChar(unsigned char c1, unsigned char c2, unsigned char m, const unsigned char* const data, int length);
+bool __WINAPI PSetUserChar(unsigned char c1, unsigned char c2, unsigned char m, const unsigned char* const data, int length);
 
 /**********************************************************************************************************************
 * ���:	2.26
@@ -425,7 +425,7 @@ bool __WINAPI byPSetUserChar(unsigned char c1, unsigned char c2, unsigned char m
 * ����ֵ:	TRUE �ɹ� 
 *           	FALSE ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPUnsetUserChar(unsigned char c1, unsigned char c2);
+bool __WINAPI PUnsetUserChar(unsigned char c1, unsigned char c2);
 
 /**********************************************************************************************************************
 * ���:	2.27
@@ -436,7 +436,7 @@ bool __WINAPI byPUnsetUserChar(unsigned char c1, unsigned char c2);
 ����ֵ��   true    �ɹ�
          false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPPrintUserChar(unsigned char c1, unsigned char c2);
+bool __WINAPI PPrintUserChar(unsigned char c1, unsigned char c2);
 
 /**********************************************************************************************************************
 * ���:	2.27
@@ -450,7 +450,7 @@ bool __WINAPI byPPrintUserChar(unsigned char c1, unsigned char c2);
 *����ֵ:       	true    �ɹ�
 *              false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPPrintUserBitmap(int xPos, int yPos, const char* const bitmap);
+bool __WINAPI PPrintUserBitmap(int xPos, int yPos, const char* const bitmap);
 
 /**********************************************************************************************************************
 * ���:	2.28
@@ -461,7 +461,7 @@ bool __WINAPI byPPrintUserBitmap(int xPos, int yPos, const char* const bitmap);
 *���ڲ���:	��
 *����ֵ:	�������
 **********************************************************************************************************************/
-int __WINAPI byPPrintDiskImage(int xPos, int yPos, const char* const imagePath);
+int __WINAPI PPrintDiskImage(int xPos, int yPos, const char* const imagePath);
 	
 /**********************************************************************************************************************
 * ���:	2.29
@@ -472,7 +472,7 @@ int __WINAPI byPPrintDiskImage(int xPos, int yPos, const char* const imagePath);
 *����ֵ��      TRUE         �ɹ�
 *            FALSE        ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPPrintBlackMark(const char* const barcode, unsigned int const length);
+bool __WINAPI PPrintBlackMark(const char* const barcode, unsigned int const length);
 
 /**********************************************************************************************************************
 * ���:	2.30
@@ -482,7 +482,7 @@ bool __WINAPI byPPrintBlackMark(const char* const barcode, unsigned int const le
 *����ֵ��	true    �ɹ�
 *           	false   ʧ��
 **********************************************************************************************************************/
-bool  __WINAPI byPGetTopMargin(int* const topMargin);
+bool  __WINAPI PGetTopMargin(int* const topMargin);
 
 /**********************************************************************************************************************
 * ���:	2.31
@@ -491,7 +491,7 @@ bool  __WINAPI byPGetTopMargin(int* const topMargin);
 *���ڲ�����     ��
 *����ֵ:        �������
 **********************************************************************************************************************/
-int __WINAPI byPPrintIsComplete(int const time_out);
+int __WINAPI PPrintIsComplete(int const time_out);
 
 /**********************************************************************************************************************
 * ���:	2.32
@@ -500,7 +500,7 @@ int __WINAPI byPPrintIsComplete(int const time_out);
 *���ڲ���:      ��
 *����ֵ:        ��һ����ֽ�뵱ǰ��ӡͷλ��֮��ĳ���  ��λ0.1mm
 **********************************************************************************************************************/
-long __WINAPI byPGetPrintLength();
+long __WINAPI PGetPrintLength();
 
 /**********************************************************************************************************************
 * ���:	2.33
@@ -511,7 +511,7 @@ long __WINAPI byPGetPrintLength();
 * ���ڲ���:	��
 * ����ֵ: 	TRUE �ɹ� FALSE ʧ��
 **********************************************************************************************************************/
-int __WINAPI byPrinterPrintMiniMark(unsigned int const length, const char* const barcode, int ColNumber);
+int __WINAPI PrinterPrintMiniMark(unsigned int const length, const char* const barcode, int ColNumber);
 
 /**********************************************************************************************************************
 * ���:	2.33
@@ -523,7 +523,7 @@ int __WINAPI byPrinterPrintMiniMark(unsigned int const length, const char* const
 
 
 **********************************************************************************************************************/
-int __WINAPI byPrinterPrintMiniMark2(unsigned int const length, const char* const barcode);
+int __WINAPI PrinterPrintMiniMark2(unsigned int const length, const char* const barcode);
 
 /**********************************************************************************************************************
 * ���:	2.34
@@ -534,7 +534,7 @@ int __WINAPI byPrinterPrintMiniMark2(unsigned int const length, const char* cons
 *����ֵ��   true    �ɹ�
 *         false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPLoadLogoImage(int imgCount, char* imgList[]);
+bool __WINAPI PLoadLogoImage(int imgCount, char* imgList[]);
 
 /**********************************************************************************************************************
 * ���:	2.35
@@ -545,7 +545,7 @@ bool __WINAPI byPLoadLogoImage(int imgCount, char* imgList[]);
 *����ֵ��    true    �ɹ�
 *          false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPLoadDiskLogo(int imgCount, char* imgFileList[]);
+bool __WINAPI PLoadDiskLogo(int imgCount, char* imgFileList[]);
 
 /**********************************************************************************************************************
 * ���:	2.36
@@ -557,7 +557,7 @@ bool __WINAPI byPLoadDiskLogo(int imgCount, char* imgFileList[]);
 *����ֵ��    true    �ɹ�
 *          false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPPrintLogo(unsigned int const xpos, unsigned int const ypos, int const index);
+bool __WINAPI PPrintLogo(unsigned int const xpos, unsigned int const ypos, int const index);
 
 /**********************************************************************************************************************
 * ���:	2.37
@@ -567,7 +567,7 @@ bool __WINAPI byPPrintLogo(unsigned int const xpos, unsigned int const ypos, int
 *����ֵ��   true    �ɹ�
 *         false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetAngle(unsigned int const angle);
+bool __WINAPI PSetAngle(unsigned int const angle);
 
 /**********************************************************************************************************************
 * ���:	2.38
@@ -577,7 +577,7 @@ bool __WINAPI byPSetAngle(unsigned int const angle);
 *����ֵ��   true    �ɹ�
 *         false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetBottomMargin(int const margin);
+bool __WINAPI PSetBottomMargin(int const margin);
 
 /**********************************************************************************************************************
 * ���:	2.39
@@ -588,7 +588,7 @@ bool __WINAPI byPSetBottomMargin(int const margin);
 *����ֵ��   true    �ɹ�
 *         false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPExec_ESC_POS(char* const command, int const strLen);
+bool __WINAPI PExec_ESC_POS(char* const command, int const strLen);
 
 /**********************************************************************************************************************
 * ���:	1.46	
@@ -601,7 +601,7 @@ bool __WINAPI byPExec_ESC_POS(char* const command, int const strLen);
 *����ֵ��	true    �ɹ�
 *		false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetPageMode(int width, int height, int leftTop_x, int leftTop_y);
+bool __WINAPI PSetPageMode(int width, int height, int leftTop_x, int leftTop_y);
 
 /**********************************************************************************************************************
 * ���:	1.47	
@@ -611,7 +611,7 @@ bool __WINAPI byPSetPageMode(int width, int height, int leftTop_x, int leftTop_y
 *����ֵ��	true    �ɹ�
 *		false   ʧ��
 **********************************************************************************************************************/
-bool __WINAPI byPSetLineMode();
+bool __WINAPI PSetLineMode();
 
 /**********************************************************************************************************************
 * ���:	1.48
@@ -621,7 +621,7 @@ bool __WINAPI byPSetLineMode();
 *����ֵ��	true    �ɹ�
 *		false   ʧ��
 **********************************************************************************************************************/
-int __WINAPI byPPrintPage();
+int __WINAPI PPrintPage();
 
 
 

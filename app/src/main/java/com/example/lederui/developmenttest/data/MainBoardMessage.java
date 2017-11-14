@@ -15,6 +15,7 @@ import com.example.lederui.developmenttest.utils.UtilsManager;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class MainBoardMessage {
             BufferedReader buffer = new BufferedReader(reader, 8192);
             str2 = buffer.readLine();
             arrayOfString = str2.split(":");
-            str2 = arrayOfString[1] +"";
+            str2 = arrayOfString[1] + "";
             reader.close();
             buffer.close();
         } catch (Exception e) {
@@ -101,8 +102,8 @@ public class MainBoardMessage {
                     "/sys/devices/system/cpu/cpu0/cpufreq/cpuinfo_max_freq");
             BufferedReader br = new BufferedReader(fr);
             String text = br.readLine();
-            if(text != "")
-            result = text.trim();
+            if (text != "")
+                result = text.trim();
 
             Log.i("hw", "result = " + result);
         } catch (FileNotFoundException e) {
@@ -173,12 +174,12 @@ public class MainBoardMessage {
 
     private static Context mContext;
 
-    public static void getContext(Context context){
+    public static void getContext(Context context) {
         mContext = context;
     }
 
     //获取RAM总内存大小
-    public static long getRAMMemory(){
+    public static long getRAMMemory() {
         ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
         ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
         am.getMemoryInfo(mi);
@@ -231,7 +232,7 @@ public class MainBoardMessage {
         return rate + "";
     }
 
-    public static int getNetworkCardCount(){
+    public static int getNetworkCardCount() {
         String wireless = UtilsManager.getMACAddress("wlan0");
         String wireless1 = UtilsManager.getMACAddress("wlan1");
         String wired = UtilsManager.getMACAddress("eth0");
@@ -239,8 +240,8 @@ public class MainBoardMessage {
         Log.e("MAC地址：", wired + "," + wired1 + "," + wireless + "," + wireless1 + ",");
         int count = 0;
         String[] macAddress = new String[]{wired, wired1, wireless, wireless1};
-        for (int i = 0; i < macAddress.length; i++){
-            if (macAddress[i] != ""){
+        for (int i = 0; i < macAddress.length; i++) {
+            if (macAddress[i] != "") {
                 count++;
             }
         }
@@ -248,31 +249,36 @@ public class MainBoardMessage {
     }
 
     //获取cpu温度
-    public static int getCpuTemp(){
-        String result = "N/A";
-        try {
-            FileReader fr = new FileReader("/sys/devices/virtual/thermal/thermal_zone0/temp");
-            BufferedReader br = new BufferedReader(fr);
-            String text = br.readLine();
-            if (text != "")
-                result = text.trim();
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static int getCpuTemp() {
+        String result = "38";
+        File file = new File("/sys/devices/virtual/thermal/thermal_zone0/temp");
+        if (file.exists()) {
+            try {
+                InputStreamReader read = new InputStreamReader(new FileInputStream(file));
+                BufferedReader br = new BufferedReader(read);
+                String text = br.readLine();
+                if (text != "")
+                    result = text.trim();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
+
         int cpuTemp = Integer.parseInt(result);
         return cpuTemp;
     }
 
-    public static String getSEAndroid(){
+    public static String getSEAndroid() {
         StringBuffer buffer = null;
         Runtime runtime = Runtime.getRuntime();
         try {
             Process process = runtime.exec("getenforce");
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            buffer =  new StringBuffer();
+            buffer = new StringBuffer();
             char[] buff = new char[1024];
             int ch = 0;
-            while ((ch = reader.read(buff))!= -1){
+            while ((ch = reader.read(buff)) != -1) {
                 buffer.append(buff, 0, ch);
             }
             reader.close();

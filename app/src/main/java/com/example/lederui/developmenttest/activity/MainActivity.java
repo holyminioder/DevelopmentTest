@@ -40,6 +40,7 @@ import com.example.lederui.developmenttest.fragment.TimeFragment;
 import com.example.lederui.developmenttest.fragment.TouchScreenTestFragment;
 
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -176,22 +177,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDev() {
         //打开打印机usb权限
-        try {
-            Process su;
-            su = Runtime.getRuntime().exec("/system/xbin/su");
-            String cmd = "chmod  777 /dev/bus/usb/* \n"
-                    + "exit\n";
-            String cmd2 = "chmod  777 /dev/bus/usb/*/* \n"
-                    + "exit\n";
-            su.getOutputStream().write(cmd.getBytes());
-            su.getOutputStream().write(cmd2.getBytes());
-            if (su.waitFor() != 0) {
+        File file = new File("/system/xbin/su");
+        if(file.exists()){
+            try {
+                Process su;
+                su = Runtime.getRuntime().exec("/system/xbin/su");
+                String cmd = "chmod  777 /dev/bus/usb/* \n"
+                        + "exit\n";
+                String cmd2 = "chmod  777 /dev/bus/usb/*/* \n"
+                        + "exit\n";
+                su.getOutputStream().write(cmd.getBytes());
+                su.getOutputStream().write(cmd2.getBytes());
+                if (su.waitFor() != 0) {
+                    throw new SecurityException();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 throw new SecurityException();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new SecurityException();
         }
+
 
     }
 
