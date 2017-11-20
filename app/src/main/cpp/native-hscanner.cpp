@@ -23,22 +23,22 @@ extern "C"
 
 
 /**********************************************************************************************************************
-* Hscanner接口错误定义
+* Hscanner????????
 **********************************************************************************************************************/
 #define	PRINTER_START_CODE			0x00
 #define	HSCANNER_NO_ERROR			0x00
-#define NO_HSCANNER  2001  //Can not find  找不到扫描枪
-#define DATA_LINE_ERROR   2002 //数据线故障 Data line error
-#define POWER_ERROR 2003    //电源线故障
-#define HSCANNER_IS_BUSY 2004 //扫描枪忙
-#define TIME_OUT 2005 //超时
-#define HSCANNER_DISABLED 2006//扫描枪被禁用
-#define GET_HWVERSION_ERROR 2007//获取扫描枪硬件信息失败
-#define START_ERROR 2008//启动扫描枪失败
-#define TABPAR_NONE 2009//参数文件不存在
-#define GET_ORIGIN_IMAGE_ERROR 2010//获取原始图像数据失败
-#define HSCANNER_READ_ERROR 2011//扫描枪数据读取错误
-#define OTHER_ERROR 2500//其他错误
+#define NO_HSCANNER  2001  //Can not find  ?????????
+#define DATA_LINE_ERROR   2002 //????????? Data line error
+#define POWER_ERROR 2003    //????????
+#define HSCANNER_IS_BUSY 2004 //?????
+#define TIME_OUT 2005 //???
+#define HSCANNER_DISABLED 2006//??????????
+#define GET_HWVERSION_ERROR 2007//????????????????
+#define START_ERROR 2008//???????????
+#define TABPAR_NONE 2009//?????????????
+#define GET_ORIGIN_IMAGE_ERROR 2010//???????????????
+#define HSCANNER_READ_ERROR 2011//??????????????
+#define OTHER_ERROR 2500//????????
 
 
 
@@ -113,15 +113,29 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_BCRInte
 }
 
 JNIEXPORT jint JNICALL Java_com_example_lederui_developmenttest_data_BCRInterface_BCRGetTicketInfo
-        (JNIEnv *env, jclass , jbyteArray ticketinfo, jint length) {
+        (JNIEnv *env, jclass , jbyteArray ticketinfo, jobject type) {
 
     int returnValue = -1;
     unsigned char info[4096] = {0};
     memset(info, 0, sizeof(info));
     returnValue = BCRGetTicketInfo(info, 4096);
-    LOGI("ticket length=%d",returnValue);
+    LOGI("ticket length=%d,%d\n",returnValue,info[0]);
+
 
     env->SetByteArrayRegion(ticketinfo,0,returnValue,(jbyte*)info);
+
+    jclass class_mode = env->FindClass("java/lang/Integer");
+    if(class_mode == NULL){
+        return false;
+    }
+    jfieldID id = env->GetFieldID(class_mode, "value", "I");
+    if(id == NULL){
+        return false;
+    }
+    env->SetIntField(type, id, info[0]);
+    //    jcharArray ti = env->NewCharArray(4096);
+//    env->SetCharArrayRegion(ti,0,returnValue,(jchar*)info);
+//    LOGI("ticketinfo[0]=  %d ti=%d", ticketinfo[0],ti[0]);
     return returnValue;
 }
 
@@ -130,7 +144,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_BCRInte
 
     bool flag = false;
     char info[1024] = {0x00};
-    //新大陆条码枪此接口函数名称错误 为BCRGetHWInfomation 正确为BCRGetHWInformation
+    //??????????????????????? ?BCRGetHWInfomation ????BCRGetHWInformation
     flag = BCRGetHWInformation(info, sizeof(info));
     env->SetByteArrayRegion(hwInfo,0,strlen(info),(jbyte*)info);
 
@@ -353,7 +367,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_BCRInte
 
     unsigned int l=0;
     flag = BCRGetDataLength(&l);
-    LOGI("len===%d",l);
+//    LOGI("len===%d",l);
 
     env->SetIntField(length, id, l);
     return flag;

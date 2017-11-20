@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.lederui.developmenttest.R;
+import com.example.lederui.developmenttest.activity.MainActivity;
 import com.example.lederui.developmenttest.data.BCRInterface;
 import com.example.lederui.developmenttest.data.MainBoardMessage;
 import com.example.lederui.developmenttest.data.PrinterInterface;
@@ -28,6 +29,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -113,6 +116,25 @@ public class HardwareFragment extends Fragment {
 
         //调用接口返回 errDevice data line error
         getPrinterHWInfo();
+
+        try {
+            getSystemInfomation();
+        } catch (ClassNotFoundException e) {
+            Log.i(MainActivity.TAG,"ClassNotFoundException");
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            Log.i(MainActivity.TAG,"NoSuchMethodException");
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(MainActivity.TAG,"IllegalAccessException");
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            Log.i(MainActivity.TAG,"InstantiationException");
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            Log.i(MainActivity.TAG,"InvocationTargetException");
+            e.printStackTrace();
+        }
 
         return view;
     }
@@ -313,4 +335,21 @@ public class HardwareFragment extends Fragment {
             }
         }
     }
+
+    public void getSystemInfomation() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, java.lang.InstantiationException {
+
+        Log.i(MainActivity.TAG, "in getHWInformation");
+        //得到调用的类
+        Class<?> aClass = Class.forName("com.cslc.android.easypos.HWInformation");
+        //创建实例
+
+//        Object hw = aClass.newInstance();
+        Object hw = aClass.newInstance();
+        //获取方法
+        Method method1 = aClass.getMethod("getHWInformation");
+
+        String returnValue = (String) method1.invoke(hw);
+        Log.i(MainActivity.TAG, "getHWInformation= \n" + returnValue);
+    }
+
 }

@@ -126,7 +126,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                 Log.d("runable", "running");
                 if(!mPrintInterface.PrintSample(mCutMode)) {
                     String str = GetLastErrStr();
-                    Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -179,6 +179,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                 mBtnAllCut.setEnabled(true);
                 mBtnHalfCut.setEnabled(false);
                 setCutMarkByINI("1");
+                PrintInit();
             }
         });
 
@@ -272,6 +273,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                 mBtnAllCut.setEnabled(false);
                 mBtnHalfCut.setEnabled(true);
                 setCutMarkByINI("0");
+                mPrintInterface.PrintInit();
                 break;
             case R.id.btn_noblackmark:
                 mCutMode = 1;
