@@ -25,22 +25,6 @@ android {
         }
     }
 
-//    signingConfigs {
-//        release {
-//            storeFile file("../zhongqikey.jks")
-//            storePassword '111111'
-//            keyAlias 'zhongqi'
-//            keyPassword '111111'
-//        }
-//
-//        debug {
-//            storeFile file("../zhongqikey.jks")
-//            storePassword '111111'
-//            keyAlias 'zhongqi'
-//            keyPassword '111111'
-//        }
-//    }
-
     buildTypes {
         release {
             minifyEnabled false
