@@ -15,7 +15,7 @@ android {
         externalNativeBuild {
             cmake {
                 cppFlags "-std=c++11"
-                targets "native-printer", "native-hscanner"
+                targets "native-printer", "native-hscanner", "native-scanner"
             }
 
         }
@@ -24,6 +24,22 @@ android {
             abiFilters 'armeabi', 'armeabi-v7a'
         }
     }
+
+//    signingConfigs {
+//        release {
+//            storeFile file("../invoke.jks")
+//            storePassword '123456'
+//            keyAlias 'sysInvoke'
+//            keyPassword '123456'
+//        }
+//
+//        debug {
+//            storeFile file("../invoke.jks")
+//            storePassword '123456'
+//            keyAlias 'sysInvoke'
+//            keyPassword '123456'
+//        }
+//    }
 
     buildTypes {
         release {
@@ -73,9 +89,8 @@ dependencies {
     compile files('libs/org.dtools.javaini-v1.1.00.jar')
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 
-
     compile files('libs/zxing-1.6-core.jar')
     compile 'com.android.support:design:25.3.1'
     compile project(':vitamio')
-
+    compile 'com.github.weilinhu:mylibaray:1.0'
 }

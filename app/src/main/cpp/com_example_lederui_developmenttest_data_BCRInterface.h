@@ -61,7 +61,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_BCRInte
  * Signature: ([BI)I
  */
 JNIEXPORT jint JNICALL Java_com_example_lederui_developmenttest_data_BCRInterface_BCRGetTicketInfo
-  (JNIEnv *, jclass , jbyteArray , jint);
+  (JNIEnv *, jclass , jbyteArray , jobject);
 
 /*
  * Class:     com_example_lederui_developmenttest_data_BCRInterface

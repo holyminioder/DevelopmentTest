@@ -40,6 +40,7 @@ import com.example.lederui.developmenttest.fragment.TimeFragment;
 import com.example.lederui.developmenttest.fragment.TouchScreenTestFragment;
 
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
     private TouchScreenTestFragment mTouchScreenFragment;
     private BatteryFragment mBatteryFragment;
     private SoundFragment mSoundFragment;
-    public static String TAG = "DEVELOPMENT";
+    public static String TAG = "DEVELOPMENTLOG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mPrinterLib = new PrinterInterface();
-//        initDev();
+        initDev();
         initDate();
 
 
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         mVoltage.setTypeface(mTypeFace);
 
         mCpuOccupancy.setVisibility(View.INVISIBLE);
-        mPrinterState.setVisibility(View.INVISIBLE);
+//        mPrinterState.setVisibility(View.INVISIBLE);
 
         //默认选中诊断程序
         initBackground(mDiagnoseProcedure);
@@ -176,23 +177,41 @@ public class MainActivity extends AppCompatActivity {
 
     private void initDev() {
         //打开打印机usb权限
-        try {
-            Process su;
-            su = Runtime.getRuntime().exec("/system/xbin/su");
-            String cmd = "chmod  777 /dev/bus/usb/* \n"
-                    + "exit\n";
-            String cmd2 = "chmod  777 /dev/bus/usb/*/* \n"
-                    + "exit\n";
-            su.getOutputStream().write(cmd.getBytes());
-            su.getOutputStream().write(cmd2.getBytes());
-            if (su.waitFor() != 0) {
+        File file = new File("/system/xbin/xbsu");
+        File fileBCR = new File("/dev/ttyACM1");
+        if(fileBCR.exists() && file.exists()){
+            //打印机设备权限
+//            try {
+//                Process su;
+//                su = Runtime.getRuntime().exec("/system/xbin/su");
+//                String cmd = "chmod  777 /dev/bus/usb/* \n"
+//                        + "exit\n";
+//                String cmd2 = "chmod  777 /dev/bus/usb/*/* \n"
+//                        + "exit\n";
+//                su.getOutputStream().write(cmd.getBytes());
+//                su.getOutputStream().write(cmd2.getBytes());
+//                if (su.waitFor() != 0) {
+//                    throw new SecurityException();
+//                }
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                throw new SecurityException();
+//            }
+
+            try {
+                Process su;
+                su = Runtime.getRuntime().exec("/system/xbin/xbsu");
+                String cmd ="chmod  777 /dev/ttyACM1\n"
+                        + "exit\n";
+                su.getOutputStream().write(cmd.getBytes());
+                if (su.waitFor() != 0) {
+                    throw new SecurityException();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 throw new SecurityException();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new SecurityException();
         }
-
     }
 
     //主分类的点击事件
@@ -304,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
 
     //添加listView的数据
     private void setListViewAdapter(String[] strings) {
+
         List<String> data = new ArrayList<>();
         for (int i = 0; i < strings.length; i++) {
             data.add(strings[i]);

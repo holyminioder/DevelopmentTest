@@ -111,6 +111,9 @@ JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterI
 JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintBarCode
   (JNIEnv *, jobject, jint, jint);
 
+JNIEXPORT jint JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintQRCode
+        (JNIEnv *, jobject);
+
 
 JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_GetLastErrStr
         (JNIEnv *, jobject);

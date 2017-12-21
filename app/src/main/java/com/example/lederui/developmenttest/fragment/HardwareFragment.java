@@ -17,9 +17,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.lederui.developmenttest.R;
+import com.example.lederui.developmenttest.activity.MainActivity;
 import com.example.lederui.developmenttest.data.BCRInterface;
 import com.example.lederui.developmenttest.data.MainBoardMessage;
 import com.example.lederui.developmenttest.data.PrinterInterface;
+import com.example.lederui.developmenttest.data.ScannerInterface;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -28,6 +30,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -60,6 +64,10 @@ public class HardwareFragment extends Fragment {
     TextView mPrinterStatusView;
     @BindView(R.id.net_card_speed)
     TextView netCardSpeed;
+    @BindView(R.id.scanner_hwinfo_view)
+    TextView mScannerHwinfoView;
+    @BindView(R.id.scanner_status_view)
+    TextView mScannerStatusView;
 
     private PrinterInterface mPrinterLib;
     private GoogleApiClient client;
@@ -80,10 +88,10 @@ public class HardwareFragment extends Fragment {
                 String state = msg.getData().getString("state");
                 buffer = new StringBuffer();
                 buffer.append("以太网状态：").append(state + "\n" + "\n");
-                if ("down".equals(state)){
-                    buffer.append("网卡速度：100M");
-                }else {
+                if ("up".equals(state)) {
                     buffer.append("网卡速度：").append(speed).append("M");
+                } else {
+                    buffer.append("网卡速度：100M");
                 }
                 netCardSpeed.setText(buffer.toString());
             }
@@ -113,6 +121,27 @@ public class HardwareFragment extends Fragment {
 
         //调用接口返回 errDevice data line error
         getPrinterHWInfo();
+
+        getScannerHWInfo();
+
+        try {
+            getSystemInfomation();
+        } catch (ClassNotFoundException e) {
+            Log.i(MainActivity.TAG, "ClassNotFoundException");
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            Log.i(MainActivity.TAG, "NoSuchMethodException");
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            Log.i(MainActivity.TAG, "IllegalAccessException");
+            e.printStackTrace();
+        } catch (java.lang.InstantiationException e) {
+            Log.i(MainActivity.TAG, "InstantiationException");
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            Log.i(MainActivity.TAG, "InvocationTargetException");
+            e.printStackTrace();
+        }
 
         return view;
     }
@@ -155,7 +184,7 @@ public class HardwareFragment extends Fragment {
         sb.append("CPU型号：");
         sb.append(MainBoardMessage.getCpuInfo() + "\n" + "\n");
         sb.append("CPU主频：");
-        sb.append("0.996GHZ" + "\n" + "\n");
+        sb.append(MainBoardMessage.getCurCpuFreq() + "GHZ" + "\n" + "\n");
         sb.append("CPU核心数：");
         sb.append(MainBoardMessage.getNumCores() + "\n" + "\n");
         sb.append("内存容量：");
@@ -178,20 +207,20 @@ public class HardwareFragment extends Fragment {
 
     }
 
-    private void getBCRHWInfo()   {
+    private void getBCRHWInfo() {
         //开启条码枪 获取硬件信息
         BCRInterface bcrInterface = new BCRInterface();
         int ret = bcrInterface.BCRInit();
-        if(ret != 0){
+        if (ret != 0) {
             String err = bcrInterface.BCRGetLastErrorStr();
-            mBCRStatus.setText("异常:"+err);
-        }else{
+            mBCRStatus.setText("异常:" + err);
+        } else {
             mBCRStatus.setText("正常");
             byte[] info = new byte[1024];
             boolean flag = bcrInterface.BCRGetHWInformation(info, 1024);
-            if(flag){
-                try{
-                    String hwinfo = new String(info,"gbk");
+            if (flag) {
+                try {
+                    String hwinfo = new String(info, "gbk");
                     String[] str;
                     if (hwinfo != "") {
                         str = hwinfo.split("\n");
@@ -202,14 +231,14 @@ public class HardwareFragment extends Fragment {
 
                     }
 
-                    mBCRHwInfoView.setText("\n"+hwinfo);
+                    mBCRHwInfoView.setText("\n" + hwinfo);
 
-                }catch (UnsupportedEncodingException e){
+                } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
 
 
-            }else{
+            } else {
                 String err = bcrInterface.BCRGetLastErrorStr();
                 mBCRHwInfoView.setText(err);
             }
@@ -238,8 +267,42 @@ public class HardwareFragment extends Fragment {
         }
     }
 
+    private void getScannerHWInfo() {
+        ScannerInterface si = new ScannerInterface();
+        int ret = si.SInit();
+        if (ret != 0) {
+            String errStr = si.SGetLastErrorStr(null, 256);
+            mScannerStatusView.setText(errStr);
+        }else {
+            mScannerStatusView.setText("正常");
+            byte[] info = new byte[1024];
+            boolean flag = si.SGetHWInformation(info, 1024);
+            if (flag) {
+                try {
+                    String hwinfo = new String(info, "gbk");
+                    String[] str;
+                    if (hwinfo != "") {
+                        str = hwinfo.split("\n");
+                        hwinfo = "";//清空 ，排版
+                        for (int i = 0; i < str.length; i++) {
+                            hwinfo += str[i] + "\n" + "\n";
+                        }
+
+                    }
+
+                    mScannerHwinfoView.setText("\n" + hwinfo);
+
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
 
 
+            } else {
+                String err = si.SGetLastErrorStr(null, 256);
+                mBCRHwInfoView.setText(err);
+            }
+        }
+    }
 
     public Action getIndexApiAction() {
         Thing object = new Thing.Builder()
@@ -253,11 +316,11 @@ public class HardwareFragment extends Fragment {
                 .build();
     }
 
-    private void startTimer(){
-        if (timer == null){
+    private void startTimer() {
+        if (timer == null) {
             timer = new Timer();
         }
-        if (task == null){
+        if (task == null) {
             task = new TimerTask() {
                 @Override
                 public void run() {
@@ -285,12 +348,12 @@ public class HardwareFragment extends Fragment {
         }
     }
 
-    private void stopTimer(){
-        if (timer != null){
+    private void stopTimer() {
+        if (timer != null) {
             timer.cancel();
             timer = null;
         }
-        if (task != null){
+        if (task != null) {
             task.cancel();
             task = null;
         }
@@ -301,16 +364,32 @@ public class HardwareFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         first++;
-        if (hidden){
+        if (hidden) {
             if (first == 3) {
                 stopTimer();
             }
-        }
-        else {
-            if (first == 4){
+        } else {
+            if (first == 4) {
                 startTimer();
                 first = 2;
             }
         }
     }
+
+    public void getSystemInfomation() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, java.lang.InstantiationException {
+
+        Log.i(MainActivity.TAG, "in getHWInformation");
+        //得到调用的类
+        Class<?> aClass = Class.forName("com.cslc.android.easypos.HWInformation");
+        //创建实例
+
+//        Object hw = aClass.newInstance();
+        Object hw = aClass.newInstance();
+        //获取方法
+        Method method1 = aClass.getMethod("getHWInformation");
+
+        String returnValue = (String) method1.invoke(hw);
+        Log.i(MainActivity.TAG, "getHWInformation= \n" + returnValue);
+    }
+
 }

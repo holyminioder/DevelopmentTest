@@ -149,7 +149,9 @@ public class BarcodeReaderFragment extends Fragment {
             switch (msg.what) {
                 case 1:
                     String ticketInfo = msg.getData().getString(TICKET_INFO);
-                    int type = msg.getData().getInt("info");
+                    int type = msg.getData().getInt(DATA_TYPE);
+                    Log.i(MainActivity.TAG, "code type" + type);
+                    mBCRCodeType.setText(type+"");
                     mScandata_view.setText(ticketInfo);
                     switch (type) {
                         case 152:
@@ -237,12 +239,14 @@ public class BarcodeReaderFragment extends Fragment {
                     byte[] ticketinfo = new byte[4096];
                     Integer len = new Integer(0);
                     mBCRInerface.BCRGetDataLength(len);
-                    int length = mBCRInerface.BCRGetTicketInfo(ticketinfo, 4096);
+                    Integer type = new Integer(0);
+                    int length = mBCRInerface.BCRGetTicketInfo(ticketinfo, type);
                     ScanData = ticketinfo;
                     ticketLength = len;
-                    Log.i(MainActivity.TAG,"BCRGetTicketInfo"+"\nlength="+len);
-                    if(len > 0){
-                        int type = ticketinfo[0] & 0xff;
+//                    Log.i(MainActivity.TAG,"BCRGetTicketInfo"+"\nlength="+len);
+                    if(len > 0 ){
+                        Log.i(MainActivity.TAG,"ticketinfo[0]="+ticketinfo[0]+"\n"+"type="+type);
+//                        int type = ticketinfo[0] & 0xff;
                         try {
                             String ticketmsg = new String(ticketinfo, 7, len, "gbk");
                             String tmpstr= new String(ScanData, 7, length, "gbk");

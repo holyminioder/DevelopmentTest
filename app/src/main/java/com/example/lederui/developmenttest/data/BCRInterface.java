@@ -6,7 +6,7 @@ package com.example.lederui.developmenttest.data;
 
 public class BCRInterface {
     static {
-        System.loadLibrary("HWIILOTBCR");
+        System.loadLibrary("HWICgltBCR");
         System.loadLibrary("native-hscanner");
     }
 
@@ -16,7 +16,7 @@ public class BCRInterface {
     public static native boolean BCRStopScan();
     public static native boolean BCRScanIsComplete();
     public static native boolean BCRIsReady();
-    public static native int BCRGetTicketInfo(byte[] pSrc, int nW);
+    public static native int BCRGetTicketInfo(byte[] pSrc, Integer nW);
     public static native boolean BCRGetHWInformation(byte[] hwInfo  , int length);
     public static native boolean BCRBeep(int tone);
 

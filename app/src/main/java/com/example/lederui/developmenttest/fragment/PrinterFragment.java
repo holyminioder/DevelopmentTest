@@ -24,6 +24,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.lederui.developmenttest.R;
+import com.example.lederui.developmenttest.activity.MainActivity;
 import com.example.lederui.developmenttest.data.PrinterInterface;
 
 import org.dtools.ini.BasicIniFile;
@@ -125,7 +126,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                 Log.d("runable", "running");
                 if(!mPrintInterface.PrintSample(mCutMode)) {
                     String str = GetLastErrStr();
-                    Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -149,6 +150,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mCodetype = position;
+                Log.i(MainActivity.TAG, "position ="+position);
             }
 
             @Override
@@ -177,6 +179,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                 mBtnAllCut.setEnabled(true);
                 mBtnHalfCut.setEnabled(false);
                 setCutMarkByINI("1");
+                PrintInit();
             }
         });
 
@@ -270,6 +273,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                 mBtnAllCut.setEnabled(false);
                 mBtnHalfCut.setEnabled(true);
                 setCutMarkByINI("0");
+                mPrintInterface.PrintInit();
                 break;
             case R.id.btn_noblackmark:
                 mCutMode = 1;
@@ -321,6 +325,8 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
                 break;
             case R.id.btn_printCode:
                 mPrintInterface.PrintBarCode(mCutMode,mCodetype);
+                Log.i(MainActivity.TAG,"in PrintBarCode "+mCodetype+" mCutMode"+mCutMode);
+
                 break;
             case R.id.btn_printPageMode:
                 if(!mPrintInterface.PrintPaperMode(mCutMode)) {
@@ -413,7 +419,7 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
   //set printer halfcut or  allcut  by .INI file
     private void setCutMarkByINI(String mode) {
         IniFile iniFile = new BasicIniFile();
-        File file = new File("/sdcard/conf/HWISNBCPrinter.ini");
+        File file = new File("/sdcard/config/HWILatechPrinter.ini");
         IniFileReader iniFileReader = new IniFileReader(iniFile, file);
         IniFileWriter iniFileWriter = new IniFileWriter(iniFile, file);
         try {

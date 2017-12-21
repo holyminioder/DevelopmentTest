@@ -1,73 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_marginLeft="@dimen/activity_main_bottom_high"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/button_margin_bottom"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/text_size"
-            android:text="@string/reader_state"/>
-
-        <EditText
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/frame_shape"
-            android:text="@string/state"/>
-
-    </LinearLayout>
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/tv_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/button_margin_bottom"
+        android:text="识别结果"
+        android:layout_alignLeft="@+id/result_view"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/text_size"
-        android:text="@string/reader_result"/>
+        android:textSize="20dp"
+        android:layout_marginTop="50dp"
+        />
 
     <TextView
-        android:layout_width="500dp"
+        android:id="@+id/result_view"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/darker_gray"
-        android:layout_marginTop="@dimen/text_spacing"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="80dp"
+        app:layout_widthPercent="60%"
+        app:layout_heightPercent="70%"
+        android:background="#D2CBCB"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/text_view_padding"
-        android:layout_marginBottom="@dimen/button_margin_bottom">
+    <TextView
+        android:id="@+id/textView_status"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_widthPercent="20%"
+        app:layout_heightPercent="20%"
+        android:layout_toRightOf="@+id/result_view"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="100dp"
+        android:text="读票机状态"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size"
-            android:textStyle="bold"
-            android:padding="@dimen/text_spacing"
-            android:layout_marginLeft="@dimen/button_margin_left"
-            android:text="@string/ticket_recognition"/>
+    <TextView
+        android:id="@+id/scanner_status"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBaseline="@+id/textView_status"
+        android:layout_toRightOf="@+id/textView_status"
+        app:layout_widthPercent="20%"
+        app:layout_heightPercent="20%"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size"
-            android:padding="@dimen/text_spacing"
-            android:layout_marginLeft="@dimen/button_margin_left"
-            android:text="@string/mark_printing"/>
 
-    </LinearLayout>
+    <TextView
+        android:id="@+id/textView_type"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/textView_status"
+        android:layout_marginTop="30dp"
+        android:layout_alignLeft="@+id/textView_status"
+        app:layout_widthPercent="20%"
+        app:layout_heightPercent="20%"
+        android:text="读票类型"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/scanner_codetype"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBaseline="@+id/textView_type"
+        android:layout_toRightOf="@+id/textView_type"
+        app:layout_widthPercent="20%"
+        app:layout_heightPercent="20%"
+        android:layout_marginLeft="20dp"
+        android:textSize="20dp"
+        android:text="PDF417"
+        android:textStyle="bold"/>
+
+
+    <Button
+        android:id="@+id/bt_sign_print"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/textView_type"
+        android:layout_marginTop="30dp"
+        app:layout_widthPercent="10%"
+        app:layout_heightPercent="10%"
+        android:background="@drawable/btn_style_five_selector"
+        android:text="标记打印"
+        android:textColor="@android:color/white"
+        android:layout_alignLeft="@+id/textView_type"
+        android:textSize="20dp"
+        android:textStyle="bold"/>
+
+    <Spinner
+        android:id="@+id/sign_spinner"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignBaseline="@+id/bt_sign_print"
+        android:layout_alignLeft="@+id/scanner_status"
+        app:layout_widthPercent="20%"
+        app:layout_heightPercent="20%"
+        android:spinnerMode="dropdown"
+        />
+
+</android.support.percent.PercentRelativeLayout>

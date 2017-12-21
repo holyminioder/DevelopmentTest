@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.data.PrinterInterface;
@@ -30,6 +29,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 import static com.example.lederui.developmenttest.data.PrinterInterface.GetLastErrStr;
+import static com.example.lederui.developmenttest.data.PrinterInterface.PrintInit;
 
 /**
  * Created by holyminier on 2017/4/21.
@@ -78,8 +78,13 @@ public class BakingMachineFragment extends Fragment {
             fileNames.add(new String(data, 0, data.length - 1));
         }
         normalPlay();
+        initPrinter();
         errorPrompt();
         return view;
+    }
+
+    private void initPrinter(){
+        PrintInit();
     }
 
     private void normalPlay() {
@@ -158,6 +163,7 @@ public class BakingMachineFragment extends Fragment {
                 }
                 break;
             case R.id.print:
+                if(!PrintInit()) return;
                 if (!isPrint) {
                     String strNum = selectNum.getSelectedItem().toString();
                     int num = Integer.valueOf(strNum);
@@ -168,10 +174,11 @@ public class BakingMachineFragment extends Fragment {
                         public void run() {
                             if (!mPrintInterface.PrintSample(mCutMode)) {
                                 String str = GetLastErrStr();
-                                Toast.makeText(getContext(), "errStr:" + str, Toast.LENGTH_SHORT).show();
+                            }else {
+                                mPDFCode = mPrintInterface.GetPDFCode();
+                                Log.i("printer", "btn_printSample mpdfcode = " + mPDFCode);
                             }
-                            mPDFCode = mPrintInterface.GetPDFCode();
-                            Log.i("printer", "btn_printSample mpdfcode = " + mPDFCode);
+
                         }
                     }, 0, 1000 * num);
                     isPrint = true;
