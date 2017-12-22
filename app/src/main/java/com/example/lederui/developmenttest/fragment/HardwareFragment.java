@@ -29,6 +29,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Timer;
@@ -341,10 +342,12 @@ public class HardwareFragment extends Fragment {
         Log.i(MainActivity.TAG, "in getHWInformation");
         //得到调用的类
         Class<?> aClass = Class.forName("com.cslc.android.easypos.HWInformation");
+        Constructor constructor = aClass.getConstructor();
+
         //创建实例
 
 //        Object hw = aClass.newInstance();
-        Object hw = aClass.newInstance();
+        Object hw = constructor.newInstance();
         //获取方法
         Method method1 = aClass.getMethod("getHWInformation");
 

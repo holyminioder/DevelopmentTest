@@ -286,6 +286,4 @@ public class BarcodeReaderFragment extends Fragment {
                 .build();
     }
 
-
-
 }
