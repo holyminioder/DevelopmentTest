@@ -1,5 +1,7 @@
 package com.example.lederui.developmenttest.fragment;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,10 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.activity.MainActivity;
@@ -23,7 +24,6 @@ import java.io.UnsupportedEncodingException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -41,7 +41,7 @@ public class TicketReaderFragment extends Fragment {
     @BindView(R.id.scanner_codetype)
     TextView mScannerCodetype;
     @BindView(R.id.bt_sign_print)
-    Button mBtSignPrint;
+    CheckBox mBtSignPrint;
     @BindView(R.id.sign_spinner)
     Spinner mSignSpinner;
     Unbinder unbinder;
@@ -146,6 +146,19 @@ public class TicketReaderFragment extends Fragment {
                         if(mScanner.ScanIsComplete()){
                             //添加beep会get不到数据？？
                             Log.i(MainActivity.TAG, "ScanIsComplete");
+                            if (mBtSignPrint.isChecked()){
+                                int value = 1;
+                                String str = mSignSpinner.getSelectedItem().toString();
+                                if ("已兑奖".equals(str)){
+                                    value = 1;
+                                }else if ("已取消".equals(str)){
+                                    value = 3;
+                                }
+                                mScanner.SPrintBrandImage(null, value, 340, 200);
+                                mScanner.SRollBack();
+                            }else {
+                                mScanner.SRollBack();
+                            }
                             break;
                         }
                         //500ms轮询一次
@@ -183,6 +196,28 @@ public class TicketReaderFragment extends Fragment {
                         }
                     }
 
+                    byte[] info = new byte[1024];
+                    boolean flag = mScanner.SGetHWInformation(info, 1024);
+                    if (flag) {
+                        try {
+                            String hwinfo = new String(info, "gbk");
+                            String[] str;
+                            if (hwinfo != "") {
+                                str = hwinfo.split("\n");
+                                hwinfo = "";//清空 ，排版
+                                for (int i = 0; i < str.length; i++) {
+                                    hwinfo += str[i] + "\n" + "\n";
+                                }
+                            }
+                            SharedPreferences shared = getActivity().getSharedPreferences("message", Activity.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = shared.edit();
+                            editor.putString("scanInfo", hwinfo);
+                            editor.putBoolean("init", isScan);
+                            editor.commit();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         }).start();
@@ -193,19 +228,6 @@ public class TicketReaderFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
-    }
-
-    @OnClick(R.id.bt_sign_print)
-    public void onViewClicked() {
-        int value = 1;
-        String str = mSignSpinner.getSelectedItem().toString();
-        if ("已兑奖".equals(str)){
-            value = 1;
-        }else if ("已取消".equals(str)){
-            value = 3;
-        }
-        mScanner.SPrintBrandImage(null, value, 340, 200);
-        mScanner.SRollBack();
     }
 
     int num = 0;

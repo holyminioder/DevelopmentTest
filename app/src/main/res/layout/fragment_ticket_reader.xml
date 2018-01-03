@@ -77,21 +77,19 @@
         app:layout_heightPercent="20%"
         android:layout_marginLeft="20dp"
         android:textSize="20dp"
-        android:text="PDF417"
+        android:text=" "
         android:textStyle="bold"/>
 
 
-    <Button
+    <CheckBox
         android:id="@+id/bt_sign_print"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_below="@+id/textView_type"
         android:layout_marginTop="30dp"
-        app:layout_widthPercent="10%"
-        app:layout_heightPercent="10%"
-        android:background="@drawable/btn_style_five_selector"
+        app:layout_widthPercent="20%"
+        app:layout_heightPercent="20%"
         android:text="标记打印"
-        android:textColor="@android:color/white"
         android:layout_alignLeft="@+id/textView_type"
         android:textSize="20dp"
         android:textStyle="bold"/>
