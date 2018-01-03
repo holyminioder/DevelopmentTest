@@ -18,9 +18,9 @@ include_directories(${CMAKE_SOURCE_DIR}/src/main/cpp)
 
 
 
-add_library(libHWILatechPrinter SHARED IMPORTED)
-set_target_properties(libHWILatechPrinter  PROPERTIES
-        IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libHWILatechPrinter.so")
+add_library(libHWISNBCPrinter SHARED IMPORTED)
+set_target_properties(libHWISNBCPrinter  PROPERTIES
+        IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libHWISNBCPrinter.so")
 
 add_library(libbitmap SHARED IMPORTED)
 set_target_properties(libbitmap  PROPERTIES
@@ -38,11 +38,13 @@ add_library(libusb1.0 SHARED IMPORTED)
 set_target_properties(libusb1.0  PROPERTIES
         IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libusb1.0.so")
 
-add_library(libHWICgltBCR SHARED IMPORTED)
-set_target_properties(libHWICgltBCR  PROPERTIES
-                IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libHWICgltBCR.so")
+add_library(libHWILatechBCR-uc SHARED IMPORTED)
+set_target_properties(libHWILatechBCR-uc  PROPERTIES
+                IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libHWILatechBCR-uc.so")
 
-
+add_library(libscanner SHARED IMPORTED)
+set_target_properties(libscanner  PROPERTIES
+                IMPORTED_LOCATION  "${libs}/${ANDROID_ABI}/libscanner.so")
 
 set(CMAKE_CXX_FLAGS "-std=c++11")
 
@@ -69,6 +71,17 @@ add_library( # Sets the name of the library.
              # file are automatically included.
              src/main/cpp/native-hscanner.cpp)
 
+add_library( # Sets the name of the library.
+             native-scanner
+
+             # Sets the library as a shared library.
+             SHARED
+
+             # Provides a relative path to your source file(s).
+             # Associated headers in the same location as their source
+             # file are automatically included.
+             src/main/cpp/native-scanner.cpp)
+
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by
 # default, you only need to specify the name of the public NDK library
@@ -93,7 +106,7 @@ find_library( # Sets the name of the path variable.
 
 target_link_libraries( # Specifies the target library.
                        native-hscanner
-                       libHWICgltBCR
+                       libHWILatechBCR-uc
 
                        # Links the target library to the log library
                        # included in the NDK.
@@ -101,7 +114,7 @@ target_link_libraries( # Specifies the target library.
 
 target_link_libraries( # Specifies the target library.
                        native-printer
-                       libHWILatechPrinter
+                       libHWISNBCPrinter
                        libConfigFileINI
                        libflog
                        libusb1.0
@@ -111,3 +124,11 @@ target_link_libraries( # Specifies the target library.
 
                        ${log-lib}
                        )
+
+target_link_libraries( # Specifies the target library.
+                       native-scanner
+                       libscanner
+
+                       # Links the target library to the log library
+                       # included in the NDK.
+                       ${log-lib} )

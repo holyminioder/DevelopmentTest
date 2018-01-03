@@ -40,7 +40,6 @@ import com.example.lederui.developmenttest.fragment.TimeFragment;
 import com.example.lederui.developmenttest.fragment.TouchScreenTestFragment;
 
 import java.io.DataOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -127,9 +126,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         mPrinterLib = new PrinterInterface();
-        initDev();
+//        initDev();
         initDate();
-
 
     }
     //   界面初始化设置
@@ -166,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
         mVoltage.setTypeface(mTypeFace);
 
         mCpuOccupancy.setVisibility(View.INVISIBLE);
-        mPrinterState.setVisibility(View.INVISIBLE);
+//        mPrinterState.setVisibility(View.INVISIBLE);
 
         //默认选中诊断程序
         initBackground(mDiagnoseProcedure);
@@ -176,10 +174,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDev() {
+
+        try {
+            Process su = Runtime.getRuntime().exec("/system/xbin/su");
+
+            if (su.waitFor() != 0) {
+                throw new SecurityException();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SecurityException();
+        }
         //打开打印机usb权限
-        File file = new File("/system/xbin/xbsu");
-        File fileBCR = new File("/dev/ttyACM1");
-        if(fileBCR.exists() && file.exists()){
+//        File file = new File("/system/xbin/xbsu");
+//        File fileBCR = new File("/dev/ttyACM1");
+//        if(fileBCR.exists() && file.exists()){
             //打印机设备权限
 //            try {
 //                Process su;
@@ -198,20 +207,6 @@ public class MainActivity extends AppCompatActivity {
 //                throw new SecurityException();
 //            }
 
-            try {
-                Process su;
-                su = Runtime.getRuntime().exec("/system/xbin/xbsu");
-                String cmd ="chmod  777 /dev/ttyACM1\n"
-                        + "exit\n";
-                su.getOutputStream().write(cmd.getBytes());
-                if (su.waitFor() != 0) {
-                    throw new SecurityException();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new SecurityException();
-            }
-        }
 
 
     }

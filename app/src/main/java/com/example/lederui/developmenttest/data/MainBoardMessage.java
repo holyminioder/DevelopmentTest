@@ -138,9 +138,9 @@ public class MainBoardMessage {
     //存储容量
     public static String getStorageSize() {
         long rom = getTotalInternalMemorySize();
-        long sdCard = getSDCardMemory();
-        long ram = getRAMMemory();
-        long storage = rom + sdCard + ram;
+//        long sdCard = getSDCardMemory();
+//        long ram = getRAMMemory();
+        long storage = rom ;
         String storageSize = formatFileSize(storage, false);
         return storageSize;
     }

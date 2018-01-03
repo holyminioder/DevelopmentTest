@@ -33,7 +33,7 @@ import java.io.UnsupportedEncodingException;
 public class BarcodeReaderFragment extends Fragment {
 
     static {
-        System.loadLibrary("HWICgltBCR");
+        System.loadLibrary("HWILatechBCR-uc");
     }
 
     private View mView;

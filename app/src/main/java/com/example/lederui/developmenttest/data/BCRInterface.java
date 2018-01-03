@@ -6,7 +6,7 @@ package com.example.lederui.developmenttest.data;
 
 public class BCRInterface {
     static {
-        System.loadLibrary("HWICgltBCR");
+        System.loadLibrary("HWILatechBCR-uc");
         System.loadLibrary("native-hscanner");
     }
 

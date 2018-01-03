@@ -22,7 +22,7 @@
             android:gravity="center"
             android:textSize="@dimen/list_view_text_size"
             android:textColor="@android:color/black"
-            android:text="@string/printer_state"/>
+            android:text="版本：1.05"/>
 
         <TextView
             android:id="@+id/cpu_occupancy"

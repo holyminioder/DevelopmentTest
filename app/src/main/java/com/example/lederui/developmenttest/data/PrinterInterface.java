@@ -10,7 +10,7 @@ public class PrinterInterface {
         System.loadLibrary("ConfigFileINI");
         System.loadLibrary("flog");
         System.loadLibrary("bitmap");
-        System.loadLibrary("HWILatechPrinter");
+        System.loadLibrary("HWISNBCPrinter");
         System.loadLibrary("native-printer");
     }
 

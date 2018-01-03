@@ -1,25 +1,22 @@
 package com.example.lederui.developmenttest.fragment;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.lederui.developmenttest.R;
+import com.zhanshow.mylibrary.phonestate.MyPhoneStateListener;
+import com.zhanshow.mylibrary.phonestate.PhoneStateUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -39,50 +36,19 @@ import static android.content.Context.WIFI_SERVICE;
  */
 public class SignalTestFragment extends Fragment {
 
-    @BindView(R.id.wifi_image)
-    ImageView wifiImage; //信号图片显示
     @BindView(R.id.signal_strength)
     TextView strength;
     Unbinder unbinder;
 
     public TelephonyManager mTelephonyManager;
+    @BindView(R.id.phone_strength)
+    TextView mPhoneStrength;
+    @BindView(R.id.operation)
+    TextView mOperation;
     private WifiInfo wifiInfo = null;       //获得的Wifi信息
     private WifiManager wifiManager = null; //Wifi管理器
     private int level;                      //信号强度值
-
-    // 使用Handler实现UI线程与Timer线程之间的信息传递,每3秒告诉UI线程获得wifiInto
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what) {
-                // 如果收到正确的消息就获取WifiInfo，改变图片并显示信号强度
-                case 1:
-                    wifiImage.setImageResource(R.drawable.id_default);
-                    strength.setText("信号强度：" + level);
-                    break;
-                case 2:
-                    wifiImage.setImageResource(R.drawable.id_default3);
-                    strength.setText("信号强度：" + level);
-                    break;
-                case 3:
-                    wifiImage.setImageResource(R.drawable.id_default2);
-                    strength.setText("信号强度：" + level);
-                    break;
-                case 4:
-                    wifiImage.setImageResource(R.drawable.id_default1);
-                    strength.setText("信号强度：" + level);
-                    break;
-                case 5:
-                    wifiImage.setImageResource(R.drawable.id_default1_grey);
-                    strength.setText("信号强度：" + level);
-                    break;
-                default:
-                    //以防万一
-                    wifiImage.setImageResource(R.drawable.id_default1_grey);
-                    strength.setText("信号强度：" + level);
-            }
-        }
-    };
+    private Handler mHandler = null;
     private Timer mTimer;
 
     @Nullable
@@ -92,6 +58,7 @@ public class SignalTestFragment extends Fragment {
         unbinder = ButterKnife.bind(this, view);
         //获取telephonyManager
         mTelephonyManager = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        mOperation.setText(getOperations(getContext()) + "：");
         //开始监听
         getWiFiStrenght();
         return view;
@@ -108,6 +75,7 @@ public class SignalTestFragment extends Fragment {
     public void onResume() {
         super.onResume();
     }
+
     @Override
     public void onPause() {
         super.onPause();
@@ -116,47 +84,76 @@ public class SignalTestFragment extends Fragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden){
+        if (hidden) {
             mTimer.cancel();
-        }else {
+        } else {
             getWiFiStrenght();
         }
     }
 
-    private void getWiFiStrenght(){
+    public String getOperations(Context context){
+        String opreator = null;
+        String IMSI = mTelephonyManager.getSubscriberId();
+        if (IMSI == null || IMSI.equals("")){
+            return opreator;
+        }
+        if (IMSI.startsWith("46000") || IMSI.startsWith("46002")){
+            opreator = "中国移动";
+        }else if (IMSI.startsWith("46001")){
+            opreator = "中国联通";
+        }else if (IMSI.startsWith("46003")){
+            opreator = "中国电信";
+        }
+        return opreator;
+    }
+
+    private void getWiFiStrenght() {
         // 获得WifiManager
         wifiManager = (WifiManager) getContext().getSystemService(WIFI_SERVICE);
         // 使用定时器,每隔5秒获得一次信号强度值
+        mHandler = new Handler();
         mTimer = new Timer();
-        mTimer.scheduleAtFixedRate(new TimerTask() {
+        mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                wifiInfo = wifiManager.getConnectionInfo();
-                //获得信号强度值
-                level = wifiInfo.getRssi();
-                //根据获得的信号强度发送信息
-                if (level <= 0 && level >= -55) {
-                    Message msg = new Message();
-                    msg.what = 1;
-                    handler.sendMessage(msg);
-                } else if (level < -55 && level >= -65) {
-                    Message msg = new Message();
-                    msg.what = 2;
-                    handler.sendMessage(msg);
-                } else if (level < -65 && level >= -75) {
-                    Message msg = new Message();
-                    msg.what = 3;
-                    handler.sendMessage(msg);
-                } else if (level < -75 && level >= -85) {
-                    Message msg = new Message();
-                    msg.what = 4;
-                    handler.sendMessage(msg);
-                } else {
-                    Message msg = new Message();
-                    msg.what = 5;
-                    handler.sendMessage(msg);
-                }
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        wifiInfo = wifiManager.getConnectionInfo();
+                        //获得信号强度值
+                        level = wifiInfo.getRssi();
+                        strength.setText("WIFI信号强度值为：" + level);
+                    }
+                });
             }
-        }, 1000, 3000);
+        }, 1000, 1000 * 3);
+        if (hasSimCard()) {
+            PhoneStateUtils.registerPhoneStateListener(getActivity(), new MyPhoneStateListener.MyPhoneStateListenerListener() {
+                @Override
+                public void onSignalStrengthsChanged(SignalStrength signalStrength) {
+                    String str = String.valueOf(signalStrength);
+                    String[] strings = str.split(" ");
+                    String signal = strings[9];
+                    mPhoneStrength.setText("4G信号强度值为：" + signal);
+                }
+            });
+        } else {
+            mOperation.setVisibility(View.INVISIBLE);
+            mPhoneStrength.setText("未找到sim卡");
+        }
+    }
+
+    public boolean hasSimCard() {
+        int simState = mTelephonyManager.getSimState();
+        boolean result = true;
+        switch (simState) {
+            case TelephonyManager.SIM_STATE_ABSENT:
+                result = false;
+                break;
+            case TelephonyManager.SIM_STATE_UNKNOWN:
+                result = false;
+                break;
+        }
+        return result;
     }
 }

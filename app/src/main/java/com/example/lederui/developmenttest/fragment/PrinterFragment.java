@@ -199,7 +199,8 @@ public class PrinterFragment extends Fragment  implements View.OnClickListener{
         }else {
             isInit = false;
             Log.i("printerfragment","PrinterFragment printer init false");
-
+            String str = GetLastErrStr();
+            Toast.makeText(getContext(),"errStr:"+str,Toast.LENGTH_SHORT).show();
         }
 
 
