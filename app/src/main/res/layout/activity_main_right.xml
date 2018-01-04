@@ -24,6 +24,7 @@
             android:textColor="@android:color/black"
             android:text="版本：1.05"/>
 
+
         <TextView
             android:id="@+id/cpu_occupancy"
             android:layout_width="0dp"

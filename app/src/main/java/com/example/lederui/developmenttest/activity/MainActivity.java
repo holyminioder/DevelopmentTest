@@ -130,6 +130,14 @@ public class MainActivity extends AppCompatActivity {
         initDate();
 
     }
+
+    @Override
+    protected void onDestroy() {
+            if(mBarcodeFragment != null)
+                mFt.detach(mBarcodeFragment);
+        super.onDestroy();
+    }
+
     //   界面初始化设置
     private void initDate() {
         //CPU温度
@@ -221,6 +229,8 @@ public class MainActivity extends AppCompatActivity {
                 mFt.commit();
                 initBackground(mDiagnoseProcedure);
                 mListView.setVisibility(View.VISIBLE);
+                if(mBarcodeFragment != null)
+                    mFt.detach(mBarcodeFragment);
                 setListViewAdapter(StringManager.diagnosis);
                 onDiagnosisItemClick();
                 break;
@@ -264,6 +274,7 @@ public class MainActivity extends AppCompatActivity {
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                onDestroy();
                                 System.exit(0);
                             }
                         }).setNegativeButton("返回", new DialogInterface.OnClickListener() {
@@ -497,6 +508,8 @@ public class MainActivity extends AppCompatActivity {
             mFt.add(R.id.container, mMachineFragment);
         }
         hideFragment(mFt);
+        if(mBarcodeFragment != null)
+            mFt.detach(mBarcodeFragment);
         mFt.show(mMachineFragment);
         mFt.commit();
     }
@@ -593,6 +606,8 @@ public class MainActivity extends AppCompatActivity {
             mFt.add(R.id.container, mPrinterFragment);
         }
         hideFragment(mFt);
+        if(mBarcodeFragment != null)
+            mFt.detach(mBarcodeFragment);
         mFt.show(mPrinterFragment);
         mFt.commit();
     }
@@ -625,6 +640,7 @@ public class MainActivity extends AppCompatActivity {
             mBarcodeFragment = new BarcodeReaderFragment();
             mFt.add(R.id.container, mBarcodeFragment);
         }
+        mFt.attach(mBarcodeFragment);
         hideFragment(mFt);
         mFt.show(mBarcodeFragment);
         mFt.commit();
@@ -709,6 +725,8 @@ public class MainActivity extends AppCompatActivity {
             mFt.add(R.id.container, mTicketFragment);
         }
         hideFragment(mFt);
+        if(mBarcodeFragment != null)
+            mFt.detach(mBarcodeFragment);
         mFt.show(mTicketFragment);
         mFt.commit();
     }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -25,12 +26,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.io.UnsupportedEncodingException;
 
+import static com.example.lederui.developmenttest.data.BCRInterface.BCRGetLastErrorStr;
+import static com.example.lederui.developmenttest.data.BCRInterface.BCRSetScanMode;
+
 /**
  * Created by holyminier on 2017/4/21.
  */
 
 /** 条码识读Fragment */
-public class BarcodeReaderFragment extends Fragment {
+public class BarcodeReaderFragment extends Fragment implements View.OnClickListener{
 
     static {
         System.loadLibrary("HWILatechBCR-uc");
@@ -50,6 +54,7 @@ public class BarcodeReaderFragment extends Fragment {
     private int ticketLength = 0;
     private String TICKETINFO= "";
     private String DATA_TYPE = "datatype";
+    private Button mStartScanBtn, mStopScanBtn;
 
 
     @Nullable
@@ -58,8 +63,16 @@ public class BarcodeReaderFragment extends Fragment {
 
         View view =  inflater.inflate(R.layout.fragment_barcode_reader, container, false);
         mView = view;
-        initBCR();
-        startScan();
+
+        mStartScanBtn = (Button) mView.findViewById(R.id.startscan_btn);
+        mStartScanBtn.setOnClickListener(this);
+
+        mStopScanBtn = (Button) mView.findViewById(R.id.stopscan_btn);
+        mStopScanBtn.setOnClickListener(this);
+
+
+
+        Log.i(MainActivity.TAG, "BCR onCreateView");
 
         InitView();
 
@@ -79,20 +92,20 @@ public class BarcodeReaderFragment extends Fragment {
         mSprinner = (Spinner) mView.findViewById(R.id.scanmode_spinner);
         mSprinner.setAdapter(spinnerAdapter);
 
-        mSprinner.setSelection(0,true);
+        mSprinner.setSelection(1,true);
         mSprinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if(position == 0){
                     mBCRInerface.BCRStopScan();
                     mScanMode = 2;
-                    boolean ret = mBCRInerface.BCRSetScanMode(mScanMode);
+                    boolean ret = BCRSetScanMode(mScanMode);
                     Log.i("BCR", "BCRSetScanMode return= " +ret + "mScanMode="+ mScanMode);
                     mBCRInerface.BCRStartScan();
                 }else if(position == 1){
                     mBCRInerface.BCRStopScan();
                     mScanMode = 1;
-                    boolean ret = mBCRInerface.BCRSetScanMode(mScanMode);
+                    boolean ret = BCRSetScanMode(mScanMode);
                     Log.i("BCR", "BCRSetScanMode return= " +ret + "mScanMode="+ mScanMode);
                     mBCRInerface.BCRStartScan();
                 }
@@ -113,17 +126,20 @@ public class BarcodeReaderFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        Log.i(MainActivity.TAG, "BCR onStart");
         client.connect();
         AppIndex.AppIndexApi.start(client, getIndexApiAction());
     }
 
     @Override
     public void onResume() {
+        Log.i(MainActivity.TAG, "BCR onResume");
         super.onResume();
     }
 
     @Override
     public void onPause() {
+        Log.i(MainActivity.TAG, "BCR onPause");
         super.onPause();
 
     }
@@ -131,6 +147,14 @@ public class BarcodeReaderFragment extends Fragment {
 
     @Override
     public void onStop() {
+
+        isScan = false;
+        boolean flag = mBCRInerface.BCRDisable();
+        Log.i(MainActivity.TAG, "BCR onStop return "+flag);
+        if(!flag){
+            String errStr = mBCRInerface.BCRGetLastErrorStr();
+            Log.i(MainActivity.TAG, "BCR onStop return errStr= "+errStr);
+        }
         super.onStop();
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
@@ -138,6 +162,8 @@ public class BarcodeReaderFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        Log.i(MainActivity.TAG, "BCR onDestroy");
+        mBCRInerface.BCRDisable();
         super.onDestroy();
     }
 
@@ -192,7 +218,7 @@ public class BarcodeReaderFragment extends Fragment {
     private void initBCR(){
         int flag = mBCRInerface.BCRInit();
         if(flag != 0){
-            String errStr = mBCRInerface.BCRGetLastErrorStr();
+            String errStr = BCRGetLastErrorStr();
             Log.e(MainActivity.TAG,errStr);
 
             Message message = new Message();
@@ -209,8 +235,9 @@ public class BarcodeReaderFragment extends Fragment {
             bundle.putString("ErrStr","OK");
             message.setData(bundle);
             handler.sendMessage(message);
-            Log.e(MainActivity.TAG,"init ok");
-            mBCRInerface.BCRSetScanMode(2);//自动模式
+
+            boolean modeflag = mBCRInerface.BCRSetScanMode(1);//手动模式
+            Log.e(MainActivity.TAG,"init ok mode return="+modeflag);
         }
     }
 
@@ -225,7 +252,7 @@ public class BarcodeReaderFragment extends Fragment {
                     while (isScan){
                         if(mBCRInerface.BCRScanIsComplete()){
                             //添加beep会get不到数据？？
-                            mBCRInerface.BCRBeep(0);
+//                            mBCRInerface.BCRBeep(0);
                             Log.i(MainActivity.TAG, "BCRScanIsComplete");
                             break;
                         }
@@ -286,4 +313,27 @@ public class BarcodeReaderFragment extends Fragment {
                 .build();
     }
 
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.startscan_btn:
+                initBCR();
+                startScan();
+                break;
+            case R.id.stopscan_btn:
+                boolean flag = mBCRInerface.BCRDisable();
+                if(!flag){
+                    Log.i(MainActivity.TAG, "BCRStopScan return = " + flag);
+                    String errStr = mBCRInerface.BCRGetLastErrorStr();
+                    Log.i(MainActivity.TAG, "BCR onStop return errStr=== "+errStr);
+                }
+                else
+                    Log.i(MainActivity.TAG, "BCRStopScan return = " + flag);
+                break;
+            default:
+                break;
+
+        }
+    }
 }

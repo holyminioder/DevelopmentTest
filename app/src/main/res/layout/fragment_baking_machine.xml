@@ -6,15 +6,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.example.lederui.developmenttest.view.SimpleVideoPlayer
-        android:id="@+id/simpleVideoPlayer"
+    <RelativeLayout
+        android:id="@+id/rl_videoView"
         android:layout_width="0dp"
         android:layout_marginTop="@dimen/status_bar"
         android:layout_height="0dp"
         android:layout_centerHorizontal="true"
         android:background="@android:color/black"
         app:layout_heightPercent="83%"
-        app:layout_widthPercent="90%"/>
+        app:layout_widthPercent="90%">
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -22,7 +33,7 @@
         app:layout_widthPercent="90%"
         android:layout_weight="1"
         android:gravity="center"
-        android:layout_below="@id/simpleVideoPlayer"
+        android:layout_below="@id/rl_videoView"
         android:orientation="horizontal">
 
         <Button

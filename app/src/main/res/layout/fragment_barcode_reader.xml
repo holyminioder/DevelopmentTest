@@ -5,6 +5,26 @@
               android:layout_height="match_parent">
 
 
+    <Button
+        android:id="@+id/startscan_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="开始扫描"
+        android:textSize="20dp"
+        android:layout_alignLeft="@+id/bcrscanData_view"
+        android:textStyle="bold"
+        style="@android:style/Widget.Button"/>
+    <Button
+        android:id="@+id/stopscan_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="停止扫描"
+        android:textSize="20dp"
+        android:layout_alignBaseline="@+id/startscan_btn"
+        android:layout_toRightOf="@+id/startscan_btn"
+        android:layout_marginLeft="20dp"
+        android:textStyle="bold"
+        style="@android:style/Widget.Button"/>
     <TextView
         android:id="@+id/textview1"
         android:layout_width="wrap_content"

@@ -27,17 +27,17 @@ android {
 
 //    signingConfigs {
 //        release {
-//            storeFile file("../invoke.jks")
-//            storePassword '123456'
-//            keyAlias 'sysInvoke'
-//            keyPassword '123456'
+//            storeFile file("../zhongqikey.jks")
+//            storePassword '111111'
+//            keyAlias 'zhongqi'
+//            keyPassword '111111'
 //        }
 //
 //        debug {
-//            storeFile file("../invoke.jks")
-//            storePassword '123456'
-//            keyAlias 'sysInvoke'
-//            keyPassword '123456'
+//            storeFile file("../zhongqikey.jks")
+//            storePassword '111111'
+//            keyAlias 'zhongqi'
+//            keyPassword '111111'
 //        }
 //    }
 

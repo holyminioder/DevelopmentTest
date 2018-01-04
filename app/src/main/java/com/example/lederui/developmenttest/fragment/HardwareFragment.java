@@ -1,7 +1,9 @@
 package com.example.lederui.developmenttest.fragment;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ConfigurationInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -204,8 +206,6 @@ public class HardwareFragment extends Fragment {
             mMainBoardStatus.setText("异常");
             mMainBoardStatus.setTextColor(getResources().getColor(R.color.read_color));
         }
-
-
     }
 
     private void getBCRHWInfo() {
@@ -247,6 +247,38 @@ public class HardwareFragment extends Fragment {
         }
     }
 
+    private void initScanner(){
+        ScannerInterface scanInterface = new ScannerInterface();
+        int ret = scanInterface.SInit();
+        if (ret != 0) {
+            String err = scanInterface.SGetLastErrorStr(null, 256);
+            mScannerStatusView.setText(err);
+        } else {
+            mScannerStatusView.setText("正常");
+            byte[] info = new byte[1024];
+            boolean flag = scanInterface.SGetHWInformation(info, 1024);
+            if (flag) {
+                try {
+                    String hwinfo = new String(info, "gbk");
+                    String[] str;
+                    if (hwinfo != "") {
+                        str = hwinfo.split("\n");
+                        hwinfo = "";//清空 ，排版
+                        for (int i = 0; i < str.length; i++) {
+                            hwinfo += str[i] + "\n" + "\n";
+                        }
+                    }
+                    mScannerHwinfoView.setText("\n" + hwinfo);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                String err = scanInterface.SGetLastErrorStr(null, 256);
+                mScannerStatusView.setText(err);
+            }
+        }
+    }
+
     //获取打印机硬件信息
     private void getPrinterHWInfo() {
         if (mPrinterLib.PrintInit()) {
@@ -269,40 +301,20 @@ public class HardwareFragment extends Fragment {
     }
 
     private void getScannerHWInfo() {
-        ScannerInterface si = new ScannerInterface();
-        int ret = si.SInit();
-        if (ret != 0) {
-            String errStr = si.SGetLastErrorStr(null, 256);
-            mScannerStatusView.setText(errStr);
-        }else {
-            mScannerStatusView.setText("正常");
-            byte[] info = new byte[1024];
-            boolean flag = si.SGetHWInformation(info, 1024);
-            if (flag) {
-                try {
-                    String hwinfo = new String(info, "gbk");
-                    String[] str;
-                    if (hwinfo != "") {
-                        str = hwinfo.split("\n");
-                        hwinfo = "";//清空 ，排版
-                        for (int i = 0; i < str.length; i++) {
-                            hwinfo += str[i] + "\n" + "\n";
-                        }
-
-                    }
-
-                    mScannerHwinfoView.setText("\n" + hwinfo);
-
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-
-
-            } else {
-                String err = si.SGetLastErrorStr(null, 256);
-                mBCRHwInfoView.setText(err);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("message", Activity.MODE_PRIVATE);
+        String scanInfo = sharedPreferences.getString("scanInfo", "");
+        boolean scanInit = sharedPreferences.getBoolean("init", false);
+        if (scanInit){
+            if (scanInfo.equals("")) {
+                mScannerStatusView.setText("异常");
+            }else {
+                mScannerStatusView.setText("正常");
+                mScannerHwinfoView.setText("\n" + scanInfo);
             }
+        }else {
+            initScanner();
         }
+
     }
 
     public Action getIndexApiAction() {

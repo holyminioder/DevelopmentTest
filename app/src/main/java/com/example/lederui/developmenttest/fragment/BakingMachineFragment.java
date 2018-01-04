@@ -1,7 +1,9 @@
 package com.example.lederui.developmenttest.fragment;
 
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -13,10 +15,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.data.PrinterInterface;
-import com.example.lederui.developmenttest.view.SimpleVideoPlayer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +43,10 @@ import static com.example.lederui.developmenttest.data.PrinterInterface.PrintIni
 public class BakingMachineFragment extends Fragment {
     @BindView(R.id.printer_status)
     TextView printerStatus;
+    @BindView(R.id.videoView)
+    VideoView mVideoView;
     private PrinterInterface mPrintInterface = new PrinterInterface();
 
-    @BindView(R.id.simpleVideoPlayer)
-    SimpleVideoPlayer simpleVideoPlayer;
     Unbinder unbinder;
     @BindView(R.id.play)
     Button play;
@@ -77,50 +79,52 @@ public class BakingMachineFragment extends Fragment {
             byte[] data = cursor.getBlob(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
             fileNames.add(new String(data, 0, data.length - 1));
         }
-        normalPlay();
+//        normalPlay();
+        playVideo();
         initPrinter();
         errorPrompt();
         return view;
     }
 
-    private void initPrinter(){
+    private void initPrinter() {
         PrintInit();
     }
 
-    private void normalPlay() {
-        for (int i = 0; i < fileNames.size(); i++) {
-            String str = (String) fileNames.get(i);
-            String[] name = str.split("/");
-            if (name[name.length - 1].equals("御龙在天avi格式_标清.avi")) {
-                Log.e("videoPath", fileNames.get(i) + "");
-                simpleVideoPlayer.setVideoPath(fileNames.get(i) + "");
+    private void playVideo() {
+        String videoUrl = Environment.getExternalStorageDirectory().getPath() + "/AFD-MP4-800600.mp4";
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mp.start();
+                mp.setLooping(true);
             }
-        }
-        normalPlay = true;
+        });
+        mVideoView.setVideoPath(videoUrl);
+        mVideoView.start();
     }
 
-    private void errorPlay() {
-        for (int i = 0; i < fileNames.size(); i++) {
-            String str = (String) fileNames.get(i);
-            String[] name = str.split("/");
-            if (name[name.length - 1].equals("error.mp4")) {
-                Log.e("videoPath", fileNames.get(i) + "");
-                simpleVideoPlayer.setVideoPath(fileNames.get(i) + "");
-            }
-        }
-        normalPlay = false;
-    }
+//    private void normalPlay() {
+//        for (int i = 0; i < fileNames.size(); i++) {
+//            String str = (String) fileNames.get(i);
+//            String[] name = str.split("/");
+//            if (name[name.length - 1].equals("御龙在天avi格式_标清.avi")) {
+//                Log.e("videoPath", fileNames.get(i) + "");
+//                simpleVideoPlayer.setVideoPath(fileNames.get(i) + "");
+//            }
+//        }
+//        normalPlay = true;
+//    }
 
     @Override
     public void onResume() {
         super.onResume();
-        simpleVideoPlayer.onResume();
+        mVideoView.resume();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        simpleVideoPlayer.onPause();
+        mVideoView.pause();
     }
 
     @Override
@@ -134,13 +138,13 @@ public class BakingMachineFragment extends Fragment {
         super.onHiddenChanged(hidden);
         num++;
         if (num == 3) {
-            simpleVideoPlayer.pauseMediaPlayer();
+            mVideoView.pause();
             isplaying = false;
             play.setText("视频播放");
             timer.cancel();
         }
         if (num == 4) {
-            simpleVideoPlayer.prepareMediaPlayer();
+            mVideoView.start();
             play.setText("视频暂停");
             isplaying = true;
             errorPrompt();
@@ -153,17 +157,17 @@ public class BakingMachineFragment extends Fragment {
         switch (view.getId()) {
             case R.id.play:
                 if (isplaying) {
-                    simpleVideoPlayer.pauseMediaPlayer();
+                    mVideoView.pause();
                     play.setText("视频播放");
                     isplaying = false;
                 } else {
-                    simpleVideoPlayer.startMediaPlayer();
+                    mVideoView.start();
                     play.setText("视频暂停");
                     isplaying = true;
                 }
                 break;
             case R.id.print:
-                if(!PrintInit()) return;
+                if (!PrintInit()) return;
                 if (!isPrint) {
                     String strNum = selectNum.getSelectedItem().toString();
                     int num = Integer.valueOf(strNum);
@@ -174,7 +178,7 @@ public class BakingMachineFragment extends Fragment {
                         public void run() {
                             if (!mPrintInterface.PrintSample(mCutMode)) {
                                 String str = GetLastErrStr();
-                            }else {
+                            } else {
                                 mPDFCode = mPrintInterface.GetPDFCode();
                                 Log.i("printer", "btn_printSample mpdfcode = " + mPDFCode);
                             }
