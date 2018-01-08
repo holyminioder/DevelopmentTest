@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.lederui.developmenttest.R;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,9 +72,44 @@ public class NetworkFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        hookWebView();//跳过Android对于webview的安全检查
         View view = inflater.inflate(R.layout.fragment_network, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
+    }
+
+
+    public static void hookWebView() {
+        int sdkInt = Build.VERSION.SDK_INT;
+        try {
+            Class<?> factoryClass = Class.forName("android.webkit.WebViewFactory");
+            Field field = factoryClass.getDeclaredField("sProviderInstance");
+            field.setAccessible(true);
+            Object sProviderInstance = field.get(null);
+            if (sProviderInstance != null) {
+                return;
+            }
+            Method getProviderClassMethod;
+            if (sdkInt > 22) {
+                getProviderClassMethod = factoryClass.getDeclaredMethod("getProviderClass");
+            } else if (sdkInt == 22) {
+                getProviderClassMethod = factoryClass.getDeclaredMethod("getFactoryClass");
+            } else {
+                return;
+            }
+            getProviderClassMethod.setAccessible(true);
+            Class<?> providerClass = (Class<?>) getProviderClassMethod.invoke(factoryClass);
+            Class<?> delegateClass = Class.forName("android.webkit.WebViewDelegate");
+            Constructor<?> providerConstructor = providerClass.getConstructor(delegateClass);
+            if (providerConstructor != null) {
+                providerConstructor.setAccessible(true);
+                Constructor<?> declaredConstructor = delegateClass.getDeclaredConstructor();
+                declaredConstructor.setAccessible(true);
+                sProviderInstance = providerConstructor.newInstance(declaredConstructor.newInstance());
+                field.set("sProviderInstance", sProviderInstance);
+            }
+        } catch (Throwable e) {
+        }
     }
 
     @Override
