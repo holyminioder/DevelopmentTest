@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private BakingMachineFragment mMachineFragment;
     private BarcodeReaderFragment mBarcodeFragment;
     private BrightnessFragment mBrightnessFragment;
-    private EditionFragment mEditionFragment;
+//    private EditionFragment mEditionFragment;
     private HardwareFragment mHardwareFragment;
     private LocationFragment mLocationFragment;
     private MainScreenTestFragment mMainScreenFragment;
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         mVoltage.setTypeface(mTypeFace);
 
         mCpuOccupancy.setVisibility(View.INVISIBLE);
-//        mPrinterState.setVisibility(View.INVISIBLE);
+        mPrinterState.setVisibility(View.INVISIBLE);
 
         //默认选中诊断程序
         initBackground(mDiagnoseProcedure);
@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    Runtime.getRuntime().exec("xbsu -c \"/system/bin/reboot\"");
+                                    Runtime.getRuntime().exec("su -c \"/system/bin/reboot\"");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -310,7 +310,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    Process process = Runtime.getRuntime().exec("xbsu");
+                                    Process process = Runtime.getRuntime().exec("su");
                                     DataOutputStream out = new DataOutputStream(process.getOutputStream());
                                     out.writeBytes("reboot -p\n");
                                     out.writeBytes("exit\n");
@@ -415,10 +415,10 @@ public class MainActivity extends AppCompatActivity {
                         mListView.setItemChecked(position, true);
                         initTimeFragment();
                         break;
-                    case 4://版本
-                        mListView.setItemChecked(position, true);
-                        initEditionFragment();
-                        break;
+//                    case 4://版本
+//                        mListView.setItemChecked(position, true);
+//                        initEditionFragment();
+//                        break;
                 }
             }
         });
@@ -447,9 +447,9 @@ public class MainActivity extends AppCompatActivity {
         if (mBrightnessFragment != null) {
             transaction.hide(mBrightnessFragment);
         }
-        if (mEditionFragment != null) {
-            transaction.hide(mEditionFragment);
-        }
+//        if (mEditionFragment != null) {
+//            transaction.hide(mEditionFragment);
+//        }
         if (mHardwareFragment != null) {
             transaction.hide(mHardwareFragment);
         }
@@ -539,16 +539,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //初始化EditionFragment
-    private void initEditionFragment() {
-        mFt = getSupportFragmentManager().beginTransaction();
-        if (mEditionFragment == null) {
-            mEditionFragment = new EditionFragment();
-            mFt.add(R.id.container, mEditionFragment);
-        }
-        hideFragment(mFt);
-        mFt.show(mEditionFragment);
-        mFt.commit();
-    }
+//    private void initEditionFragment() {
+//        mFt = getSupportFragmentManager().beginTransaction();
+//        if (mEditionFragment == null) {
+//            mEditionFragment = new EditionFragment();
+//            mFt.add(R.id.container, mEditionFragment);
+//        }
+//        hideFragment(mFt);
+//        mFt.show(mEditionFragment);
+//        mFt.commit();
+//    }
 
     //初始化HardwareFragment
     private void initHardwareFragment() {

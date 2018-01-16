@@ -1,25 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:gravity="center"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.percent.PercentRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <com.example.lederui.developmenttest.view.VolumeView
-        android:id="@+id/move_view"
-        android:layout_width="@dimen/view_width"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"/>
-
-    <TextView
-        android:id="@+id/value"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/ll_seekBar"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/black"
-        android:text="@string/volume_now"
-        android:textSize="@dimen/main_board_text_size"
-        android:layout_marginBottom="@dimen/button_margin_bottom"/>
+        android:layout_marginTop="@dimen/bottom_text_padding"
+        android:orientation="horizontal"
+        app:layout_widthPercent="65%">
+
+        <Button
+            android:id="@+id/sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/text_spacing"
+            android:background="@drawable/btn_sub_selector"/>
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:focusable="true"
+            android:maxHeight="@dimen/seek_bar_height"
+            android:minHeight="@dimen/seek_bar_height"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:progressDrawable="@drawable/po_seekbar"
+            android:thumb="@drawable/seekbar_thumb"/>
+
+        <Button
+            android:id="@+id/add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_spacing"
+            android:background="@drawable/btn_add_selector"/>
+
+    </LinearLayout>
 
 
-</LinearLayout>
+</android.support.percent.PercentRelativeLayout>
