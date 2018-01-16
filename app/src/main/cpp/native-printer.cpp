@@ -84,7 +84,226 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
     return  ret;
 }
 
+bool PrintStringForTest() {
+    LOGI("in PrintPDF417");
+    int		returnValueInt = PRINTER_NO_ERROR;
+    bool		returnValueBool = false;
+    bool		returnValue = false;
+    char    	barCode[256] = {0x00};
+    int		barCodeLength = 0;
+    int		ii = 0;
+    int 		begin = 0;
 
+
+    bool ret = PPrinterIsReady();
+    int errcode = 0;
+
+    if (!ret) {
+        return false;
+    }
+
+    //*****************************************************************************************************************
+    //????????
+    if(!PSetLineMode())
+    {
+        goto ExitLine;
+    }
+
+    //*****************************************************************************************************************
+    //?????????
+    if(!PSetBottomMargin(200))
+    {
+        goto ExitLine;
+    }
+
+    //*****************************************************************************************************************
+    //?ж??豸?????????
+//    PPrinterIsReady();
+
+    //*****************************************************************************************************************
+    //??????????
+    returnValueBool = PSetLeftMargin(0x0);//????????
+    if(!returnValueBool)
+    {
+        printf("PrinterSetLeftMargin failed!\n");
+        fflush(stdout);
+        goto ExitLine;
+    }
+
+    returnValueBool = PSetLineSpace(10);//?????и?
+    if(!returnValueBool)
+    {
+        printf("PrinterSetLineSpace(36) failed!\n");
+        fflush(stdout);
+        goto ExitLine;
+    }
+
+    returnValueBool = PSetFont(0x00, 0x11,0x01);//????????
+    if(!returnValueBool)
+    {
+        printf("PrinterSetLineSpace(0x33,0x10,0x01) failed!\n");
+        goto ExitLine;
+    }
+
+    returnValueInt = PPrintString("演示票<全国联网排列5>\n\n");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('演示票<全国联网排列5>') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    returnValueBool = PSetLineSpace(14);//?????м??
+    if(!returnValueBool)
+    {
+        printf("PrinterSetLineSpace(24) failed!\n");
+        goto ExitLine;
+    }
+
+    PFeedLine(1);//???
+    returnValueBool = PSetFont(0x00,0x00,0x01);//????????
+    if(!returnValueBool)
+    {
+        printf("PrinterSetFont(0x00,0x00,0x01) failed!\n");
+        goto ExitLine;
+    }
+
+    PFeedLine(1);
+    returnValueInt = PPrintString("35073110603460810054   d2WIvi   64319331\n");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('35073110603460810054') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    returnValueInt = PPrintString("销售点:06034      06073期 2006/03/22开奖");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('销售点:06034') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+    PPrintString("\n");
+    PFeedLine(1);
+    returnValueInt = PPrintString("倍:1  合计:2元       2006/03/22 12:26:49\n");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('倍:1  合计:2元') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+
+    PFeedLine(2);//???
+    returnValueBool = PSetFont(0x00,0x10,0x01);
+    if(!returnValueBool)
+    {
+        printf("PrinterSetFont(0x00,0x10,0x01) failed!\n");
+        goto ExitLine;
+    }
+
+    returnValueInt = PPrintString("单 式 票");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('单 式 票') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    PFeedLine(2);//???
+    returnValueInt = PPrintString("① 3 3 2 1 5");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('① 3 3 2 1 5') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    PFeedLine(2);//???
+
+    returnValueInt = PPrintString("② 5 8 1 4 6");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('② 5 8 1 4 6') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    PFeedLine(2);//???
+    returnValueInt = PPrintString("③ 3 3 2 6 2");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('③ 3 3 2 6 2') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    PFeedLine(2);//???
+    returnValueInt = PPrintString("④ 5 8 3 1 3");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('④ 5 8 3 1 3') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    PFeedLine(2);//???
+    returnValueInt = PPrintString("⑤ 3 3 2 4 7");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('⑤ 3 3 2 4 7') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    PFeedLine(2);//???
+    returnValueBool = PSetFont(0x00,0x00,0x01);
+    if(!returnValueBool)
+
+    {
+        printf("PrinterSetFont(2)(0x00,0x10,0x01) failed!\n");
+        goto ExitLine;
+    }
+
+    returnValueInt = PPrintString("电话查询:123456短信查询:输入1234发至4321");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('电话查询') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    PFeedLine(2);//???
+    returnValueInt = PPrintString("＊＊＊＊胡同＊＊号＊＊大厦");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('＊＊＊＊') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    returnValueInt = PPrintString("\n\n\n");//????????
+    if(returnValueInt != PRINTER_NO_ERROR && returnValueInt != 0x0B)
+    {
+        printf("PrinterPrintString('＊＊＊＊') failed, return code: %d\n", returnValueInt);
+        goto ExitLine;
+    }
+
+    //*****************************************************************************************************************
+    //????????????
+    memset(barCode, 0x00, sizeof(barCode));
+    barCodeLength = (rand() % 21);
+    barCodeLength = (barCodeLength < 10) ? 10 : barCodeLength;
+    for(ii = 0; ii < barCodeLength; ii++)
+    {
+        if(ii < (barCodeLength / 2))//????
+        {
+            barCode[ii] = (rand() % 10) + '0';
+        }
+        else//???
+        {
+            barCode[ii] = rand() % 27 + 'A';
+        }
+    }
+
+
+    PCutPaper();//???
+
+    returnValue = true;
+    ExitLine:
+    return  false;
+
+    return returnValue;
+}
 
 bool PrintPDF417() {
     //*****************************************************************************************************************
@@ -675,7 +894,7 @@ JNIEXPORT jstring JNICALL Java_com_example_lederui_developmenttest_data_PrinterI
 }
 
 JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintSample
-        (JNIEnv *, jobject, jint mode) {
+        (JNIEnv *, jobject, jint mode ) {
 
     int ret = PGetLastErrorCode();
     if(ret != 0)
@@ -684,6 +903,19 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
     if (PrintPDF417() != PRINTER_NO_ERROR)
         return false;
     return true;
+}
+
+JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintSample2
+        (JNIEnv *, jobject, jint mode) {
+
+    int ret = PGetLastErrorCode();
+    if(ret != 0)
+        return false;
+    PSetCutterMode(mode);
+    if (PrintStringForTest() != PRINTER_NO_ERROR)
+        return false;
+    return true;
+
 }
 
 JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintAllString

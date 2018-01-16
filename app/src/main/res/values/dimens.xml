@@ -6,7 +6,7 @@
     <dimen name="activity_main_left_width">183dp</dimen>
     <dimen name="text_size">20sp</dimen>
 
-    <dimen name="text_view_padding">15dp</dimen>
+    <dimen name="text_view_padding">20dp</dimen>
     <dimen name="bottom_text_padding">45dp</dimen>
     <dimen name="status_bar">10dp</dimen>
     <dimen name="app_edition_padding">24.5dp</dimen>

@@ -8,7 +8,6 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:paddingLeft="@dimen/status_bar"
         android:background="@drawable/frame_shape"
         android:orientation="vertical">
 
@@ -33,6 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
+                android:paddingLeft="50dp"
                 android:textSize="@dimen/main_board_msg_text"
                 android:layout_marginTop="@dimen/status_bar"/>
 
@@ -41,6 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
+                android:paddingLeft="50dp"
                 android:textSize="@dimen/main_board_msg_text"
                 android:layout_marginTop="@dimen/text_spacing"/>
 
@@ -81,8 +82,10 @@
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:layout_gravity="center_horizontal"
+            android:paddingLeft="50dp"
             android:textSize="18sp"
             android:layout_marginTop="20dp"/>
+
 
         <TextView
             android:id="@+id/print_status_view"
@@ -106,8 +109,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textStyle="bold"
             android:text="条码枪"
+            android:textStyle="bold"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/button_margin_bottom"
             android:textSize="@dimen/text_size"/>
@@ -117,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:layout_gravity="center_horizontal"
+            android:paddingLeft="50dp"
             android:textSize="@dimen/main_board_msg_text"
             android:layout_marginTop="@dimen/text_spacing"/>
 
@@ -151,13 +154,13 @@
 
         <TextView
             android:id="@+id/scanner_hwinfo_view"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@android:color/black"
-            android:layout_gravity="center_horizontal"
-            android:paddingLeft="@dimen/status_bar"
+            android:paddingLeft="50dp"
             android:textSize="@dimen/main_board_msg_text"
-            android:layout_marginTop="@dimen/text_spacing"/>
+            android:layout_marginTop="20dp"/>
+
 
         <TextView
             android:id="@+id/scanner_status_view"
@@ -167,6 +170,7 @@
             android:textSize="@dimen/main_board_text_size"
             android:textColor="@android:color/black"
             android:layout_marginBottom="@dimen/button_margin_bottom"/>
+
 
     </LinearLayout>
 

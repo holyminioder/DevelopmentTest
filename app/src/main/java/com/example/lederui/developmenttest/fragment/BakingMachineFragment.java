@@ -176,7 +176,7 @@ public class BakingMachineFragment extends Fragment {
                     printInterval.schedule(new TimerTask() {
                         @Override
                         public void run() {
-                            if (!mPrintInterface.PrintSample(mCutMode)) {
+                            if (!mPrintInterface.PrintSample2(mCutMode)) {
                                 String str = GetLastErrStr();
                             } else {
                                 mPDFCode = mPrintInterface.GetPDFCode();

@@ -39,6 +39,9 @@ JNIEXPORT void JNICALL Java_com_example_lederui_developmenttest_data_PrinterInte
 JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintSample
   (JNIEnv *, jobject, jint);
 
+JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintSample2
+        (JNIEnv *, jobject, jint);
+
 /*
  * Class:     com_example_lederui_developmenttest_data_PrinterInterface
  * Method:    PrintAllString

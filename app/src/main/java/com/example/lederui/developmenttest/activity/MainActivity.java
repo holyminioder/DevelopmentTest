@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    Runtime.getRuntime().exec("xbsu -c \"/system/bin/reboot\"");
+                                    Runtime.getRuntime().exec("su -c \"/system/bin/reboot\"");
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
