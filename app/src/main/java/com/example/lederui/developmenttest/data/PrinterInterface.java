@@ -27,6 +27,8 @@ public class PrinterInterface {
 
     public native boolean PrintSample(int cutmode);
 
+    public native boolean PrintSample2(int cutmode);
+
     public native boolean PrintAllString(int cutmode);
 
     public native boolean PrintImage(int cutmode);

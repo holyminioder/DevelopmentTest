@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.MediaController;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -50,6 +51,7 @@ public class TicketReaderFragment extends Fragment {
     byte[] ScanData = new byte[4096];
     private String DATA_TYPE = "datatype";
     private String TICKET_INFO = "ticketInfo";
+//    private static int first = 0;
 
     @Nullable
     @Override
@@ -63,8 +65,7 @@ public class TicketReaderFragment extends Fragment {
     }
 
     private void initView(){
-        String[] mItems = getResources().getStringArray(R.array.pattern);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mItems);
+        ArrayAdapter adapter = ArrayAdapter.createFromResource(getContext(), R.array.pattern, R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSignSpinner.setAdapter(adapter);
     }
@@ -230,13 +231,26 @@ public class TicketReaderFragment extends Fragment {
         unbinder.unbind();
     }
 
-    int num = 0;
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        num++;
-        if (num == 3){
-
-        }
-    }
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        first++;
+//        if (hidden) {
+//            if (first == 3) {
+//                if (!mScanner.ScannerIsReady()){
+//                    scannerInit();
+//                    mScanner = null;
+//                }
+//            }
+//        } else {
+//            if (first == 4) {
+//                if (!isScan){
+//                    mScanner = new ScannerInterface();
+//                    scannerInit();
+//                    startScan();
+//                }
+//                first = 2;
+//            }
+//        }
+//    }
 }

@@ -124,7 +124,6 @@ public class HardwareFragment extends Fragment {
 
         //调用接口返回 errDevice data line error
         getPrinterHWInfo();
-
         getScannerHWInfo();
 
         try {
@@ -218,21 +217,42 @@ public class HardwareFragment extends Fragment {
         } else {
             mBCRStatus.setText("正常");
             byte[] info = new byte[1024];
+            String[] str;
             boolean flag = bcrInterface.BCRGetHWInformation(info, 1024);
             if (flag) {
                 try {
                     String hwinfo = new String(info, "gbk");
-                    String[] str;
+
                     if (hwinfo != "") {
                         str = hwinfo.split("\n");
                         hwinfo = "";//清空 ，排版
                         for (int i = 0; i < str.length; i++) {
-                            hwinfo += str[i] + "\n" + "\n";
+                            String[] bcrinfo = str[i].split("=");
+
+                            if(bcrinfo[0].equals("Vendor")){
+                                hwinfo += "硬件厂商: " + bcrinfo[1] + "\n\n";
+                            }
+                            if(bcrinfo[0].equals("ProductType")){
+                                hwinfo += "硬件型号: " + bcrinfo[1] + "\n\n";
+                            }
+                            if(bcrinfo[0].equals("HWVersion")){
+                                hwinfo += "硬件版本: " + bcrinfo[1] + "\n\n";
+                            }
+                            if(bcrinfo[0].equals("FirmwareVersion")){
+                                hwinfo += "固件版本: " + bcrinfo[1] + "\n\n";
+                            }
+                            if(bcrinfo[0].equals("ProductDate")){
+                                hwinfo += "生产日期: " + bcrinfo[1] + "\n\n";
+                            }
+                            if(bcrinfo[0].equals("SN")){
+                                hwinfo += "硬件序列号: " + bcrinfo[1] + "\n\n";
+                            }
+
                         }
 
                     }
 
-                    mBCRHwInfoView.setText("\n" + hwinfo);
+                    mBCRHwInfoView.setText(hwinfo + "");
 
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
@@ -265,10 +285,32 @@ public class HardwareFragment extends Fragment {
                         str = hwinfo.split("\n");
                         hwinfo = "";//清空 ，排版
                         for (int i = 0; i < str.length; i++) {
-                            hwinfo += str[i] + "\n" + "\n";
+                            String[] scannerinfo = str[i].split("=");
+
+                            if(scannerinfo[0].equals("Vendor")){
+                                hwinfo += "硬件厂商: " + scannerinfo[1] + "\n\n";
+                            }
+                            if(scannerinfo[0].equals("ProductType")){
+                                hwinfo += "硬件型号: " + scannerinfo[1] + "\n\n";
+                            }
+                            if(scannerinfo[0].equals("HWVersion")){
+                                hwinfo += "硬件版本: " + scannerinfo[1] + "\n\n";
+                            }
+                            if(scannerinfo[0].equals("FirmwareVersion")){
+                                hwinfo += "固件版本: " + scannerinfo[1] + "\n\n";
+                            }
+                            if(scannerinfo[0].equals("ProductDate")){
+                                hwinfo += "生产日期: " + scannerinfo[1] + "\n\n";
+                            }
+                            if(scannerinfo[0].equals("SN")){
+                                hwinfo += "硬件序列号: " + scannerinfo[1] + "\n\n";
+                            }
+
                         }
+
                     }
-                    mScannerHwinfoView.setText("\n" + hwinfo);
+
+                    mScannerHwinfoView.setText(hwinfo + "");
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -287,14 +329,35 @@ public class HardwareFragment extends Fragment {
             String hwinfo = mPrinterLib.GetPrintHwInfo();
             if (hwinfo != "") {
                 str = hwinfo.split("\n");
+
                 hwinfo = "";//清空 ，排版
                 for (int i = 0; i < str.length; i++) {
-                    hwinfo += str[i] + "\n" + "\n";
+                    String[] printinfo = str[i].split("=");
+
+                    if(printinfo[0].equals("Vendor")){
+                        hwinfo += "硬件厂商: " + printinfo[1] + "\n\n";
+                    }
+                    if(printinfo[0].equals("ProductType")){
+                        hwinfo += "硬件型号: " + printinfo[1] + "\n\n";
+                    }
+                    if(printinfo[0].equals("HWVersion")){
+                        hwinfo += "硬件版本: " + printinfo[1] + "\n\n";
+                    }
+                    if(printinfo[0].equals("FirmwareVersion")){
+                        hwinfo += "固件版本: " + printinfo[1] + "\n\n";
+                    }
+                    if(printinfo[0].equals("ProductDate")){
+                        hwinfo += "生产日期: " + printinfo[1] + "\n\n";
+                    }
+                    if(printinfo[0].equals("SN")){
+                        hwinfo += "硬件序列号: " + printinfo[1] + "\n\n";
+                    }
+
                 }
 
             }
 
-            mPrinterHwInfoView.setText(hwinfo + "");
+            mPrinterHwInfoView.setText(hwinfo+"");
         } else {
             mPrinterStatusView.setText("异常");
         }
@@ -309,7 +372,7 @@ public class HardwareFragment extends Fragment {
                 mScannerStatusView.setText("异常");
             }else {
                 mScannerStatusView.setText("正常");
-                mScannerHwinfoView.setText("\n" + scanInfo);
+                mScannerHwinfoView.setText(scanInfo);
             }
         }else {
             initScanner();

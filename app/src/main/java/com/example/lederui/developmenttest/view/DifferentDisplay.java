@@ -12,6 +12,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -39,6 +40,7 @@ public class DifferentDisplay extends Presentation implements View.OnClickListen
     private ImageButton mPlay;
     private ImageButton mRewind;
     private ImageButton mSpeed;
+    private LinearLayout mControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class DifferentDisplay extends Presentation implements View.OnClickListen
         mPlay = (ImageButton) findViewById(R.id.syn_play);
         mRewind = (ImageButton) findViewById(R.id.rewind);
         mSpeed = (ImageButton) findViewById(R.id.speed);
+        mControl = (LinearLayout) findViewById(R.id.ll_control);
         mPlay.setOnClickListener(this);
         mRewind.setOnClickListener(this);
         mSpeed.setOnClickListener(this);
@@ -78,14 +81,12 @@ public class DifferentDisplay extends Presentation implements View.OnClickListen
 //        mSimpleVideoPlayer.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {
-//                if (mController != null){
-//                    if (isShow){
-//                        mController.show();
-//                        isShow = true;
-//                    }else {
-//                        mController.hide();
-//                        isShow = false;
-//                    }
+//                if (isShow){
+//                    mControl.setVisibility(View.VISIBLE);
+//                    isShow = false;
+//                }else{
+//                    mControl.setVisibility(View.INVISIBLE);
+//                    isShow = true;
 //                }
 //                return true;
 //            }
@@ -107,37 +108,17 @@ public class DifferentDisplay extends Presentation implements View.OnClickListen
                 }
                 break;
             case R.id.rewind:
-                int currentPosition = mSimpleVideoPlayer.getCurrentPosition();
-                if (currentPosition > 0){
-                    int rewindPosition = currentPosition - 2000;
-                    if (rewindPosition <= 0){
-                        currentPosition = 0;
-                        mSimpleVideoPlayer.seekTo(currentPosition);
-                    }else {
-                        currentPosition = rewindPosition;
-                        mSimpleVideoPlayer.seekTo(currentPosition);
-                    }
-                }
+                int pos = mSimpleVideoPlayer.getCurrentPosition();
+                pos -= 5000; // milliseconds
+                mSimpleVideoPlayer.seekTo(pos);
                 break;
             case R.id.speed:
-                Toast.makeText(getContext(), "暂未实现", Toast.LENGTH_SHORT).show();
-//                int curPosition = mSimpleVideoPlayer.getCurrentPosition();
-//                Log.e("curPosition", curPosition + "");
-//                int lengthOfTime = mSimpleVideoPlayer.getDuration();
-//                Log.e("lengthOfTime", lengthOfTime + "");
-//                if (curPosition < lengthOfTime){
-//                    int speedPosition = curPosition + 3000;
-//                    Log.e("speedPosition", speedPosition + "");
-//                    if (speedPosition > lengthOfTime){
-//                        curPosition = lengthOfTime;
-//                        Log.e("curPosition", curPosition + "");
-//                        mSimpleVideoPlayer.seekTo(curPosition);
-//                    }else {
-//                        curPosition = speedPosition;
-//                        Log.e("curPosition", curPosition + "");
-//                        mSimpleVideoPlayer.seekTo(curPosition);
-//                    }
-//                }
+                int post = mSimpleVideoPlayer.getCurrentPosition();
+                post += 10000; // milliseconds
+                if (post > mSimpleVideoPlayer.getDuration()){
+                    post -= 10000;
+                }
+                mSimpleVideoPlayer.seekTo(post);
                 break;
         }
     }

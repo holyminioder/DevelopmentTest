@@ -102,7 +102,5 @@
         android:layout_alignLeft="@+id/scanner_status"
         app:layout_widthPercent="20%"
         app:layout_heightPercent="20%"
-        android:spinnerMode="dropdown"
-        />
-
+        android:spinnerMode="dropdown"/>
 </android.support.percent.PercentRelativeLayout>

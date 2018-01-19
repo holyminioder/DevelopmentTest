@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.example.lederui.developmenttest"
-          >
+          android:sharedUserId="android.uid.system">
 
 
     <!--//定位包、导航包需要的额外权限（注：基础权限也需要）-->
