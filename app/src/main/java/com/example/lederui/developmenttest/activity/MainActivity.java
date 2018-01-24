@@ -22,7 +22,6 @@ import com.example.lederui.developmenttest.fragment.BakingMachineFragment;
 import com.example.lederui.developmenttest.fragment.BarcodeReaderFragment;
 import com.example.lederui.developmenttest.fragment.BatteryFragment;
 import com.example.lederui.developmenttest.fragment.BrightnessFragment;
-import com.example.lederui.developmenttest.fragment.EditionFragment;
 import com.example.lederui.developmenttest.fragment.HardwareFragment;
 import com.example.lederui.developmenttest.fragment.LocationFragment;
 import com.example.lederui.developmenttest.fragment.MainScreenTestFragment;
@@ -39,7 +38,6 @@ import com.example.lederui.developmenttest.fragment.TicketReaderFragment;
 import com.example.lederui.developmenttest.fragment.TimeFragment;
 import com.example.lederui.developmenttest.fragment.TouchScreenTestFragment;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
     private BakingMachineFragment mMachineFragment;
     private BarcodeReaderFragment mBarcodeFragment;
     private BrightnessFragment mBrightnessFragment;
-    private EditionFragment mEditionFragment;
+//    private EditionFragment mEditionFragment;
     private HardwareFragment mHardwareFragment;
     private LocationFragment mLocationFragment;
     private MainScreenTestFragment mMainScreenFragment;
@@ -172,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         mVoltage.setTypeface(mTypeFace);
 
         mCpuOccupancy.setVisibility(View.INVISIBLE);
-//        mPrinterState.setVisibility(View.INVISIBLE);
+        mPrinterState.setVisibility(View.INVISIBLE);
 
         //默认选中诊断程序
         initBackground(mDiagnoseProcedure);
@@ -291,8 +289,9 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    Runtime.getRuntime().exec(new String[]{"su", "-c","reboot"});
-                                } catch (IOException e) {
+                                    Process process = Runtime.getRuntime().exec(new String[]{"su", "-c","reboot"});
+                                    process.waitFor();
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -312,10 +311,7 @@ public class MainActivity extends AppCompatActivity {
                                 try {
                                     Process process = Runtime.getRuntime().exec(new String[]{"su", "-c","reboot -p"});
                                     process.waitFor();
-                                    DataOutputStream out = new DataOutputStream(process.getOutputStream());
-                                    out.writeBytes("reboot -p\n");
-                                    out.writeBytes("exit\n");
-                                    out.flush();
+
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -416,10 +412,10 @@ public class MainActivity extends AppCompatActivity {
                         mListView.setItemChecked(position, true);
                         initTimeFragment();
                         break;
-                    case 4://版本
-                        mListView.setItemChecked(position, true);
-                        initEditionFragment();
-                        break;
+//                    case 4://版本
+//                        mListView.setItemChecked(position, true);
+//                        initEditionFragment();
+//                        break;
                 }
             }
         });
@@ -448,9 +444,9 @@ public class MainActivity extends AppCompatActivity {
         if (mBrightnessFragment != null) {
             transaction.hide(mBrightnessFragment);
         }
-        if (mEditionFragment != null) {
-            transaction.hide(mEditionFragment);
-        }
+//        if (mEditionFragment != null) {
+//            transaction.hide(mEditionFragment);
+//        }
         if (mHardwareFragment != null) {
             transaction.hide(mHardwareFragment);
         }
@@ -540,16 +536,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //初始化EditionFragment
-    private void initEditionFragment() {
-        mFt = getSupportFragmentManager().beginTransaction();
-        if (mEditionFragment == null) {
-            mEditionFragment = new EditionFragment();
-            mFt.add(R.id.container, mEditionFragment);
-        }
-        hideFragment(mFt);
-        mFt.show(mEditionFragment);
-        mFt.commit();
-    }
+//    private void initEditionFragment() {
+//        mFt = getSupportFragmentManager().beginTransaction();
+//        if (mEditionFragment == null) {
+//            mEditionFragment = new EditionFragment();
+//            mFt.add(R.id.container, mEditionFragment);
+//        }
+//        hideFragment(mFt);
+//        mFt.show(mEditionFragment);
+//        mFt.commit();
+//    }
 
     //初始化HardwareFragment
     private void initHardwareFragment() {

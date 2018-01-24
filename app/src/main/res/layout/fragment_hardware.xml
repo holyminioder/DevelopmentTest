@@ -15,11 +15,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textStyle="bold"
             android:text="@string/main_board"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/button_margin_bottom"
-            android:textSize="@dimen/text_size"/>
+            android:textSize="@dimen/main_board_msg_text"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -32,8 +31,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:paddingLeft="50dp"
                 android:textSize="@dimen/main_board_msg_text"
+                android:paddingLeft="50dp"
                 android:layout_marginTop="@dimen/status_bar"/>
 
             <TextView
@@ -43,7 +42,7 @@
                 android:textColor="@android:color/black"
                 android:paddingLeft="50dp"
                 android:textSize="@dimen/main_board_msg_text"
-                android:layout_marginTop="@dimen/text_spacing"/>
+                android:layout_marginTop="@dimen/status_bar"/>
 
         </LinearLayout>
 
@@ -53,7 +52,7 @@
             android:layout_height="match_parent"
             android:text="@string/main_board_status"
             android:gravity="bottom|center_horizontal"
-            android:textSize="@dimen/main_board_text_size"
+            android:textSize="@dimen/main_board_msg_text"
             android:textColor="@android:color/black"
             android:layout_marginBottom="@dimen/button_margin_bottom"/>
 
@@ -70,11 +69,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textStyle="bold"
             android:text="@string/printer"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/button_margin_bottom"
-            android:textSize="@dimen/text_size"/>
+            android:textSize="@dimen/main_board_msg_text"/>
 
         <TextView
             android:id="@+id/printer_hw_info"
@@ -92,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom|center_horizontal"
-            android:textSize="@dimen/main_board_text_size"
+            android:textSize="@dimen/main_board_msg_text"
             android:textColor="@android:color/black"
             android:layout_marginBottom="@dimen/button_margin_bottom"/>
 
@@ -113,7 +111,7 @@
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/button_margin_bottom"
-            android:textSize="@dimen/text_size"/>
+            android:textSize="@dimen/main_board_msg_text"/>
 
         <TextView
             android:id="@+id/bcr_hwinfo_view"
@@ -129,7 +127,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom|center_horizontal"
-            android:textSize="@dimen/main_board_text_size"
+            android:textSize="@dimen/main_board_msg_text"
             android:textColor="@android:color/black"
             android:layout_marginBottom="@dimen/button_margin_bottom"/>
 
@@ -146,11 +144,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:textStyle="bold"
             android:text="@string/ticket_reader"
             android:textColor="@android:color/black"
             android:layout_marginTop="@dimen/button_margin_bottom"
-            android:textSize="@dimen/text_size"/>
+            android:textSize="@dimen/main_board_msg_text"/>
 
         <TextView
             android:id="@+id/scanner_hwinfo_view"
@@ -167,7 +164,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="bottom|center_horizontal"
-            android:textSize="@dimen/main_board_text_size"
+            android:textSize="@dimen/main_board_msg_text"
             android:textColor="@android:color/black"
             android:layout_marginBottom="@dimen/button_margin_bottom"/>
 
