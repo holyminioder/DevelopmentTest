@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <string.h>
 #include <android/log.h>
-#include "LoadScanPrnDeviceLibrary.h"
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -11,6 +11,9 @@ extern "C" {
 
 #include "native-scanner.h"
 #include "com_example_lederui_developmenttest_data_ScannerInterface.h"
+#include <stdio.h>
+
+
 /*
  * Class:     com_example_lederui_developmenttest_data_ScannerInterface
  * Method:    SInit
@@ -259,6 +262,51 @@ JNIEXPORT jint JNICALL Java_com_example_lederui_developmenttest_data_ScannerInte
     int result = SPrintBrandImage(NULL, index, x, y);
     return result;
 }
+
+
+bool getBmpData(char *fileName, unsigned char *bmpData)
+{
+    int i = 0;
+    FILE *fp;
+
+    fp = fopen(fileName, "r+");
+    if (NULL == fp) {
+        LOGI("not %s bmp file", fileName);
+        return false;
+    }
+    while (!feof(fp))
+    {
+        fread(bmpData+i, sizeof(char), 1, fp);
+        i++;
+    }
+    fclose(fp);
+
+    return true;
+}
+
+JNIEXPORT jint JNICALL Java_com_example_lederui_developmenttest_data_ScannerInterface_SPrintSelfDefBrandImage
+        (JNIEnv * env, jclass,jbyteArray jbyteArray1, jint xPos, jint yPos) {
+
+    int ret = 0;
+    char bmpPath[128];
+    memset(bmpPath, 0, sizeof(bmpPath));
+    sprintf(bmpPath, "/sdcard/BrandImage.bmp");
+
+    char bmpData[1024 * 64];
+    memset(bmpData, 0, sizeof(bmpData));
+
+    if (getBmpData((char *) bmpPath, (unsigned char *) bmpData)) {
+        LOGI("SPrintBrandImage =%d\n", sizeof(bmpData));
+        ret = SPrintBrandImage(bmpData, 2, xPos, yPos);
+        LOGI("SPrintBrandImage return =%d,xpos=%d,ypos=%d" ,ret,xPos,yPos );
+    } else {
+        LOGI("getBmpData fail");
+    }
+
+    return ret;
+}
+
+
 
 /*
  * Class:     com_example_lederui_developmenttest_data_ScannerInterface

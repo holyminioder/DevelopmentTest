@@ -86,7 +86,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_below="@+id/textView_type"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20dp"
         app:layout_widthPercent="20%"
         app:layout_heightPercent="20%"
         android:text="标记打印"
@@ -104,5 +104,14 @@
         app:layout_heightPercent="20%"
         android:spinnerMode="dropdown"
         />
+    <EditText
+        android:id="@+id/selfdefine_edit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/bt_sign_print"
+        android:layout_alignLeft="@+id/bt_sign_print"
+        app:layout_widthPercent="30%"
+        app:layout_heightPercent="10%"
+        android:background="@drawable/frame_shape"/>
 
 </android.support.percent.PercentRelativeLayout>

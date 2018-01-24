@@ -148,6 +148,8 @@ bool __WINAPI SGetHWInformation(char* const hwInfo , unsigned int const length);
  */
 bool __WINAPI SGetSWVersion(char* const swVersion , unsigned int const length);
 
+
+
 #ifdef	__cplusplus
 }
 #endif

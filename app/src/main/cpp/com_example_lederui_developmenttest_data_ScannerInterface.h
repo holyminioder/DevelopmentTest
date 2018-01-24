@@ -159,6 +159,9 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Scanner
 JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_ScannerInterface_SAdjustSensibility
   (JNIEnv *, jclass, jobject, jobject);
 
+JNIEXPORT jint JNICALL Java_com_example_lederui_developmenttest_data_ScannerInterface_SPrintSelfDefBrandImage
+        (JNIEnv *, jclass ,jbyteArray, jint x, jint y);
+
 #ifdef __cplusplus
 }
 #endif

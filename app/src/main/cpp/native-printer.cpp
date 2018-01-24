@@ -11,6 +11,7 @@ extern "C"
 #include "byScanPrnDeviceDll.h"
 #include "com_example_lederui_developmenttest_data_PrinterInterface.h"
 
+
 #define  LOG_TAG    "native-printer"
 #define LOGV(...) __android_log_print(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
 #define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG  , LOG_TAG, __VA_ARGS__)
@@ -907,6 +908,7 @@ JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_Printer
 
 JNIEXPORT jboolean JNICALL Java_com_example_lederui_developmenttest_data_PrinterInterface_PrintSample2
         (JNIEnv *, jobject, jint mode) {
+
 
     int ret = PGetLastErrorCode();
     if(ret != 0)

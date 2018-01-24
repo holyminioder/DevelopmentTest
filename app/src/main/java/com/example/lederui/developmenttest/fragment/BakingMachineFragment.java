@@ -79,7 +79,6 @@ public class BakingMachineFragment extends Fragment {
             byte[] data = cursor.getBlob(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
             fileNames.add(new String(data, 0, data.length - 1));
         }
-//        normalPlay();
         playVideo();
         initPrinter();
         errorPrompt();
@@ -102,18 +101,6 @@ public class BakingMachineFragment extends Fragment {
         mVideoView.setVideoPath(videoUrl);
         mVideoView.start();
     }
-
-//    private void normalPlay() {
-//        for (int i = 0; i < fileNames.size(); i++) {
-//            String str = (String) fileNames.get(i);
-//            String[] name = str.split("/");
-//            if (name[name.length - 1].equals("御龙在天avi格式_标清.avi")) {
-//                Log.e("videoPath", fileNames.get(i) + "");
-//                simpleVideoPlayer.setVideoPath(fileNames.get(i) + "");
-//            }
-//        }
-//        normalPlay = true;
-//    }
 
     @Override
     public void onResume() {
@@ -154,6 +141,7 @@ public class BakingMachineFragment extends Fragment {
 
     @OnClick({R.id.play, R.id.print})
     public void onViewClicked(View view) {
+
         switch (view.getId()) {
             case R.id.play:
                 if (isplaying) {
@@ -167,17 +155,28 @@ public class BakingMachineFragment extends Fragment {
                 }
                 break;
             case R.id.print:
+
                 if (!PrintInit()) return;
+                String strNum = selectNum.getSelectedItem().toString();
+
+                int num = Integer.valueOf(strNum);
+                if(num == 5000){
+                    num = 10;
+                }
                 if (!isPrint) {
-                    String strNum = selectNum.getSelectedItem().toString();
-                    int num = Integer.valueOf(strNum);
+
                     print.setText("停止打印");
                     printInterval = new Timer();
                     printInterval.schedule(new TimerTask() {
                         @Override
                         public void run() {
                             if (!mPrintInterface.PrintSample2(mCutMode)) {
-                                String str = GetLastErrStr();
+                                if(PrintInit()){
+                                    mPrintInterface.PrintSample2(mCutMode);
+                                }else{
+                                    String str = GetLastErrStr();
+                                }
+
                             } else {
                                 mPDFCode = mPrintInterface.GetPDFCode();
                                 Log.i("printer", "btn_printSample mpdfcode = " + mPDFCode);
@@ -207,56 +206,37 @@ public class BakingMachineFragment extends Fragment {
                         final int printStatus = mPrintInterface.PrinterStatus();
                         switch (printStatus) {
                             case 0:
-                                printerStatus.setText("打印机状态：正常");
-//                                if (!normalPlay) {
-//                                    printerStatus.setText(str);
-//                                    simpleVideoPlayer.pauseMediaPlayer();
-//                                    normalPlay();
-//                                    simpleVideoPlayer.prepareMediaPlayer();
-//                                }
+
                                 break;
                             case 1:
-                                printerStatus.setText("打印机状态：找不到打印机");
-//                                if (normalPlay) {
-//                                    printerStatus.setText(str);
-//                                    simpleVideoPlayer.pauseMediaPlayer();
-//                                    errorPlay();
-//                                    simpleVideoPlayer.prepareMediaPlayer();
-//                                }
+//                                printerStatus.setText("打印机状态：找不到打印机");
                                 break;
                             case 2:
-                                printerStatus.setText("打印机状态：数据线故障");
+//                                printerStatus.setText("打印机状态：数据线故障");
                                 break;
                             case 3:
-                                printerStatus.setText("打印机状态：电源线故障");
+//                                printerStatus.setText("打印机状态：电源线故障");
                                 break;
                             case 4:
-                                printerStatus.setText("打印机状态：打印机忙");
+//                                printerStatus.setText("打印机状态：打印机忙");
                                 break;
                             case 5:
-                                printerStatus.setText("打印机状态：超时");
+//                                printerStatus.setText("打印机状态：超时");
                                 break;
                             case 8:
-                                printerStatus.setText("打印机状态：打印机上盖被打卡");
+//                                printerStatus.setText("打印机状态：打印机上盖被打卡");
                                 break;
                             case 9:
-                                printerStatus.setText("打印机状态：纸卷错误");
+//                                printerStatus.setText("打印机状态：纸卷错误");
                                 break;
                             case 10:
-                                printerStatus.setText("打印机状态：纸将尽");
+//                                printerStatus.setText("打印机状态：纸将尽");
                                 break;
                             case 11:
-                                printerStatus.setText("打印机状态：其他错误");
+//                                printerStatus.setText("打印机状态：其他错误");
                                 break;
                             case 500:
-//                                str = "打印机状态：" + "正常";
-                                printerStatus.setText("打印机状态：正常");
-//                                if (!normalPlay) {
-//                                    printerStatus.setText(str);
-//                                    simpleVideoPlayer.pauseMediaPlayer();
-//                                    normalPlay();
-//                                    simpleVideoPlayer.prepareMediaPlayer();
-//                                }
+//                                printerStatus.setText("打印机状态：正常");
                                 break;
                             default:
                                 break;

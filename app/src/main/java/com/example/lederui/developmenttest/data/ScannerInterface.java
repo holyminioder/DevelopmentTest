@@ -42,6 +42,8 @@ public class ScannerInterface {
 
     public static native int SPrintBrandImage(byte[] image, int index, int xpos, int ypos);
 
+    public static native int SPrintSelfDefBrandImage(byte[] image, int xpos, int ypos);
+
     public static native boolean SRollBack();
 
     public static native boolean SRecognizeItem(int posX, int posY, int width, int height, byte[] image, byte[] result);

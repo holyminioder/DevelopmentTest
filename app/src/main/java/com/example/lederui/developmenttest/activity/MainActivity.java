@@ -291,7 +291,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    Runtime.getRuntime().exec("su -c \"/system/bin/reboot\"");
+                                    Runtime.getRuntime().exec(new String[]{"su", "-c","reboot"});
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
@@ -310,7 +310,8 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    Process process = Runtime.getRuntime().exec("xbsu");
+                                    Process process = Runtime.getRuntime().exec(new String[]{"su", "-c","reboot -p"});
+                                    process.waitFor();
                                     DataOutputStream out = new DataOutputStream(process.getOutputStream());
                                     out.writeBytes("reboot -p\n");
                                     out.writeBytes("exit\n");

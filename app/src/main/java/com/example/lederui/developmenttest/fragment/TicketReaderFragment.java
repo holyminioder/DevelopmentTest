@@ -2,24 +2,37 @@ package com.example.lederui.developmenttest.fragment;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.lederui.developmenttest.R;
 import com.example.lederui.developmenttest.activity.MainActivity;
 import com.example.lederui.developmenttest.data.ScannerInterface;
+import com.example.lederui.developmenttest.utils.BitmapConvertor;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import butterknife.BindView;
@@ -44,7 +57,11 @@ public class TicketReaderFragment extends Fragment {
     CheckBox mBtSignPrint;
     @BindView(R.id.sign_spinner)
     Spinner mSignSpinner;
+    @BindView(R.id.selfdefine_edit)
+    EditText mSelfDefEditText;
+
     Unbinder unbinder;
+    String mSelfdefStr = "自定义标记测试";
     private ScannerInterface mScanner = new ScannerInterface();
     private boolean isScan = false;
     byte[] ScanData = new byte[4096];
@@ -67,8 +84,61 @@ public class TicketReaderFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, mItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSignSpinner.setAdapter(adapter);
+        mSelfDefEditText.addTextChangedListener(textWatcher);
+        mSignSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 2){
+                    String editstr = mSelfDefEditText.getText().toString().trim();
+                    if(editstr.isEmpty()) {
+                        mSelfdefStr = "自定义标记测试";
+                        creatBMP(mSelfdefStr);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
+    TextWatcher textWatcher = new TextWatcher() {
+        private CharSequence temp;
+        private int editStart ;
+        private int editEnd ;
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            mSelfdefStr = String.valueOf(s);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            editStart = mSelfDefEditText.getSelectionStart();
+            editEnd = mSelfDefEditText.getSelectionEnd();
+            if (mSelfdefStr.length() > 15) {
+                Toast.makeText(getContext(),
+                        "你输入的字数已经超过了限制！", Toast.LENGTH_SHORT)
+                        .show();
+                s.delete(editStart-1, editEnd);
+                int tempSelection = editStart;
+                mSelfDefEditText.setText(s);
+                mSelfDefEditText.setSelection(tempSelection);
+            }
+
+            if(mSelfDefEditText.getText().toString().trim().isEmpty()) {
+                mSelfdefStr = "自定义标记测试";
+            }
+            creatBMP(mSelfdefStr);
+        }
+    };
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -153,6 +223,10 @@ public class TicketReaderFragment extends Fragment {
                                     value = 1;
                                 }else if ("已取消".equals(str)){
                                     value = 3;
+                                }else if("自定义".equals(str)){
+                                    mScanner.SPrintSelfDefBrandImage(null, 320, 300);
+                                    mScanner.SRollBack();
+                                    break;
                                 }
                                 mScanner.SPrintBrandImage(null, value, 340, 200);
                                 mScanner.SRollBack();
@@ -223,6 +297,67 @@ public class TicketReaderFragment extends Fragment {
         }).start();
 
     }
+
+    private void creatBMP(String str){
+
+        //创建空bitmap
+        Bitmap bitmap = Bitmap.createBitmap(256, 90, Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(bitmap);
+        //ANTI_ALIAS_FLAG 抗锯齿
+        Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mPaint.setDither(true);
+        mPaint.setFilterBitmap(true);
+        mPaint.setColor(Color.BLACK);
+        mPaint.setFlags(1);
+        mPaint.setTextSize(30);
+
+        int width = 256;
+        int height = 90;
+
+        mPaint.setStyle(Paint.Style.FILL);//填充
+        mPaint.setFakeBoldText(true);//加粗
+        mPaint.setStrokeWidth((float) 10.0);//设置线宽
+        canvas.drawColor(Color.WHITE);
+        canvas.drawLine(0,0,0,height,mPaint);
+        canvas.drawLine(width,0,width,height,mPaint);
+        canvas.drawLine(0,0,width,0,mPaint);
+        canvas.drawLine(0,height,width,height,mPaint);
+
+        canvas.drawText(str,20,50,mPaint);
+
+        canvas.save();
+        canvas.restore();
+
+        BitmapConvertor bitmapConvertor = new BitmapConvertor(getContext());
+        bitmapConvertor.convertBitmap(bitmap,"BrandImage");
+
+    }
+
+
+
+
+    private void savePic(Bitmap bitmap,String path) {
+        File file = new File(path);
+        FileOutputStream fileOutputStream = null;
+        try {
+            file.createNewFile();
+            fileOutputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
+            fileOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fileOutputStream != null) {
+                    fileOutputStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 
     @Override
     public void onDestroyView() {
